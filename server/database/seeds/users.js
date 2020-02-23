@@ -4,75 +4,74 @@ exports.seed = function(knex) {
     .then(function (){
       return knex("users").insert([
         {
-          "id": 1,
           "email": "ablandamore0@google.cn",
           "first_name": "Aile",
           "last_name": "Blandamore",
           "project_position_id": 5,
-          "company_id": 2
-        }, {
-          "id": 2,
+          "company_id": 1
+        }, 
+        {
           "email": "dolivia1@eepurl.com",
           "first_name": "Daryle",
           "last_name": "Olivia",
           "project_position_id": 4,
-          "company_id": 2
-        }, {
-          "id": 3,
+          "company_id": 5
+        }, 
+        {
           "email": "mfackney2@theglobeandmail.com",
           "first_name": "Maurine",
           "last_name": "Fackney",
-          "project_position_id": 5,
+          "project_position_id": 2,
           "company_id": 2
-        }, {
-          "id": 4,
+        }, 
+        {
           "email": "jlorence3@zimbio.com",
           "first_name": "Janos",
           "last_name": "Lorence",
-          "project_position_id": 4,
+          "project_position_id": 1,
           "company_id": 2
-        }, {
-          "id": 5,
+        }, 
+        {
           "email": "lalecock4@xinhuanet.com",
           "first_name": "Lew",
           "last_name": "Alecock",
           "project_position_id": 1,
           "company_id": 4
         }, {
-          "id": 6,
+
           "email": "jclementet5@com.com",
           "first_name": "Jerome",
           "last_name": "Clementet",
-          "project_position_id": 5,
+          "project_position_id": 2,
           "company_id": 1
-        }, {
-          "id": 7,
+        }, 
+        {
           "email": "lbelitz6@ft.com",
           "first_name": "Lyon",
           "last_name": "Belitz",
           "project_position_id": 5,
           "company_id": 2
-        }, {
-          "id": 8,
+        }, 
+        {
           "email": "sdiggins7@seattletimes.com",
           "first_name": "Simonette",
           "last_name": "Diggins",
           "project_position_id": 4,
           "company_id": 3
-        }, {
-          "id": 9,
+        }, 
+        {
           "email": "jpeltz8@discuz.net",
           "first_name": "Jason",
           "last_name": "Peltz",
           "project_position_id": 3,
           "company_id": 3
-        }, {
-          "id": 10,
+        }, 
+        {
           "email": "cbussons9@webmd.com",
           "first_name": "Cyb",
           "last_name": "Bussons",
           "project_position_id": 2,
-          "company_id": 3
+          "company_id": 5
         }
       ])
     })
