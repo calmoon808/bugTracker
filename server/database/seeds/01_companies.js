@@ -17,7 +17,7 @@ exports.seed = function(knex) {
         },
         {
           name: "Dunder Mifflin"
-        },
+        }
       ])
     }
   )

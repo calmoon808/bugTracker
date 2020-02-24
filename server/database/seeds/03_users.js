@@ -55,7 +55,7 @@ exports.seed = function(knex) {
         {
           "email": "sdiggins7@seattletimes.com",
           "first_name": "Simonette",
-          "last_name": "Diggins",
+          "last_name": "Diggins", 
           "project_position_id": 4,
           "company_id": 3
         }, 
