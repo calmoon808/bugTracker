@@ -20,6 +20,7 @@
     "react-scripts": "3.4.0",
     "redis": "^3.0.2"
   },
+  "dev": "npm run generate-imported-components && parcel app/index.html--hmr-port 1235",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
