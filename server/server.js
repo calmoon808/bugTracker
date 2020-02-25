@@ -1,6 +1,5 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-// const fs = require("fs");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -12,12 +11,6 @@ app.use(
     parameterLimit: 50000
   })
 );
-
-// fs.readdirSync(__dirname + '/database/models').forEach(function(filename) {
-//   if (~filename.indexOf('.js')) 
-//   require(__dirname + '/database/models/' + filename)
-//   // console.log(filename.slice(0, -3));
-// });
 
 app.use("/users", require("./routes/users"));
 app.use("/bug_priorities", require("./routes/bug_priorities"));
