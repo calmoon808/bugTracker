@@ -14,11 +14,11 @@ app.use(
   })
 );
 
-fs.readdirSync(__dirname + '/database/models').forEach(function(filename) {
-  if (~filename.indexOf('.js')) 
-  require(__dirname + '/database/models/' + filename)
-  // console.log(filename.slice(0, -3));
-});
+// fs.readdirSync(__dirname + '/database/models').forEach(function(filename) {
+//   if (~filename.indexOf('.js')) 
+//   require(__dirname + '/database/models/' + filename)
+//   // console.log(filename.slice(0, -3));
+// });
 
 app.listen(PORT, () => {
   console.log(`PORT ${PORT} at your service.`)
