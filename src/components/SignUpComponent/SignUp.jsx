@@ -1,29 +1,34 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-import styles from "./Login.module.scss"
+import styles from './SignUp.module.scss';
+
 import {
   Button,
   Form,
   Grid,
   Header,
-  Message,
   Segment,
 } from 'semantic-ui-react';
 
 export default () => (
-  <div className={styles.Login}>
+  <div className={styles.SignUp}>
     <Grid centered columns={2}>
       <Grid.Column>
         <Header as="h2" textAlign="center">
-          Login
+          Sign Up
         </Header>
         <Segment>
           <Form size="large">
-            <Form.Input
+            <Form.Input 
               fluid
               icon="envelope"
               iconPosition="left"
               placeholder="Email address"
+            />
+            <Form.Input 
+              fluid
+              icon="user"
+              iconPosition="left"
+              placeholder="Full name"
             />
             <Form.Input
               fluid
@@ -32,17 +37,20 @@ export default () => (
               placeholder="Password"
               type="password"
             />
+            <Form.Input
+              fluid
+              icon="lock"
+              iconPosition="left"
+              placeholder="Confirm password"
+              type="password"
+            />
 
             <Button color="blue" fluid size="large">
-              Login
+              Sign Up
             </Button>
           </Form>
         </Segment>
-        <Message>
-          Not registered yet? <Link to="/signup">Sign Up</Link>
-        </Message>
       </Grid.Column>
     </Grid>
   </div>
-);
-
+)
