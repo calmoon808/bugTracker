@@ -21,7 +21,7 @@ export default function App(props) {
   }
 
   return (
-    <AuthContext.Provider value={false}>
+    <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
       <Router>
         <Header />
         {/* {this.state.isLoggedIn ? <NavigationMenu /> : <Redirect to="/authorization" />} */}
