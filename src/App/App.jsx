@@ -12,30 +12,28 @@ import PrivateRoute from '../decorators/PrivateRoute';
 import { AuthContext } from "../context/auth";
 // import NavigationMenu from '../components/NavigationMenuComponent';
 
-export default class App extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      isLoggedIn: false
-    }
+export default function App(props) {
+  const [authTokens, setAuthTokens] = useState();
+  
+  const setTokens = (data) => {
+    localStorage.setItem("tokens", JSON.stringify(data));
+    setAuthTokens(data);
   }
 
-  render() {
-    return (
-      <AuthContext.Provider value={false}>
-        <Router>
-          <Header />
-          {/* {this.state.isLoggedIn ? <NavigationMenu /> : <Redirect to="/authorization" />} */}
-          <Container className="Container">
-            <Switch>
-              <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={SignUp} />
-              <Route exact path="/" component={HomePage} />
-            </Switch>
-          </Container>
-        </Router>
-      </AuthContext.Provider>
-    )
-  }
+  return (
+    <AuthContext.Provider value={false}>
+      <Router>
+        <Header />
+        {/* {this.state.isLoggedIn ? <NavigationMenu /> : <Redirect to="/authorization" />} */}
+        <Container className="Container">
+          <Switch>
+            <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={SignUp} />
+            <Route exact path="/" component={HomePage} />
+          </Switch>
+        </Container>
+      </Router>
+    </AuthContext.Provider>
+  )
 }
