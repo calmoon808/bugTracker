@@ -1,34 +1,30 @@
 import React, {Component} from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "semantic-ui-react";
 import { Container } from "semantic-ui-react";
-import NavigationMenu from "../components/NavigatrionMenuComponent/NavigationMenu";
+import Header from "../components/HeaderComponent/Header";
 import AuthorizationPage from '../pages/AuthorizationPage';
 import HomePage from '../pages/HomePage';
-import DashboardComponent from '../components/DashboardComponent';
+// import NavigationMenu from '../components/NavigationMenuComponent';
 
 export default class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      isLoggedIn: false
+      isLoggedIn: true
     }
   }
 
   render() {
     return (
       <Router>
-        <NavigationMenu />
-        {this.state.isLoggedIn ? <DashboardComponent /> : <Redirect to="/authorization" />}
+        <Header />
+        {/* {this.state.isLoggedIn ? <NavigationMenu /> : <Redirect to="/authorization" />} */}
         <Container className="Container">
           <Switch>
-            <Route path="/authorization">
-             <AuthorizationPage />
-            </Route>
-            <Route path="/">
-              <HomePage />
-            </Route>
+            <Route path="/authorization" component={AuthorizationPage} />
+            <Route exact path="/" component={HomePage} />
           </Switch>
         </Container>
       </Router>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from "./DashboardComponent.module.scss"
+import styles from "./NavigationMenu.module.scss"
 
 class Dashboard extends Component {
   render() {

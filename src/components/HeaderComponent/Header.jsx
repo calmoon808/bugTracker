@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Image, Menu } from 'semantic-ui-react';
-import styles from "./NavigationMenu.module.scss";
+import styles from "./Header.module.scss";
 import bugIcon from "../../icons/bugIcon.png"
 
 export default () => (
