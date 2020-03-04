@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "semantic-ui-react";
@@ -13,7 +13,7 @@ import { AuthContext } from "../context/auth";
 // import NavigationMenu from '../components/NavigationMenuComponent';
 
 export default function App(props) {
-  const [authTokens, setAuthTokens] = useState();
+  const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
   
   const setTokens = (data) => {
     localStorage.setItem("tokens", JSON.stringify(data));
@@ -21,7 +21,7 @@ export default function App(props) {
   }
 
   return (
-    <AuthContext.Provider value={false}>
+    <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
       <Router>
         <Header />
         {/* {this.state.isLoggedIn ? <NavigationMenu /> : <Redirect to="/authorization" />} */}
