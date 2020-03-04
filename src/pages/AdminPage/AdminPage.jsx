@@ -1,13 +1,20 @@
-import React, { Component } from 'react';
+import React from "react";
+import { Button } from "semantic-ui-react";
+import { useAuth } from "../../context/auth";
 
-class AdminPage extends Component {
-  render() {
-    return (
-      <div>
-        <h1>ADMIN PAGE</h1>
-      </div>
-    );
+function Admin(props) {
+  const { setAuthTokens } = useAuth();
+
+  function logOut() {
+    setAuthTokens();
   }
+
+  return (
+    <div>
+      <div>Admin Page</div>
+      <Button onClick={logOut}>Log out</Button>
+    </div>
+  );
 }
 
-export default AdminPage;
+export default Admin;

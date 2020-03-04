@@ -13,7 +13,7 @@ import { AuthContext } from "../context/auth";
 // import NavigationMenu from '../components/NavigationMenuComponent';
 
 export default function App(props) {
-  const [authTokens, setAuthTokens] = useState();
+  const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
   
   const setTokens = (data) => {
     localStorage.setItem("tokens", JSON.stringify(data));

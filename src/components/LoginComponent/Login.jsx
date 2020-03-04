@@ -5,7 +5,7 @@ import { useAuth } from "../../context/auth";
 import { Button, Form, Grid, Header, Message, Segment} from 'semantic-ui-react';
 import axios from "axios";
 
-const Login = () => {
+const Login = (props) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
   const [userName, setUserName] = useState("");
@@ -26,8 +26,10 @@ const Login = () => {
     });
   }
 
+  const referer = props.location.state.referer || "/";
+
   if (isLoggedIn) {
-    return <Redirect to="/" />
+    return <Redirect to={referer} />
   }
 
   return(
