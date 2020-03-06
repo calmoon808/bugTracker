@@ -1,8 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-
+const passport = require("passport");
 const app = express();
+
 const PORT = process.env.PORT || 8080;
+require("./config/passport");
 
 app.use(
   bodyParser.urlencoded({
@@ -11,6 +13,8 @@ app.use(
     parameterLimit: 50000
   })
 );
+app.use(bodyParser.json());
+app.use(passport.initialize());
 
 app.use("/users", require("./routes/users"));
 app.use("/bug_priorities", require("./routes/bug_priorities"));
