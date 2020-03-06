@@ -1,5 +1,5 @@
-import bcrypt from "bcrypt";
-import User from "../database/models/User";
+const bcrypt = require('bcrypt');
+const User = require("../database/models/User");
 
 const saltRounds = 12;
 
@@ -12,24 +12,28 @@ passport.use(
   'register',
   new localStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
       session: false
     },
     (username, password, done) => {
       try {
-        //CHANGE TO QUERY DB FOR USERNAME
-        User.query().then(users => {
-          console.log(users);
-        }).then(user => {
+        User.query()
+        .select("*")
+        .where('username', username)
+        .then(user => {
           if (user !== null) {
             console.log('username already taken');
             return done(null, false, { message: 'username already taken' });
           } else {
             bcrypt.hash(password, saltRounds).then(hashedPassword => {
-              //ADD FUNCTION TO ADD TO DATABASE
+              User.query()
+              .insert({
+                email: username,
+                password: hashedPassword
+              })
               console.log('user created');
-              return 'add function'
+              return done(null, user);
             })
           }
         })
@@ -44,16 +48,16 @@ passport.use(
   'login',
   new localStrategy(
     {
-      usernameField: 'username',
+      usernameField: 'email',
       passwordField: 'password',
       session: false
     },
     (username, password, done) => {
       try {
-        //CHANGE TO QUERY DB FOR USERNAME
-        User.query().then(users => {
-          console.log(users);
-        }).then(user => {
+        User.query()
+        .select("*")
+        .where('username', username)
+        .then(user => {
           if (user === null) {
             return done(null, false, { message: 'bad username' });
           } else {

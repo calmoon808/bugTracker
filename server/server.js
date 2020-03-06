@@ -13,7 +13,7 @@ app.use(
     parameterLimit: 50000
   })
 );
-app.use(body.Parser.json());
+app.use(bodyParser.json());
 app.use(passport.initialize());
 
 app.use("/users", require("./routes/users"));

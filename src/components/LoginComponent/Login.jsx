@@ -13,17 +13,18 @@ const Login = (props) => {
   const { setAuthTokens } = useAuth();
 
   const postLogin = () => {
-    axios.post("https://www.somePlace.com/auth/login", {
-      userName,
-      password
-    }).then(result => {
-      if (result.status === 200) {
-        setAuthTokens(result.data);
-        setLoggedIn(true);
-      } else {
-        setIsError(true);
-      }
-    });
+    console.log(this)
+    // axios.post("https://www.somePlace.com/auth/login", {
+    //   userName,
+    //   password
+    // }).then(result => {
+    //   if (result.status === 200) {
+    //     setAuthTokens(result.data);
+    //     setLoggedIn(true);
+    //   } else {
+    //     setIsError(true);
+    //   }
+    // });
   }
 
   const referer = props.location.state.referer || "/";
@@ -43,6 +44,7 @@ const Login = (props) => {
             <Form size="large">
               <Form.Input
                 fluid
+                name="email"
                 icon="envelope"
                 iconPosition="left"
                 placeholder="Email address"
@@ -52,6 +54,7 @@ const Login = (props) => {
               />
               <Form.Input
                 fluid
+                name="password"
                 icon="lock"
                 iconPosition="left"
                 placeholder="Password"
