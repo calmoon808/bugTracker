@@ -11,6 +11,7 @@ userRouter.route("/")
         res.json(users);
       })
     // User.query()
+    //   .limit(1)
     //   .select("*")
     //   .where('email', "ablandamore0@google.cn")
     //   .then(user => {
@@ -18,4 +19,13 @@ userRouter.route("/")
     //   })
   })
 
+userRouter.route("/login")
+  .post((req, res) => {
+    console.log(req.body);
+  })
+
+userRouter.route("/register")
+  .post((req, res) => {
+    
+  })
 module.exports = userRouter;

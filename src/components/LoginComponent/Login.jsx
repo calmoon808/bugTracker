@@ -13,21 +13,21 @@ const Login = (props) => {
   const { setAuthTokens } = useAuth();
 
   const postLogin = () => {
-    console.log(this)
-    // axios.post("https://www.somePlace.com/auth/login", {
-    //   userName,
-    //   password
-    // }).then(result => {
-    //   if (result.status === 200) {
-    //     setAuthTokens(result.data);
-    //     setLoggedIn(true);
-    //   } else {
-    //     setIsError(true);
-    //   }
-    // });
+    console.log(useAuth)
+    axios.post("/users/login", {
+      userName,
+      password
+    }).then(result => {
+      if (result.status === 200) {
+        setAuthTokens(result.data);
+        setLoggedIn(true);
+      } else {
+        setIsError(true);
+      }
+    });
   }
 
-  const referer = props.location.state.referer || "/";
+  const referer = props.location.state ? props.location.state.referer : "/";
 
   if (isLoggedIn) {
     return <Redirect to={referer} />
