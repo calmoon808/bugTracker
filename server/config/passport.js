@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const User = require("../database/models/User");
 
 const saltRounds = 12;
@@ -17,26 +17,38 @@ passport.use(
       session: false
     },
     (email, password, done) => {
+      console.log("hello")
       try {
-        User.query()
-        .limit(1)
-        .select("*")
-        .where('email', email)
-        .then(user => {
-          if (user !== null) {
-            console.log('email already taken');
-            return done(null, false, { message: 'email already taken' });
-          } else {
-            bcrypt.hash(password, saltRounds).then(hashedPassword => {
-              User.query()
-              .insert({
-                email: email,
-                password: hashedPassword
-              })
-              console.log('user created');
-              return done(null, user);
+        User.query().findOne({ email : email })
+        .then(async user => {
+          // if (user !== undefined) {
+          //   console.log('email already taken');
+          //   return done(null, false, { message: 'email already taken' });
+          // } else {
+            console.log("WHY DONT You RUN");
+            bcrypt.genSalt(saltRounds, (err, salt) => {
+              if (err) {
+                console.log(err)
+              }
+              console.log(salt)
+              return salt
             })
-          }
+            console.log("fuck bcrypt");
+            // await bcrypt.hash(password, saltRounds, (err, hash) => {
+            //   console.log("FUUUUUUUUUUUCCCCCCCCCCCCCCCKKKKKKKKk")
+            //   if (err){
+            //     return err
+            //   }
+            //   console.log(hash)
+            //   User.query()
+            //   .insert({
+            //     email: email,
+            //     password: hash
+            //   })
+            //   console.log('user created');
+            //   return done(null, user);
+            // })
+          // }
         })
       } catch (err) {
         done(err);
@@ -44,6 +56,7 @@ passport.use(
     }
   )
 )
+  
 
 passport.use(
   'login',
@@ -57,9 +70,7 @@ passport.use(
       try {
         console.log("FUUUUCKKKK");
         User.query()
-        .limit(1)
-        .select("*")
-        .where('email', email)
+        .findOne({ 'email': email })
         .then(user => {
           console.log(user);
           if (user[0] === undefined) {
@@ -67,7 +78,7 @@ passport.use(
           } else {
             console.log("1111111111111", typeof(password));
             console.log("2222222222222", typeof(user[0].password));
-            console.log(user);
+            console.log(password === user[0].password);
             bcrypt.compare(password, user[0].password).then(response => {
               console.log(response)
               if (response !== true) {
@@ -97,9 +108,7 @@ passport.use(
   new JWTStrategy(opts, (jwt_payload, done) => {
     try {
       User.query()
-      .limit(1)
-      .select("*")
-      .where("email", jwt_payload.id)
+      .findOne({ 'email': jwt_payload.id })
       .then(user => {
         if (user) {
           console.log('user found in db in passport');

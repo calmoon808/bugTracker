@@ -13,12 +13,6 @@ const Login = (props) => {
   const { setAuthTokens } = useAuth();
 
   const postLogin = () => {
-    // console.log(useAuth)
-    // axios.post("/users/login")
-    //   .then(response => {
-    //     console.log(response);
-    //     return "postlogin";
-    //   })
     axios.post("/users/login", { email, password })
     .then(result => {
       console.log("hello");
