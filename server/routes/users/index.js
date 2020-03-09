@@ -19,16 +19,22 @@ userRouter.route("/")
     //   })
   })
 
-userRouter.route("/login")
-  .post((req, res) => {
-    console.log(req.body);
-    User.query()
-      .select("*")
-      .where("email", req.body.userName)
-      .then(user => {
-        console.log(user);
-      })
-  })
+// userRouter.route("/login")
+  // .post(passport.authenticate("login"), (req, res) => {
+  //   console.log(req.body);
+  //   User.query()
+  //     .select("*")
+  //     .where("email", req.body.userName)
+  //     .then(user => {
+  //       if (!user[0]) {
+          
+  //       }
+  //     })
+  // })
+
+userRouter.post("/login", passport.authenticate('login'), (req, res) => {
+  return res.send('hello');
+})
 
 userRouter.route("/register")
   .post((req, res) => {

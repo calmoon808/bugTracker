@@ -5,6 +5,7 @@ exports.seed = function(knex) {
       return knex("users").insert([
         {
           "email": "ablandamore0@google.cn",
+          "password":"$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Aile",
           "last_name": "Blandamore",
           "project_position_id": 5,
@@ -12,6 +13,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "dolivia1@eepurl.com",
+          "password":"$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Daryle",
           "last_name": "Olivia",
           "project_position_id": 4,
@@ -19,6 +21,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "mfackney2@theglobeandmail.com",
+          "password":"$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Maurine",
           "last_name": "Fackney",
           "project_position_id": 2,
@@ -26,6 +29,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "jlorence3@zimbio.com",
+          "password": "$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Janos",
           "last_name": "Lorence",
           "project_position_id": 1,
@@ -33,6 +37,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "lalecock4@xinhuanet.com",
+          "password": "$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Lew",
           "last_name": "Alecock",
           "project_position_id": 1,
@@ -40,6 +45,7 @@ exports.seed = function(knex) {
         }, {
 
           "email": "jclementet5@com.com",
+          "password": "$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Jerome",
           "last_name": "Clementet",
           "project_position_id": 2,
@@ -47,6 +53,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "lbelitz6@ft.com",
+          "password": "$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Lyon",
           "last_name": "Belitz",
           "project_position_id": 5,
@@ -54,6 +61,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "sdiggins7@seattletimes.com",
+          "password": "$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Simonette",
           "last_name": "Diggins", 
           "project_position_id": 4,
@@ -61,6 +69,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "jpeltz8@discuz.net",
+          "password": "$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Jason",
           "last_name": "Peltz",
           "project_position_id": 3,
@@ -68,6 +77,7 @@ exports.seed = function(knex) {
         }, 
         {
           "email": "cbussons9@webmd.com",
+          "password": "$2a$12$MBEEogMOJKRbVNA1Tlc8OL0ZQ3cVulYU5XABCFcSLsXLuazypflC",
           "first_name": "Cyb",
           "last_name": "Bussons",
           "project_position_id": 2,

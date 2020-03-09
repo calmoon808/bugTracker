@@ -16,21 +16,21 @@ passport.use(
       passwordField: 'password',
       session: false
     },
-    (username, password, done) => {
+    (email, password, done) => {
       try {
         User.query()
         .limit(1)
         .select("*")
-        .where('username', username)
+        .where('email', email)
         .then(user => {
           if (user !== null) {
-            console.log('username already taken');
-            return done(null, false, { message: 'username already taken' });
+            console.log('email already taken');
+            return done(null, false, { message: 'email already taken' });
           } else {
             bcrypt.hash(password, saltRounds).then(hashedPassword => {
               User.query()
               .insert({
-                email: username,
+                email: email,
                 password: hashedPassword
               })
               console.log('user created');
@@ -53,24 +53,31 @@ passport.use(
       passwordField: 'password',
       session: false
     },
-    (username, password, done) => {
+    (email, password, done) => {
       try {
+        console.log("FUUUUCKKKK");
         User.query()
         .limit(1)
         .select("*")
-        .where('username', username)
+        .where('email', email)
         .then(user => {
-          if (user === null) {
-            return done(null, false, { message: 'bad username' });
+          console.log(user);
+          if (user[0] === undefined) {
+            return done(null, false, { message: 'bad email' });
           } else {
-            bcrypt.compare(password, user.password).then(response => {
-              if (response === true) {
+            console.log("1111111111111", typeof(password));
+            console.log("2222222222222", typeof(user[0].password));
+            console.log(user);
+            bcrypt.compare(password, user[0].password).then(response => {
+              console.log(response)
+              if (response !== true) {
                 console.log('passwords do not match');
                 return done(null, false, { message: 'passwords do not match '});
               }
               console.log('user found & authenticated');
               return done(null, user);
             })
+            console.log('finished?')
           }
         })
       } catch (err) {
@@ -92,7 +99,7 @@ passport.use(
       User.query()
       .limit(1)
       .select("*")
-      .where("username", jwt_payload.id)
+      .where("email", jwt_payload.id)
       .then(user => {
         if (user) {
           console.log('user found in db in passport');

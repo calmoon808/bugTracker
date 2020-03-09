@@ -1,8 +1,8 @@
 {
   "name": "bugtracker",
+  "proxy": "http://127.0.0.1:8080",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -11,6 +11,7 @@
     "babel": "^6.23.0",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
     "connect-redis": "^4.0.4",
     "constate": "^2.0.0",
     "dotenv": "^8.2.0",
