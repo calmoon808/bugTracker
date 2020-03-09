@@ -22,6 +22,12 @@ userRouter.route("/")
 userRouter.route("/login")
   .post((req, res) => {
     console.log(req.body);
+    User.query()
+      .select("*")
+      .where("email", req.body.userName)
+      .then(user => {
+        console.log(user);
+      })
   })
 
 userRouter.route("/register")
