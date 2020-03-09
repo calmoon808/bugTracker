@@ -19,6 +19,7 @@ passport.use(
     (username, password, done) => {
       try {
         User.query()
+        .limit(1)
         .select("*")
         .where('username', username)
         .then(user => {
@@ -55,6 +56,7 @@ passport.use(
     (username, password, done) => {
       try {
         User.query()
+        .limit(1)
         .select("*")
         .where('username', username)
         .then(user => {
@@ -87,10 +89,11 @@ passport.use(
   "jwt",
   new JWTStrategy(opts, (jwt_payload, done) => {
     try {
-      //INSERT FUNCTION TO CHECK USER DB WITH JWT ID
-      User.query().then(users => {
-        console.log(users);
-      }).then(user => {
+      User.query()
+      .limit(1)
+      .select("*")
+      .where("username", jwt_payload.id)
+      .then(user => {
         if (user) {
           console.log('user found in db in passport');
           done(null, user);
