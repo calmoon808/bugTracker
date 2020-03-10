@@ -21,34 +21,23 @@ passport.use(
       try {
         User.query().findOne({ email : email })
         .then(async user => {
-          // if (user !== undefined) {
-          //   console.log('email already taken');
-          //   return done(null, false, { message: 'email already taken' });
-          // } else {
-            console.log("WHY DONT You RUN");
-            bcrypt.genSalt(saltRounds, (err, salt) => {
-              if (err) {
-                console.log(err)
+          if (user !== undefined) {
+            console.log('email already taken');
+            return done(null, false, { message: 'email already taken' });
+          } else {
+            await bcrypt.hash(password, saltRounds, (err, hash) => {
+              if (err){
+                return err
               }
-              console.log(salt)
-              return salt
+              User.query().insert({
+                email: email,
+                password: hash
+              }).then(response => {
+                console.log(response);
+                return done(null, user);
+              })
             })
-            console.log("fuck bcrypt");
-            // await bcrypt.hash(password, saltRounds, (err, hash) => {
-            //   console.log("FUUUUUUUUUUUCCCCCCCCCCCCCCCKKKKKKKKk")
-            //   if (err){
-            //     return err
-            //   }
-            //   console.log(hash)
-            //   User.query()
-            //   .insert({
-            //     email: email,
-            //     password: hash
-            //   })
-            //   console.log('user created');
-            //   return done(null, user);
-            // })
-          // }
+          }
         })
       } catch (err) {
         done(err);
