@@ -21,25 +21,46 @@ userRouter.route("/")
   //   })
   // })
 
-// userRouter.route("/login")
-  // .post(passport.authenticate("login"), (req, res) => {
-  //   console.log(req.body);
-  //   User.query()
-  //     .select("*")
-  //     .where("email", req.body.userName)
-  //     .then(user => {
-  //       if (!user[0]) {
-          
-  //       }
-  //     })
-  // })
-
 userRouter.post("/login", passport.authenticate('login'), (req, res) => {
   return res.send('hello');
 })
 
-userRouter.post("/signup", passport.authenticate('register'), (req, res) => {
-  console.log('HELLLLOOOO');
-  res.send("idk")
-})
+// userRouter.post("/signup", passport.authenticate('register', {
+//   successRedirect: "/",
+//   failureRedirect: "/users/login"
+// }), (req, res) => {
+//   console.log('HELLLLOOOO');
+//   res.send("idk")
+// })
+
+userRouter.post('/signup', (req, res, next) => {
+  passport.authenticate('register', (err, user, info) => {
+    console.log(info);
+    if (err) {
+      console.log(err)
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.send(info.message);
+    } else {
+      req.login(user, err => {
+        const data = {
+          email: req.body.email,
+          first_name: req.body.firstName,
+          last_name: req.body.lastName
+        };
+        User.query()
+        .findOne({ email: data.email })
+        .patch({ 
+          first_name: data.first_name, 
+          last_name: data.last_name 
+        }).then(() => {
+          console.log('user created in db');
+          res.status(200).send({ message: 'user created' })
+        })
+      });
+    }
+  })(req, res, next);
+});
+
 module.exports = userRouter;

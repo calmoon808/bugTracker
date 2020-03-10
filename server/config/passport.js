@@ -17,7 +17,6 @@ passport.use(
       session: false
     },
     (email, password, done) => {
-      console.log("hello")
       try {
         User.query().findOne({ email : email })
         .then(async user => {
@@ -33,8 +32,8 @@ passport.use(
                 email: email,
                 password: hash
               }).then(response => {
-                console.log(response);
-                return done(null, user);
+                console.log("account created");
+                return done(null, response);
               })
             })
           }
