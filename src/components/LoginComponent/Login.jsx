@@ -8,22 +8,21 @@ import axios from "axios";
 const Login = (props) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthTokens } = useAuth();
 
   const postLogin = () => {
-    console.log(useAuth)
-    axios.post("/users/login", {
-      userName,
-      password
-    }).then(result => {
+    axios.post("/users/login", { email, password })
+    .then(result => {
+      console.log("hello");
       if (result.status === 200) {
         setAuthTokens(result.data);
         setLoggedIn(true);
       } else {
         setIsError(true);
       }
+      return;
     });
   }
 
@@ -49,7 +48,7 @@ const Login = (props) => {
                 iconPosition="left"
                 placeholder="Email address"
                 onChange={e => {
-                  setUserName(e.target.value)
+                  setEmail(e.target.value)
                 }}
               />
               <Form.Input
