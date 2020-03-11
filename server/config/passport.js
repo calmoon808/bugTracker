@@ -21,8 +21,7 @@ passport.use(
         User.query().findOne({ email : email })
         .then(async user => {
           if (user !== undefined) {
-            console.log('email already taken');
-            return done(null, false, { message: 'email already taken' });
+            return done(null, false, { message: 'Email already taken.' });
           } else {
             await bcrypt.hash(password, saltRounds, (err, hash) => {
               if (err){

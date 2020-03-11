@@ -34,14 +34,15 @@ userRouter.post("/login", passport.authenticate('login'), (req, res) => {
 // })
 
 userRouter.post('/signup', (req, res, next) => {
-  passport.authenticate('register', (err, user, info) => {
-    console.log(info);
+  passport.authenticate('register', { 
+    successRedirect: "/login",
+    failureFlash: "bluh"
+  },(err, user, info) => {
     if (err) {
       console.log(err)
     }
     if (info !== undefined) {
-      console.log(info.message);
-      res.send(info.message);
+      res.status(422).send(info.message);
     } else {
       req.login(user, err => {
         const data = {
