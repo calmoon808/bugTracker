@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from "react-router-dom";
 import styles from './SignUp.module.scss';
 import { Button, Form, Grid, Header, Segment} from 'semantic-ui-react';
+import { validateEmail } from '../../actions'
 import axios from "axios";
 
 const SignUp = () => {
@@ -50,11 +51,6 @@ const SignUp = () => {
       setIsSuccess(false);
       setErrorMsg(err.response.data);
     })
-  }
-
-  const validateEmail = (email) => {
-    const reg = /\S+@\S+\.\S+/;
-    return reg.test(email);
   }
 
   const closeButton = () => {
@@ -127,12 +123,12 @@ const SignUp = () => {
               </Button>
             </Form>
           </Segment>
-            {isError && <div className="ui negative message">
-                          <i className="close icon" onClick={e => {closeButton()}}></i>
-                          <div className="header">
-                            {displayErrorMsg()}
-                          </div>
-                        </div>}
+          {isError && <div className="ui negative message">
+                        <i className="close icon" onClick={e => {closeButton()}}></i>
+                        <div className="header">
+                          {displayErrorMsg()}
+                        </div>
+                      </div>}
         </Grid.Column>
       </Grid>
     </div>

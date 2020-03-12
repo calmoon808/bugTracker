@@ -1,8 +1,4 @@
-const axios = require("axios");
-
-export const actionPostLogin = async data => {
-  await axios.post("/users/login", data)
-    .then(response => {
-      console.log("ACTIONSSSS", data,response);
-    })
+export const validateEmail = (email) => {
+  const reg = /\S+@\S+\.\S+/;
+  return reg.test(email);
 }

@@ -55,27 +55,20 @@ passport.use(
     },
     (email, password, done) => {
       try {
-        console.log("FUUUUCKKKK");
         User.query()
-        .findOne({ 'email': email })
+        .findOne({ email: email })
         .then(user => {
-          console.log(user);
-          if (user[0] === undefined) {
-            return done(null, false, { message: 'bad email' });
+          if (user === undefined) {
+            return done(null, false, { message: 'Username or password invalid.' });
           } else {
-            console.log("1111111111111", typeof(password));
-            console.log("2222222222222", typeof(user[0].password));
-            console.log(password === user[0].password);
-            bcrypt.compare(password, user[0].password).then(response => {
-              console.log(response)
+            bcrypt.compare(password, user.password).then(response => {
               if (response !== true) {
                 console.log('passwords do not match');
-                return done(null, false, { message: 'passwords do not match '});
+                return done(null, false, { message: 'Username or password invalid. '});
               }
               console.log('user found & authenticated');
               return done(null, user);
             })
-            console.log('finished?')
           }
         })
       } catch (err) {

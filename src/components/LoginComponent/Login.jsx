@@ -3,27 +3,50 @@ import { Link, Redirect } from "react-router-dom";
 import styles from "./Login.module.scss";
 import { useAuth } from "../../context/auth";
 import { Button, Form, Grid, Header, Message, Segment} from 'semantic-ui-react';
+import { validateEmail } from '../../actions';
 import axios from "axios";
 
 const Login = (props) => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthTokens } = useAuth();
 
   const postLogin = () => {
+    if (!email || !password) {
+      setIsError(true);
+      setErrorMsg("Please fill in all fields");
+      return false;
+    }
+    if (!validateEmail(email)) {
+      setIsError(true);
+      setErrorMsg("Please enter a valid email address.");
+      return false;
+    }
+    
     axios.post("/users/login", { email, password })
     .then(result => {
-      console.log("hello");
+      console.log(result);
       if (result.status === 200) {
         setAuthTokens(result.data);
         setLoggedIn(true);
-      } else {
-        setIsError(true);
       }
-      return;
+    })
+    .catch(err => {
+      setIsError(true);
+      setErrorMsg("Email or password are invalid.");
+      console.log(err.response);
     });
+  }
+
+  const closeButton = () => {
+    setIsError(false);
+  }
+
+  const displayErrorMsg = () => {
+    return errorMsg;
   }
 
   const referer = props.location.state ? props.location.state.referer : "/";
@@ -74,8 +97,13 @@ const Login = (props) => {
           </Segment>
           <Message>
             Not registered yet? <Link to="/signup">Sign Up</Link>
-            { isError &&<div>The username or password provided were incorrect!</div> }
           </Message>
+          {isError && <div className="ui negative message">
+                        <i className="close icon" onClick={e => {closeButton()}}></i>
+                        <div className="header">
+                          {displayErrorMsg()}
+                        </div>
+                      </div>}
         </Grid.Column>
       </Grid>
     </div>

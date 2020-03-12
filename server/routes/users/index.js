@@ -21,18 +21,6 @@ userRouter.route("/")
   //   })
   // })
 
-userRouter.post("/login", passport.authenticate('login'), (req, res) => {
-  return res.send('hello');
-})
-
-// userRouter.post("/signup", passport.authenticate('register', {
-//   successRedirect: "/",
-//   failureRedirect: "/users/login"
-// }), (req, res) => {
-//   console.log('HELLLLOOOO');
-//   res.send("idk")
-// })
-
 userRouter.post('/signup', (req, res, next) => {
   passport.authenticate('register', { 
     successRedirect: "/login",
@@ -59,9 +47,34 @@ userRouter.post('/signup', (req, res, next) => {
           console.log('user created in db');
           res.status(200).send({ message: 'user created' })
         })
-      });
+      })
     }
   })(req, res, next);
 });
+
+userRouter.post('/login', (req, res, next) => {
+  passport.authenticate('login', (err, user, info) => {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      console.log(info.message);
+      res.status(422).send(info.message);
+    } else {
+      req.logIn(user, err => {
+        User.query()
+        .findOne({ email: user.email })
+        .then(user => {
+          const token = jwt.sign({ id: user.username}, process.env.JWT_SECRET_KEY);
+          res.status(200).send({
+            auth: true,
+            token: token,
+            message: 'user found & logged in'
+          })
+        })
+      }) 
+    }
+  })(req, res, next)
+})
 
 module.exports = userRouter;
