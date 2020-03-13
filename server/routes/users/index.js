@@ -21,10 +21,28 @@ userRouter.route("/")
   //   })
   // })
 
+userRouter.route('/find')
+  .get((req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (info, err) => {
+      if (err) {
+        res.send(err.message);
+      }
+      if (info != undefined) {
+        res.send(info.message);
+      } else {
+        console.log('user found in db from route');
+        res.status(200).send({
+          auth: true,
+          message: 'we made it'
+        })
+      }
+    })(req, res, next);
+  }
+)
+
 userRouter.post('/signup', (req, res, next) => {
   passport.authenticate('register', { 
     successRedirect: "/login",
-    failureFlash: "bluh"
   },(err, user, info) => {
     if (err) {
       console.log(err)
@@ -58,14 +76,13 @@ userRouter.post('/login', (req, res, next) => {
       console.log(err);
     }
     if (info !== undefined) {
-      console.log(info.message);
       res.status(422).send(info.message);
     } else {
       req.logIn(user, err => {
         User.query()
         .findOne({ email: user.email })
         .then(user => {
-          const token = jwt.sign({ id: user.username}, process.env.JWT_SECRET_KEY);
+          const token = jwt.sign({ id: user.email }, process.env.JWT_SECRET_KEY);
           res.status(200).send({
             auth: true,
             token: token,

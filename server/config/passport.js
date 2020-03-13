@@ -84,11 +84,12 @@ const opts = {
 };
 
 passport.use(
-  "jwt",
+  'jwt',
   new JWTStrategy(opts, (jwt_payload, done) => {
+    console.log(jwt_payload);
     try {
       User.query()
-      .findOne({ 'email': jwt_payload.id })
+      .findOne({ email: jwt_payload.id })
       .then(user => {
         if (user) {
           console.log('user found in db in passport');
