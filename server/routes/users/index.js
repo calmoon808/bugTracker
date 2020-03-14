@@ -21,22 +21,28 @@ userRouter.route("/")
   //   })
   // })
 
-userRouter.post("/login", passport.authenticate('login'), (req, res) => {
-  return res.send('hello');
-})
-
-// userRouter.post("/signup", passport.authenticate('register', {
-//   successRedirect: "/",
-//   failureRedirect: "/users/login"
-// }), (req, res) => {
-//   console.log('HELLLLOOOO');
-//   res.send("idk")
-// })
+userRouter.route('/find')
+  .get((req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (info, err) => {
+      if (err) {
+        res.send(err.message);
+      }
+      if (info != undefined) {
+        res.send(info.message);
+      } else {
+        console.log('user found in db from route');
+        res.status(200).send({
+          auth: true,
+          message: 'we made it'
+        })
+      }
+    })(req, res, next);
+  }
+)
 
 userRouter.post('/signup', (req, res, next) => {
   passport.authenticate('register', { 
     successRedirect: "/login",
-    failureFlash: "bluh"
   },(err, user, info) => {
     if (err) {
       console.log(err)
@@ -59,9 +65,33 @@ userRouter.post('/signup', (req, res, next) => {
           console.log('user created in db');
           res.status(200).send({ message: 'user created' })
         })
-      });
+      })
     }
   })(req, res, next);
 });
+
+userRouter.post('/login', (req, res, next) => {
+  passport.authenticate('login', (err, user, info) => {
+    if (err) {
+      console.log(err);
+    }
+    if (info !== undefined) {
+      res.status(422).send(info.message);
+    } else {
+      req.logIn(user, err => {
+        User.query()
+        .findOne({ email: user.email })
+        .then(user => {
+          const token = jwt.sign({ id: user.email }, process.env.JWT_SECRET_KEY);
+          res.status(200).send({
+            auth: true,
+            token: token,
+            message: 'user found & logged in'
+          })
+        })
+      }) 
+    }
+  })(req, res, next)
+})
 
 module.exports = userRouter;

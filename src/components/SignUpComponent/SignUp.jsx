@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Redirect } from "react-router-dom";
 import styles from './SignUp.module.scss';
-// import { useAuth } from "../../context/auth";
 import { Button, Form, Grid, Header, Segment} from 'semantic-ui-react';
+import { validateEmail } from '../../actions'
 import axios from "axios";
 
 const SignUp = () => {
@@ -43,22 +43,14 @@ const SignUp = () => {
     }
     axios.post("/users/signup", data)
     .then(result => {
-      console.log(result);
       setIsSuccess(true);
       setIsError(false);
-      return <Redirect to="/users/login"/>
     })
     .catch(err => {
-      console.log(err.response);
       setIsError(true);
       setIsSuccess(false);
       setErrorMsg(err.response.data);
     })
-  }
-
-  const validateEmail = (email) => {
-    const reg = /\S+@\S+\.\S+/;
-    return reg.test(email);
   }
 
   const closeButton = () => {
@@ -69,81 +61,78 @@ const SignUp = () => {
     return errorMsg;
   }
 
-  if (isSuccess){ 
-    return <Redirect to="/users/login"/>
-  } else {
-    return(
-      <div className={styles.SignUp}>
-        <Grid centered columns={2}>
-          <Grid.Column>
-            <Header as="h2" textAlign="center">
-              Sign Up
-            </Header>
-            <Segment>
-              <Form size="large">
-                <Form.Input 
-                  fluid
-                  name="email"
-                  icon="envelope"
-                  iconPosition="left"
-                  placeholder="Email address"
-                  onChange={e => {
-                    setEmail(e.target.value)
-                  }}
-                />
-                <Form.Input 
-                  fluid
-                  icon="user"
-                  iconPosition="left"
-                  placeholder="Full name"
-                  onChange={e => {
-                    setName(e.target.value)
-                  }}
-                />
-                <Form.Input
-                  fluid
-                  name="password"
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Password"
-                  type="password"
-                  onChange={e => {
-                    setPassword(e.target.value)
-                  }}
-                />
-                <Form.Input
-                  fluid
-                  icon="lock"
-                  iconPosition="left"
-                  placeholder="Confirm password"
-                  type="password"
-                  onChange={e => {
-                    setPasswordConfirm(e.target.value)
-                  }}
-                />
-  
-                <Button 
-                  color="blue" 
-                  fluid size="large"
-                  onClick={e => {
-                    postSignUp();
-                  }}
-                >
-                  Sign Up
-                </Button>
-              </Form>
-            </Segment>
-              {isError && <div className="ui negative message">
-                            <i className="close icon" onClick={e => {closeButton()}}></i>
-                            <div className="header">
-                              {displayErrorMsg()}
-                            </div>
-                          </div>}
-          </Grid.Column>
-        </Grid>
-      </div>
-    )
-  }
+  return(
+    <div className={styles.SignUp}>
+      {isSuccess && <Redirect to="login"/>}
+      <Grid centered columns={2}>
+        <Grid.Column>
+          <Header as="h2" textAlign="center">
+            Sign Up
+          </Header>
+          <Segment>
+            <Form size="large">
+              <Form.Input 
+                fluid
+                name="email"
+                icon="envelope"
+                iconPosition="left"
+                placeholder="Email address"
+                onChange={e => {
+                  setEmail(e.target.value)
+                }}
+              />
+              <Form.Input 
+                fluid
+                icon="user"
+                iconPosition="left"
+                placeholder="Full name"
+                onChange={e => {
+                  setName(e.target.value)
+                }}
+              />
+              <Form.Input
+                fluid
+                name="password"
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
+                type="password"
+                onChange={e => {
+                  setPassword(e.target.value)
+                }}
+              />
+              <Form.Input
+                fluid
+                icon="lock"
+                iconPosition="left"
+                placeholder="Confirm password"
+                type="password"
+                onChange={e => {
+                  setPasswordConfirm(e.target.value)
+                }}
+              />
+
+              <Button 
+                color="blue" 
+                fluid size="large"
+                onClick={e => {
+                  postSignUp();
+                }}
+              >
+                Sign Up
+              </Button>
+            </Form>
+          </Segment>
+          {isError && <div className="ui negative message">
+                        <i className="close icon" onClick={e => {closeButton()}}></i>
+                        <div className="header">
+                          {displayErrorMsg()}
+                        </div>
+                      </div>}
+        </Grid.Column>
+      </Grid>
+    </div>
+  )
 }
 
 export default SignUp;
