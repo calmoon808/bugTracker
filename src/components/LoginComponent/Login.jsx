@@ -28,12 +28,14 @@ const Login = (props) => {
     
     axios.post("/users/login", { email, password })
     .then(result => {
+      console.log(result.data)
       if (result.status === 200) {
         setAuthTokens(result.data);
         setLoggedIn(true);
       }
     })
     .catch(err => {
+      console.log(err.response);
       setIsError(true);
       setErrorMsg("Email or password are invalid.");
       console.log(err.response);
