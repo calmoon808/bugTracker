@@ -107,3 +107,11 @@ passport.use(
     console.log(jwt_payload);
   })
 )
+
+passport.serializeUser(function(user, done) {
+  return done(null, { id: user.id, email: user.email });
+});
+
+passport.deserializeUser(function(user, done) {
+  return done(null, user);
+});

@@ -5,11 +5,14 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
 userRouter.route("/")
+  // .get((req, res) => {
+  //   User.query().then(users => {
+  //     console.log("help")
+  //     res.json(users);
+  //   })
+  // })
   .get((req, res) => {
-    User.query().then(users => {
-      console.log("help")
-      res.json(users);
-    })
+    res.send(req.cookies);
   })
   // .post((req, res) => {
   //   console.log(req.body);
@@ -91,19 +94,20 @@ userRouter.post('/login', (req, res, next) => {
           const signature = tokenArr.splice(-1 ,1);
           const headerPayload = tokenArr.join('.');
           const signatureOptions = {
-            secure: true,
+            // secure: true,
             httpOnly: true,
           }
-
           const headerPayloadOptions = {
-            secure: true,
+            // secure: true,
             maxAge: 60 * 30
           }
 
           res.cookie('signature', signature, signatureOptions);
           res.cookie('headerPayload', headerPayload, headerPayloadOptions);
           res.status(200).send({
+            session: req.session,
             cookies: req.cookies,
+            isLoggedIn: req.isAuthenticated(),
             auth: true,
             token: token,
             message: 'user found & logged in',

@@ -39,7 +39,14 @@ const Login = (props) => {
       setIsError(true);
       setErrorMsg("Email or password are invalid.");
       console.log(err.response);
-    });
+    })
+    .then(() => {
+      axios.get("/users", (req, res) => {
+        console.log("?????", req.isAuthenticated())
+      }).then(result => {
+        console.log(result);
+      })
+    })
   }
 
   const closeButton = () => {
