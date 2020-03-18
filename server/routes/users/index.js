@@ -76,8 +76,6 @@ userRouter.post('/signup', (req, res, next) => {
 });
 
 userRouter.post('/login', (req, res, next) => {
-  console.log(req.cookies);
-  console.log(req.signedCookies);
   passport.authenticate('login', (err, user, info) => {
     if (err) {
       console.log(err);
@@ -91,7 +89,7 @@ userRouter.post('/login', (req, res, next) => {
         .then(user => {
           const token = jwt.sign({ id: user.email }, process.env.JWT_SECRET_KEY);
           const tokenArr = token.split(".");
-          const signature = tokenArr.splice(-1 ,1);
+          const signature = tokenArr.splice(-1 ,1)[0];
           const headerPayload = tokenArr.join('.');
           const signatureOptions = {
             // secure: true,
@@ -101,12 +99,11 @@ userRouter.post('/login', (req, res, next) => {
             // secure: true,
             maxAge: 60 * 30
           }
-
-          res.cookie('signature', signature, signatureOptions);
           res.cookie('headerPayload', headerPayload, headerPayloadOptions);
+          res.cookie('signature', signature, signatureOptions);
           res.status(200).send({
             session: req.session,
-            cookies: req.cookies,
+            JWTCookies: req.cookies,
             isLoggedIn: req.isAuthenticated(),
             auth: true,
             token: token,

@@ -41,7 +41,7 @@ const Login = (props) => {
       console.log(err.response);
     })
     .then(() => {
-      axios.get("/users", (req, res) => {
+      axios.get("/secret", (req, res) => {
         console.log("?????", req.isAuthenticated())
       }).then(result => {
         console.log(result);

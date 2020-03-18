@@ -5,6 +5,7 @@ const flash = require("connect-flash")
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const app = express();
+const { withAuth } = require('./middleware');
 
 const PORT = process.env.PORT || 8080;
 require("./config/passport");
@@ -39,7 +40,11 @@ app.listen(PORT, () => {
   console.log(`PORT ${PORT} at your service.`)
 })
 
-// app.get("/", (req, res) => {
-//   console.log('111111111111111', req);
-//   res.send(req.isAuthenticated);
-// })
+app.get("/", (req, res) => {
+  // console.log('111111111111111', req);
+  res.send(req.isAuthenticated);
+})
+
+app.get("/secret", withAuth, function (req, res) {
+  res.json('SECRET FOUND');
+})
