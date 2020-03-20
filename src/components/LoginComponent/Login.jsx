@@ -45,6 +45,7 @@ const Login = (props) => {
         console.log("?????", req.isAuthenticated())
       }).then(result => {
         console.log(result);
+        console.log("COOKIE: ", document.cookie)
       })
     })
   }

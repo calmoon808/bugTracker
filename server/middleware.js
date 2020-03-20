@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const withAuth = function(req, res, next) {
   console.log(req.cookies);
+
   let token = `${req.cookies.headerPayload}.${req.cookies.signature}`
 
   if (!token[0]) {
