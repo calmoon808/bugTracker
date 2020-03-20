@@ -88,12 +88,14 @@ passport.use(
   new JWTStrategy(opts, (jwt_payload, done) => {
     console.log(jwt_payload);
     try {
+      console.log(jwt_payload);
       User.query()
       .findOne({ email: jwt_payload.id })
       .then(user => {
+        console.log(user);
         if (user) {
           console.log('user found in db in passport');
-          done(null, user);
+          return done(null, user);
         } else {
           console.log('user not found in db');
           done(null, false);
@@ -102,5 +104,14 @@ passport.use(
     } catch (err) {
       done(err);
     }
+    console.log(jwt_payload);
   })
 )
+
+passport.serializeUser(function(user, done) {
+  return done(null, { id: user.id, email: user.email });
+});
+
+passport.deserializeUser(function(user, done) {
+  return done(null, user);
+});

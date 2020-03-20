@@ -5,11 +5,14 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
 userRouter.route("/")
+  // .get((req, res) => {
+  //   User.query().then(users => {
+  //     console.log("help")
+  //     res.json(users);
+  //   })
+  // })
   .get((req, res) => {
-    User.query().then(users => {
-      console.log("help")
-      res.json(users);
-    })
+    res.send(req.cookies);
   })
   // .post((req, res) => {
   //   console.log(req.body);
@@ -21,24 +24,26 @@ userRouter.route("/")
   //   })
   // })
 
-userRouter.route('/find')
-  .get((req, res, next) => {
-    passport.authenticate('jwt', { session: false }, (info, err) => {
-      if (err) {
-        res.send(err.message);
-      }
-      if (info != undefined) {
-        res.send(info.message);
-      } else {
-        console.log('user found in db from route');
-        res.status(200).send({
-          auth: true,
-          message: 'we made it'
-        })
-      }
-    })(req, res, next);
-  }
-)
+userRouter.get("/find", (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    console.log(user);
+    if (err) {
+      console.log(err)
+      res.send(err.message);
+    }
+    if (info != undefined) {
+      console.log(info.message);
+      res.send(info.message);
+    } else {
+      console.log('user found in db from route');
+      res.status(200).send({
+        auth: true,
+        email: user.email,
+        message: 'we made it'
+      })
+    }
+  })(req, res, next);
+});
 
 userRouter.post('/signup', (req, res, next) => {
   passport.authenticate('register', { 
@@ -83,10 +88,26 @@ userRouter.post('/login', (req, res, next) => {
         .findOne({ email: user.email })
         .then(user => {
           const token = jwt.sign({ id: user.email }, process.env.JWT_SECRET_KEY);
+          const tokenArr = token.split(".");
+          const signature = tokenArr.splice(-1 ,1)[0];
+          const headerPayload = tokenArr.join('.');
+          const signatureOptions = {
+            // secure: true,
+            httpOnly: true,
+          }
+          const headerPayloadOptions = {
+            // secure: true,
+            maxAge: 60 * 30
+          }
+          res.cookie('headerPayload', headerPayload, headerPayloadOptions);
+          res.cookie('signature', signature, signatureOptions);
           res.status(200).send({
+            session: req.session,
+            JWTCookies: req.cookies,
+            isLoggedIn: req.isAuthenticated(),
             auth: true,
             token: token,
-            message: 'user found & logged in'
+            message: 'user found & logged in',
           })
         })
       }) 

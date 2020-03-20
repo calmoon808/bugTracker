@@ -2,7 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const flash = require("connect-flash")
+const cookieParser = require("cookie-parser");
+const session = require('express-session');
 const app = express();
+const { withAuth } = require('./middleware');
 
 const PORT = process.env.PORT || 8080;
 require("./config/passport");
@@ -14,9 +17,16 @@ app.use(
     parameterLimit: 50000
   })
 );
-app.use(flash());
+app.use(cookieParser())
 app.use(bodyParser.json());
+app.use(session({ 
+  secret: 'keyboard cat',
+  saveUninitialized: true,
+  resave: true
+ }));
 app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 app.use("/users", require("./routes/users"));
 app.use("/bug_priorities", require("./routes/bug_priorities"));
@@ -31,5 +41,10 @@ app.listen(PORT, () => {
 })
 
 app.get("/", (req, res) => {
-  res.send("HI");
+  // console.log('111111111111111', req);
+  res.send(req.isAuthenticated);
+})
+
+app.get("/secret", withAuth, function (req, res) {
+  res.json('SECRET FOUND');
 })

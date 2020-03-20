@@ -28,16 +28,26 @@ const Login = (props) => {
     
     axios.post("/users/login", { email, password })
     .then(result => {
+      console.log(result.data)
       if (result.status === 200) {
         setAuthTokens(result.data);
         setLoggedIn(true);
       }
     })
     .catch(err => {
+      console.log(err.response);
       setIsError(true);
       setErrorMsg("Email or password are invalid.");
       console.log(err.response);
-    });
+    })
+    .then(() => {
+      axios.get("/secret", (req, res) => {
+        console.log("?????", req.isAuthenticated())
+      }).then(result => {
+        console.log(result);
+        console.log("COOKIE: ", document.cookie)
+      })
+    })
   }
 
   const closeButton = () => {
