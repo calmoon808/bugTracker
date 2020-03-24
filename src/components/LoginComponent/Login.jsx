@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./Login.module.scss";
 import { useAuth } from "../../context/auth";
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
@@ -11,7 +11,7 @@ const Login = (props) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setAuthTokens,setIsLoggedIn } = useAuth();
+  const { setAuthTokens, setIsLoggedIn } = useAuth();
 
   const postLogin = () => {
     if (!email || !password) {
@@ -27,9 +27,7 @@ const Login = (props) => {
     
     axios.post("/users/login", { email, password })
     .then(result => {
-      console.log(result.data.isAuthenticated)
       if (result.status === 200) {
-        console.log(result.data);
         setAuthTokens(result.data);
         setIsLoggedIn(true);
       }
@@ -56,13 +54,6 @@ const Login = (props) => {
   const displayErrorMsg = () => {
     return errorMsg;
   }
-
-  // console.log("props", props)
-  // const referer = props.location.state ? props.location.state.referer : "/home";
-
-  // if (isLoggedIn) {
-  //   return <Redirect to={referer} />
-  // }
 
   return(
     <div className={styles.Login}>

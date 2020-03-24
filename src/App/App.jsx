@@ -43,8 +43,6 @@ export default function App(props) {
             <Switch>
               <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
               <Route path="/home" component={HomePage} />
-              {/* <Route path="/signup" component={SignUp} /> */}
-              {/* <Route exact path="/" component={Login} /> */}
             </Switch>
           </Container>
         </>: 
