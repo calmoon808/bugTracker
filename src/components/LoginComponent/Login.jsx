@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import styles from "./Login.module.scss";
 import { useAuth } from "../../context/auth";
 import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
@@ -11,7 +11,7 @@ const Login = (props) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setAuthTokens, setIsLoggedIn } = useAuth();
+  const { setAuthTokens, setIsLoggedIn, isLoggedIn } = useAuth();
 
   const postLogin = () => {
     if (!email || !password) {
@@ -57,6 +57,7 @@ const Login = (props) => {
 
   return(
     <div className={styles.Login}>
+      {isLoggedIn && <Redirect to="/home"/>}
       <Grid centered columns={2}>
         <Grid.Column>
           <Header as="h2" textAlign="center">

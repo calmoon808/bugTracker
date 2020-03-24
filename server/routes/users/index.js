@@ -46,9 +46,7 @@ userRouter.get("/find", (req, res, next) => {
 });
 
 userRouter.post('/signup', (req, res, next) => {
-  passport.authenticate('register', { 
-    successRedirect: "/",
-  },(err, user, info) => {
+  passport.authenticate('register', (err, user, info) => {
     if (err) {
       console.log(err)
     }
@@ -114,5 +112,10 @@ userRouter.post('/login', (req, res, next) => {
     }
   })(req, res, next)
 })
+
+userRouter.post("/logout", (req, res) => {
+  req.logout();
+  return res.json({ session: {}, message: "See you again soon!" });
+});
 
 module.exports = userRouter;

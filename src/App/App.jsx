@@ -14,17 +14,16 @@ import NavigationMenu from '../components/NavigationMenuComponent';
 
 export default function App(props) {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isAuthenticated') || "");
 
   const setTokens = (data) => {
-    localStorage.setItem("authTokens", JSON.stringify(data));
+    console.log(data);
+    localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
+    localStorage.setItem("isAuthenticated", data.isAuthenticated)
     setAuthTokens(data);
     setIsLoggedIn(data.isAuthenticated);
-    console.log(data, isLoggedIn);
-  }
-
-  const setLoggedIn = (data) => {
-    setIsLoggedIn(data)
+    // console.log(data, isLoggedIn);
+    console.log(localStorage.getItem("isAuthenticated"));
   }
 
   return (
@@ -32,7 +31,7 @@ export default function App(props) {
       authTokens, 
       setAuthTokens: setTokens,
       isLoggedIn,
-      setIsLoggedIn: setLoggedIn
+      setIsLoggedIn
     }}>
       <Router>
         {isLoggedIn ? 
@@ -45,11 +44,12 @@ export default function App(props) {
               <Route path="/home" component={HomePage} />
             </Switch>
           </Container>
-        </>: 
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <Route path="/signup" component={SignUp} />
-          </Switch>
+        </>
+        : 
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route path="/signup" component={SignUp} />
+        </Switch>
         }
       </Router>
     </AuthContext.Provider>
