@@ -1,26 +1,23 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { Container, Image, Menu } from 'semantic-ui-react';
 import styles from "./Header.module.scss";
 import bugIcon from "../../icons/bugIcon.png"
 import { useAuth } from "../../context/auth";
 import axios from 'axios';
 
-const Header = (props) => {
-  const { isLoggedIn } = useAuth();
+const Header = () => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const logoutOnClick = () => {
-    axios.get("/login")
-    .then((response) => {
-      console.log(response)
-      console.log("isloggedin", isLoggedIn);
+    axios.get("/users/logout")
+    .then(() => {
+      setIsLoggedIn(false);
       localStorage.clear();
     })
     .catch(err => {
       console.log(err.response)
     })
-    // console.log("isloggedin", isLoggedIn);
-    // localStorage.clear();
   }
 
   return (
@@ -36,9 +33,6 @@ const Header = (props) => {
         <Menu.Menu position="right">
           <Menu.Item name="logout" onClick={ () => logoutOnClick() }>
             Logout
-          </Menu.Item>
-          <Menu.Item as={Link} to ="/signup" name="signup">
-            Sign Up
           </Menu.Item>
         </Menu.Menu>
       </Container>

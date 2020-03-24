@@ -4,6 +4,15 @@ const User = require("../../database/models/User")
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
+const signatureOptions = {
+  // secure: true,
+  httpOnly: true,
+}
+const headerPayloadOptions = {
+  // secure: true,
+  maxAge: 60 * 30
+}
+
 userRouter.route("/")
   // .get((req, res) => {
   //   User.query().then(users => {
@@ -89,14 +98,7 @@ userRouter.post('/login', (req, res, next) => {
           const tokenArr = token.split(".");
           const signature = tokenArr.splice(-1 ,1)[0];
           const headerPayload = tokenArr.join('.');
-          const signatureOptions = {
-            // secure: true,
-            httpOnly: true,
-          }
-          const headerPayloadOptions = {
-            // secure: true,
-            maxAge: 60 * 30
-          }
+
           res.cookie('headerPayload', headerPayload, headerPayloadOptions);
           res.cookie('signature', signature, signatureOptions);
           res.status(200).send({
@@ -113,8 +115,10 @@ userRouter.post('/login', (req, res, next) => {
   })(req, res, next)
 })
 
-userRouter.post("/logout", (req, res) => {
-  req.logout();
+userRouter.get("/logout", (req, res) => {
+  // req.logout();
+  res.clearCookie('headerPayload', headerPayloadOptions);
+  res.clearCookie('signature', signatureOptions);
   return res.json({ session: {}, message: "See you again soon!" });
 });
 

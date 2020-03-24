@@ -6,7 +6,7 @@ import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 import { validateEmail } from '../../actions';
 import axios from "axios";
 
-const Login = (props) => {
+const Login = () => {
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
