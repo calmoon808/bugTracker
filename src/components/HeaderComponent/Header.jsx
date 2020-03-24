@@ -14,7 +14,7 @@ export default () => (
         />
       </Menu.Item>
       <Menu.Menu position="right">
-        <Menu.Item as={Link} to="/login" name="login">
+        <Menu.Item as={Link} to="/" name="login">
           Login
         </Menu.Item>
         <Menu.Item as={Link} to ="/signup" name="signup">

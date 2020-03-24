@@ -10,29 +10,49 @@ import HomePage from '../pages/HomePage';
 import AdminPage from '../pages/AdminPage/AdminPage';
 import PrivateRoute from '../decorators/PrivateRoute';
 import { AuthContext } from "../context/auth";
-// import NavigationMenu from '../components/NavigationMenuComponent';
+import NavigationMenu from '../components/NavigationMenuComponent';
 
 export default function App(props) {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const setTokens = (data) => {
-    localStorage.setItem("tokens", JSON.stringify(data));
+    localStorage.setItem("authTokens", JSON.stringify(data));
     setAuthTokens(data);
+    setIsLoggedIn(data.isAuthenticated);
+    console.log(data, isLoggedIn);
+  }
+
+  const setLoggedIn = (data) => {
+    setIsLoggedIn(data)
   }
 
   return (
-    <AuthContext.Provider value={{authTokens, setAuthTokens: setTokens}}>
+    <AuthContext.Provider value={{
+      authTokens, 
+      setAuthTokens: setTokens,
+      isLoggedIn,
+      setIsLoggedIn: setLoggedIn
+    }}>
       <Router>
-        <Header />
-        {/* {this.state.isLoggedIn ? <NavigationMenu /> : <Redirect to="/authorization" />} */}
-        <Container className="Container">
+        {isLoggedIn ? 
+        <>
+          <NavigationMenu />
+          <Container className="Container">
+            <Header /> 
+            <Switch>
+              <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
+              <Route path="/home" component={HomePage} />
+              {/* <Route path="/signup" component={SignUp} /> */}
+              {/* <Route exact path="/" component={Login} /> */}
+            </Switch>
+          </Container>
+        </>: 
           <Switch>
-            <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
-            <Route path="/login" component={Login} />
+            <Route exact path="/" component={Login} />
             <Route path="/signup" component={SignUp} />
-            <Route exact path="/" component={HomePage} />
           </Switch>
-        </Container>
+        }
       </Router>
     </AuthContext.Provider>
   )

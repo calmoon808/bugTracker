@@ -47,7 +47,7 @@ userRouter.get("/find", (req, res, next) => {
 
 userRouter.post('/signup', (req, res, next) => {
   passport.authenticate('register', { 
-    successRedirect: "/login",
+    successRedirect: "/",
   },(err, user, info) => {
     if (err) {
       console.log(err)
@@ -104,7 +104,7 @@ userRouter.post('/login', (req, res, next) => {
           res.status(200).send({
             session: req.session,
             JWTCookies: req.cookies,
-            isLoggedIn: req.isAuthenticated(),
+            isAuthenticated: req.isAuthenticated(),
             auth: true,
             token: token,
             message: 'user found & logged in',
