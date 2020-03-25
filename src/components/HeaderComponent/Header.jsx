@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Container, Image, Menu } from 'semantic-ui-react';
+import { Input, Image, Menu } from 'semantic-ui-react';
 import styles from "./Header.module.scss";
 import bugIcon from "../../icons/bugIcon.png"
 import { useAuth } from "../../context/auth";
@@ -22,20 +22,21 @@ const Header = () => {
 
   return (
     <Menu className={styles.Menu}>
-        { !isLoggedIn && <Redirect to="/"/>}
-      <Container>
-        <Menu.Item as="a" header position="left">
-          <Image
-            size="mini"
-            src={bugIcon}
-          />
+      { !isLoggedIn && <Redirect to="/"/>}
+      <Menu.Item position="">
+        <Image
+          size="mini"
+          src={bugIcon}
+        />
+      </Menu.Item>
+      <Menu.Menu position="right">
+        <Menu.Item>
+          <Input icon='search' placeholder='Search....'/>
         </Menu.Item>
-        <Menu.Menu position="right">
-          <Menu.Item name="logout" onClick={ () => logoutOnClick() }>
-            Logout
-          </Menu.Item>
-        </Menu.Menu>
-      </Container>
+        <Menu.Item name="logout" onClick={ () => logoutOnClick() }>
+          Logout
+        </Menu.Item>
+      </Menu.Menu>
     </Menu>
   )
 };

@@ -36,7 +36,7 @@ export default function App(props) {
       <Router>
         {isLoggedIn ? 
         <>
-          <NavigationMenu />
+          <NavigationMenu className="NavMenu"></NavigationMenu>
           <Container className="Container">
             <Header /> 
             <Switch>

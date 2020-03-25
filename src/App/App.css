@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -26,15 +26,15 @@
 
 .App-link {
   color: #61dafb;
-}
+} */
 
 .Container {
-  width: 90% !important;
-  height: 95%;
-  padding: 0 !important;
+  width: 89.2% !important;
+  height: 100%;
+  padding-top: 0 !important;
   margin: 0 !important;
   border: 0 !important;
-  float: left;
+  float: right;
 }
 
 /* .ui.fluid.container {
