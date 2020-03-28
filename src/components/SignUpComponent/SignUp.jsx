@@ -63,7 +63,7 @@ const SignUp = () => {
 
   return(
     <div className={styles.SignUp}>
-      {isSuccess && <Redirect to="login"/>}
+      {isSuccess && <Redirect to="/"/>}
       <Grid centered columns={2}>
         <Grid.Column>
           <Header as="h2" textAlign="center">

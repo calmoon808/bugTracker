@@ -2,17 +2,16 @@ import React, { useState } from 'react';
 import { Link, Redirect } from "react-router-dom";
 import styles from "./Login.module.scss";
 import { useAuth } from "../../context/auth";
-import { Button, Form, Grid, Header, Message, Segment} from 'semantic-ui-react';
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react';
 import { validateEmail } from '../../actions';
 import axios from "axios";
 
-const Login = (props) => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+const Login = () => {
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setAuthTokens } = useAuth();
+  const { setAuthTokens, setIsLoggedIn, isLoggedIn } = useAuth();
 
   const postLogin = () => {
     if (!email || !password) {
@@ -28,26 +27,24 @@ const Login = (props) => {
     
     axios.post("/users/login", { email, password })
     .then(result => {
-      console.log(result.data)
       if (result.status === 200) {
         setAuthTokens(result.data);
-        setLoggedIn(true);
+        setIsLoggedIn(true);
       }
     })
     .catch(err => {
       console.log(err.response);
       setIsError(true);
       setErrorMsg("Email or password are invalid.");
-      console.log(err.response);
     })
-    .then(() => {
-      axios.get("/secret", (req, res) => {
-        console.log("?????", req.isAuthenticated())
-      }).then(result => {
-        console.log(result);
-        console.log("COOKIE: ", document.cookie)
-      })
-    })
+    // .then(() => {
+    //   axios.get("/secret", (req, res) => {
+    //     console.log("?????", req.isAuthenticated())
+    //   }).then(result => {
+    //     console.log(result);
+    //     console.log("COOKIE: ", document.cookie)
+    //   })
+    // })
   }
 
   const closeButton = () => {
@@ -58,14 +55,9 @@ const Login = (props) => {
     return errorMsg;
   }
 
-  const referer = props.location.state ? props.location.state.referer : "/";
-
-  if (isLoggedIn) {
-    return <Redirect to={referer} />
-  }
-
   return(
     <div className={styles.Login}>
+      {isLoggedIn && <Redirect to="/home"/>}
       <Grid centered columns={2}>
         <Grid.Column>
           <Header as="h2" textAlign="center">

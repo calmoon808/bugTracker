@@ -4,6 +4,15 @@ const User = require("../../database/models/User")
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
+const signatureOptions = {
+  // secure: true,
+  httpOnly: true,
+}
+const headerPayloadOptions = {
+  // secure: true,
+  maxAge: 60 * 30
+}
+
 userRouter.route("/")
   // .get((req, res) => {
   //   User.query().then(users => {
@@ -46,9 +55,7 @@ userRouter.get("/find", (req, res, next) => {
 });
 
 userRouter.post('/signup', (req, res, next) => {
-  passport.authenticate('register', { 
-    successRedirect: "/login",
-  },(err, user, info) => {
+  passport.authenticate('register', (err, user, info) => {
     if (err) {
       console.log(err)
     }
@@ -91,20 +98,13 @@ userRouter.post('/login', (req, res, next) => {
           const tokenArr = token.split(".");
           const signature = tokenArr.splice(-1 ,1)[0];
           const headerPayload = tokenArr.join('.');
-          const signatureOptions = {
-            // secure: true,
-            httpOnly: true,
-          }
-          const headerPayloadOptions = {
-            // secure: true,
-            maxAge: 60 * 30
-          }
+
           res.cookie('headerPayload', headerPayload, headerPayloadOptions);
           res.cookie('signature', signature, signatureOptions);
           res.status(200).send({
             session: req.session,
             JWTCookies: req.cookies,
-            isLoggedIn: req.isAuthenticated(),
+            isAuthenticated: req.isAuthenticated(),
             auth: true,
             token: token,
             message: 'user found & logged in',
@@ -114,5 +114,12 @@ userRouter.post('/login', (req, res, next) => {
     }
   })(req, res, next)
 })
+
+userRouter.get("/logout", (req, res) => {
+  // req.logout();
+  res.clearCookie('headerPayload', headerPayloadOptions);
+  res.clearCookie('signature', signatureOptions);
+  return res.json({ session: {}, message: "See you again soon!" });
+});
 
 module.exports = userRouter;
