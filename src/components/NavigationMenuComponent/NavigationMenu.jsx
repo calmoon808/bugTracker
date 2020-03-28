@@ -14,7 +14,7 @@ const NavigationMenu = () => {
     //   NAVIGATION MENU
       <Grid className={styles.Grid}>
         <Grid.Column width={28} className={styles.Column}>
-          <Menu vertical pointing className={styles.Menu}>
+          <Menu inverted vertical pointing className={styles.Menu}>
             <Menu.Item
               name='BugTracker'
             />
