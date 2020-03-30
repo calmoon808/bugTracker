@@ -8,6 +8,7 @@ import Login from '../components/LoginComponent';
 import SignUp from '../components/SignUpComponent';
 import HomePage from '../pages/HomePage';
 import AdminPage from '../pages/AdminPage/AdminPage';
+import ProjectPage from '../pages/ProjectPage';
 import PrivateRoute from '../decorators/PrivateRoute';
 import { AuthContext } from "../context/auth";
 import NavigationMenu from '../components/NavigationMenuComponent';
@@ -42,6 +43,7 @@ export default function App(props) {
             <Switch>
               <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
               <Route path="/home" component={HomePage} />
+              <Route path="/projects" component={ProjectPage} />
             </Switch>
           </Container>
         </>

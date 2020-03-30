@@ -8,7 +8,7 @@ exports.seed = function(knex) {
           "password": "$2a$12$Z7vwF.d.l//ljkeDLt5EE./oQJAsGGv0RpkprqenJlfygkPdC/9.6",
           "first_name": "Aile",
           "last_name": "Blandamore",
-          "project_position_id": 5,
+          "project_position_id": 1,
           "company_id": 1
         }, 
         {
@@ -16,7 +16,7 @@ exports.seed = function(knex) {
           "password": "$2a$12$Z7vwF.d.l//ljkeDLt5EE./oQJAsGGv0RpkprqenJlfygkPdC/9.6",
           "first_name": "Daryle",
           "last_name": "Olivia",
-          "project_position_id": 4,
+          "project_position_id": 1,
           "company_id": 5
         }, 
         {
@@ -24,7 +24,7 @@ exports.seed = function(knex) {
           "password": "$2a$12$Z7vwF.d.l//ljkeDLt5EE./oQJAsGGv0RpkprqenJlfygkPdC/9.6",
           "first_name": "Maurine",
           "last_name": "Fackney",
-          "project_position_id": 2,
+          "project_position_id": 1,
           "company_id": 2
         }, 
         {
@@ -32,7 +32,7 @@ exports.seed = function(knex) {
           "password": "$2a$12$Z7vwF.d.l//ljkeDLt5EE./oQJAsGGv0RpkprqenJlfygkPdC/9.6",
           "first_name": "Janos",
           "last_name": "Lorence",
-          "project_position_id": 1,
+          "project_position_id": 4,
           "company_id": 2
         }, 
         {
@@ -64,7 +64,7 @@ exports.seed = function(knex) {
           "password": "$2a$12$Z7vwF.d.l//ljkeDLt5EE./oQJAsGGv0RpkprqenJlfygkPdC/9.6",
           "first_name": "Simonette",
           "last_name": "Diggins", 
-          "project_position_id": 4,
+          "project_position_id": 1,
           "company_id": 3
         }, 
         {

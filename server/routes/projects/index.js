@@ -5,9 +5,16 @@ const Project = require("../../database/models/Project")
 projectRouter.route("/")
   .get((req, res) => {
     Project.query()
-      .then(projects => {
-        res.json(projects);
-      })
+    .withGraphFetched("project_creator")
+    .withGraphFetched("company")
+    .withGraphFetched("bugs")
+    .then(projects => {
+      res.json(projects);
+    })
+    .catch(err => {
+      console.log(err);
+      res.json(err);
+    })
   })
 
 module.exports = projectRouter;

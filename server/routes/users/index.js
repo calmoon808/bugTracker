@@ -14,14 +14,18 @@ const headerPayloadOptions = {
 }
 
 userRouter.route("/")
-  // .get((req, res) => {
-  //   User.query().then(users => {
-  //     console.log("help")
-  //     res.json(users);
-  //   })
-  // })
   .get((req, res) => {
-    res.send(req.cookies);
+    User.query()
+    .withGraphFetched("project_position")
+    .withGraphFetched("company")
+    .withGraphFetched("projects")
+    .then(users => {
+      res.json(users);
+    })
+    .catch(err => {
+      console.log(err);
+      res.json(err);
+    })
   })
   // .post((req, res) => {
   //   console.log(req.body);
@@ -116,7 +120,6 @@ userRouter.post('/login', (req, res, next) => {
 })
 
 userRouter.get("/logout", (req, res) => {
-  // req.logout();
   res.clearCookie('headerPayload', headerPayloadOptions);
   res.clearCookie('signature', signatureOptions);
   return res.json({ session: {}, message: "See you again soon!" });
