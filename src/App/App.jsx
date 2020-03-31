@@ -14,8 +14,10 @@ import { AuthContext } from "../context/auth";
 import NavigationMenu from '../components/NavigationMenuComponent';
 
 export default function App() {
+  console.log(window.location.pathname.slice(1));
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isAuthenticated') || "");
+  const [activePage, setActivePage] = useState('/')
 
   const setTokens = (data) => {
     console.log(data);
@@ -31,7 +33,9 @@ export default function App() {
       authTokens, 
       setAuthTokens: setTokens,
       isLoggedIn,
-      setIsLoggedIn
+      setIsLoggedIn,
+      activePage,
+      setActivePage
     }}>
       <Router>
         {isLoggedIn ? 
@@ -41,7 +45,7 @@ export default function App() {
             <Header /> 
             <Switch>
               <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
-              <Route path="/" component={DashboardPage} />
+              <Route exact path="/" component={DashboardPage} />
               <Route path="/projects" component={ProjectPage} />
             </Switch>
           </Container>
