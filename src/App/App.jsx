@@ -6,14 +6,14 @@ import { Container } from "semantic-ui-react";
 import Header from "../components/HeaderComponent/Header";
 import Login from '../components/LoginComponent';
 import SignUp from '../components/SignUpComponent';
-import HomePage from '../pages/HomePage';
+import DashboardPage from '../pages/DashboardPage';
 import AdminPage from '../pages/AdminPage/AdminPage';
 import ProjectPage from '../pages/ProjectPage';
 import PrivateRoute from '../decorators/PrivateRoute';
 import { AuthContext } from "../context/auth";
 import NavigationMenu from '../components/NavigationMenuComponent';
 
-export default function App(props) {
+export default function App() {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isAuthenticated') || "");
 
@@ -22,9 +22,8 @@ export default function App(props) {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
     localStorage.setItem("isAuthenticated", data.isAuthenticated)
     setAuthTokens(data);
+    console.log('asdfasdfasdfasfasdf', data.isAuthenticated);
     setIsLoggedIn(data.isAuthenticated);
-    // console.log(data, isLoggedIn);
-    console.log(localStorage.getItem("isAuthenticated"));
   }
 
   return (
@@ -42,7 +41,7 @@ export default function App(props) {
             <Header /> 
             <Switch>
               <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
-              <Route path="/home" component={HomePage} />
+              <Route path="/" component={DashboardPage} />
               <Route path="/projects" component={ProjectPage} />
             </Switch>
           </Container>

@@ -122,6 +122,7 @@ userRouter.post('/login', (req, res, next) => {
 userRouter.get("/logout", (req, res) => {
   res.clearCookie('headerPayload', headerPayloadOptions);
   res.clearCookie('signature', signatureOptions);
+  res.clearCookie('connect.sid')
   return res.json({ session: {}, message: "See you again soon!" });
 });
 
