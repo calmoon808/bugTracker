@@ -14,17 +14,14 @@ import { AuthContext } from "../context/auth";
 import NavigationMenu from '../components/NavigationMenuComponent';
 
 export default function App() {
-  console.log(window.location.pathname.slice(1));
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isAuthenticated') || "");
-  const [activePage, setActivePage] = useState('/')
+  const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.includes('headerPayload'));
+  const [activePage, setActivePage] = useState('/');
 
   const setTokens = (data) => {
-    console.log(data);
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
     localStorage.setItem("isAuthenticated", data.isAuthenticated)
     setAuthTokens(data);
-    console.log('asdfasdfasdfasfasdf', data.isAuthenticated);
     setIsLoggedIn(data.isAuthenticated);
   }
 

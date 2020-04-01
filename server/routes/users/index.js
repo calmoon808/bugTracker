@@ -10,7 +10,7 @@ const signatureOptions = {
 }
 const headerPayloadOptions = {
   // secure: true,
-  maxAge: 60 * 30
+  maxAge: 8 * 60 * 60 * 1000
 }
 
 userRouter.route("/")
