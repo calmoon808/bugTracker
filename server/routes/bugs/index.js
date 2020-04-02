@@ -5,9 +5,13 @@ const Bug = require("../../database/models/Bug")
 bugRouter.route("/")
   .get((req, res) => {
     Bug.query()
-      .then(bugs => {
-        res.json(bugs);
-      })
+    .withGraphFetched('poster')
+    .withGraphFetched('project')
+    .withGraphFetched('bug_status')
+    .withGraphFetched('bug_priority')
+    .then(bugs => {
+      res.json(bugs);
+    })
   })
 
 module.exports = bugRouter;

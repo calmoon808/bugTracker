@@ -7,7 +7,7 @@ import { useAuth } from "../../context/auth";
 import axios from 'axios';
 
 const Header = () => {
-  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn } = useAuth();
 
   const logoutOnClick = () => {
     axios.get("/users/logout")
@@ -18,12 +18,12 @@ const Header = () => {
     .catch(err => {
       console.log(err.response)
     })
+    return <Redirect to="/"/>
   }
 
   return (
     <Menu className={styles.Menu}>
-      { !isLoggedIn && <Redirect to="/"/>}
-      <Menu.Item position="">
+      <Menu.Item>
         <Image
           size="mini"
           src={bugIcon}

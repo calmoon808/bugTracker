@@ -27,6 +27,7 @@ const Login = () => {
     
     axios.post("/users/login", { email, password })
     .then(result => {
+      console.log(result)
       if (result.status === 200) {
         setAuthTokens(result.data);
         setIsLoggedIn(true);
@@ -55,7 +56,7 @@ const Login = () => {
     return errorMsg;
   }
 
-  return(
+  return (
     <div className={styles.Login}>
       {isLoggedIn && <Redirect to="/home"/>}
       <Grid centered columns={2}>
@@ -90,7 +91,7 @@ const Login = () => {
               <Button 
                 color="blue" 
                 fluid size="large"
-                onClick={postLogin}
+                onClick={ () => postLogin() }
               >
                 Login
               </Button>

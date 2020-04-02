@@ -1,42 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, Menu } from 'semantic-ui-react';
 import styles from "./NavigationMenu.module.scss"
+import { useAuth } from "../../context/auth";
 
 const NavigationMenu = () => {
-  const [activeItem, setActiveItem] = useState('Dashboard')
+  const { activePage, setActivePage } = useAuth()
 
-  const handleItemClick = (e, { name }) => {
-    setActiveItem(name)
-  } 
+  const handlePageClick = (e, { name }) => {
+    setActivePage(name);
+  }
 
   return (
     // <div className={styles.NavigationMenu}>
     //   NAVIGATION MENU
       <Grid className={styles.Grid}>
-        <Grid.Column width={28} className={styles.Column}>
+        <Grid.Column width={16} className={styles.Column}>
           <Menu inverted vertical pointing className={styles.Menu}>
             <Menu.Item
               name='BugTracker'
             />
             <Menu.Item
-              name='Dashboard'
-              active={activeItem === 'Dashboard'}
-              onClick={handleItemClick}
+              as={Link} to='/'
+              name='/'
+              content='Dashboard'
+              active={activePage === '/'}
+              onClick={handlePageClick}
+            />
+            <Menu.Item 
+              as={Link} to='/projects'
+              name='/projects' 
+              content='My Projects'
+              active={activePage === '/projects'}
+              onClick={handlePageClick}
             />
             <Menu.Item
-              name='My Projects'
-              active={activeItem === 'My Projects'}
-              onClick={handleItemClick}
+              as={Link} to='/tickets'
+              name='/tickets'
+              content='My Tickets'
+              active={activePage === '/tickets'}
+              onClick={handlePageClick}
             />
             <Menu.Item
-              name='My Tickets'
-              active={activeItem === 'My Tickets'}
-              onClick={handleItemClick}
-            />
-            <Menu.Item
-              name='UserProfile'
-              active={activeItem === 'UserProfile'}
-              onClick={handleItemClick}
+              as={Link} to='/profile'
+              name='/profile'
+              content='User Profile'
+              active={activePage === 'profile'}
+              onClick={handlePageClick}
             />
           </Menu>
         </Grid.Column>

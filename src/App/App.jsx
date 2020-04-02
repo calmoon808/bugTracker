@@ -3,27 +3,63 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "semantic-ui-react";
 import { Container } from "semantic-ui-react";
+import NavigationMenu from '../components/NavigationMenuComponent';
 import Header from "../components/HeaderComponent/Header";
 import Login from '../components/LoginComponent';
 import SignUp from '../components/SignUpComponent';
-import HomePage from '../pages/HomePage';
+import DashboardPage from '../pages/DashboardPage';
 import AdminPage from '../pages/AdminPage/AdminPage';
+import ProjectPage from '../pages/ProjectPage';
+import ProjectDisplay from '../components/ProjectDisplayComponent';
 import PrivateRoute from '../decorators/PrivateRoute';
+import TicketPage from '../pages/TicketPage/TicketPage';
+import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import { AuthContext } from "../context/auth";
-import NavigationMenu from '../components/NavigationMenuComponent';
+import { PageDataContext } from "../context/pageData";
+import TicketDisplay from '../components/TicketDisplay/TicketDisplay';
 
-export default function App(props) {
+export default function App() {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
-  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isAuthenticated') || "");
+  const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.includes('headerPayload'));
+  const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
+  const [projectData, setProjectData] = useState({});
+  const [ticketData, setTicketData] = useState({});
 
   const setTokens = (data) => {
-    console.log(data);
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
     localStorage.setItem("isAuthenticated", data.isAuthenticated)
     setAuthTokens(data);
     setIsLoggedIn(data.isAuthenticated);
-    // console.log(data, isLoggedIn);
-    console.log(localStorage.getItem("isAuthenticated"));
+  }
+
+  const mapData = (data) => {
+    if (data.config === undefined) { return false };
+    if (data.config.url === "/projects"){
+      return data.data.map(project => {
+        return (
+          <ProjectDisplay 
+            key={project.id}
+            project_name={project.name}
+            project_creator={`${project.project_creator.first_name} ${project.project_creator.last_name || ''}`}
+            company_name={project.company.name || ''}
+          />
+        )
+      })
+    }
+    if (data.config.url === "/bugs"){
+      return data.data.map(ticket => {
+        return (
+          <TicketDisplay
+            key={ticket.id}
+            description={ticket.bug}
+            project={ticket.project.name}
+            poster={`${ticket.poster.first_name} ${ticket.poster.last_name || ''}`}
+            bug_status={ticket.bug_status.status}
+            bug_priority={ticket.bug_priority.priority}
+          />
+        )
+      })
+    }
   }
 
   return (
@@ -31,7 +67,9 @@ export default function App(props) {
       authTokens, 
       setAuthTokens: setTokens,
       isLoggedIn,
-      setIsLoggedIn
+      setIsLoggedIn,
+      activePage,
+      setActivePage
     }}>
       <Router>
         {isLoggedIn ? 
@@ -40,8 +78,19 @@ export default function App(props) {
           <Container className="Container">
             <Header /> 
             <Switch>
-              <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
-              <Route path="/home" component={HomePage} />
+              <PageDataContext.Provider value={{
+                mapData,
+                projectData,
+                setProjectData,
+                ticketData,
+                setTicketData
+              }}>
+                <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
+                <Route exact path="/" component={DashboardPage} />
+                <Route path="/projects" component={ProjectPage} />
+                <Route path="/tickets" component={TicketPage} />
+                <Route path ="/profile" component={ProfilePage} />
+              </PageDataContext.Provider>
             </Switch>
           </Container>
         </>
