@@ -1,14 +1,23 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
+import { usePageData } from '../../context/pageData';
+import axios from 'axios';
 
-class ProjectPage extends Component {
+const ProjectPage = () => {
+  const { mapData, projectData, setProjectData } = usePageData();
 
-  render() {
-    return (
-      <div>
-        <h1>PROJECT PAGE</h1>
-      </div>
-    );
-  }
+  useEffect(() => {
+    axios.get("/projects")
+    .then(response => {
+      setProjectData(response);
+    })
+  }, [setProjectData])
+
+  return (
+    <div>
+      <h1>PROJECT PAGE</h1>
+      <div>{mapData(projectData)}</div>
+    </div>
+  );
 }
 
 export default ProjectPage;

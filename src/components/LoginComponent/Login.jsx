@@ -56,7 +56,7 @@ const Login = () => {
     return errorMsg;
   }
 
-  return(
+  return (
     <div className={styles.Login}>
       {isLoggedIn && <Redirect to="/home"/>}
       <Grid centered columns={2}>

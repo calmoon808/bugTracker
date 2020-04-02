@@ -35,15 +35,17 @@ const NavigationMenu = () => {
               onClick={handlePageClick}
             />
             <Menu.Item
+              as={Link} to='/tickets'
               name='/tickets'
               content='My Tickets'
-              active={activePage === 'My Tickets'}
+              active={activePage === '/tickets'}
               onClick={handlePageClick}
             />
             <Menu.Item
+              as={Link} to='/profile'
               name='/profile'
-              content='UserProfile'
-              active={activePage === 'UserProfile'}
+              content='User Profile'
+              active={activePage === 'profile'}
               onClick={handlePageClick}
             />
           </Menu>
