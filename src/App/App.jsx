@@ -16,7 +16,7 @@ import TicketPage from '../pages/TicketPage/TicketPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import { AuthContext } from "../context/auth";
 import { PageDataContext } from "../context/pageData";
-import TicketDisplay from '../components/TicketDisplay/TicketDisplay';
+import TicketDisplay from '../components/TicketDisplayComponent/TicketDisplay';
 
 export default function App() {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");

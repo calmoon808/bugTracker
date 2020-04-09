@@ -34,13 +34,13 @@ const NavigationMenu = () => {
               active={activePage === '/projects'}
               onClick={handlePageClick}
             />
-            <Menu.Item
+            {/* <Menu.Item
               as={Link} to='/tickets'
               name='/tickets'
               content='My Tickets'
               active={activePage === '/tickets'}
               onClick={handlePageClick}
-            />
+            /> */}
             <Menu.Item
               as={Link} to='/profile'
               name='/profile'
