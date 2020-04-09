@@ -4,13 +4,13 @@ exports.seed = function(knex) {
     .then(function () {
       return knex('bug_statuses').insert([
         {
-          status: "Unassigned",
+          status: "Fixed",
         },
         {
           status: "Assigned",
         },
         {
-          status: "Fixed",
+          status: "Unassigned",
         }
       ]);
     });
