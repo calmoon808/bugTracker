@@ -3,13 +3,13 @@ exports.seed = function(knex) {
     .then(function () {
       return knex('bug_priorities').insert([
         {
-          priority: "Low",
+          priority: "High",
         },
         {
           priority: "Medium",
         },
         {
-          priority: "High",
+          priority: "Low",
         }
       ]);
     });
