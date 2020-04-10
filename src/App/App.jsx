@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import "semantic-ui-react";
 import { Container } from "semantic-ui-react";
 import NavigationMenu from '../components/NavigationMenuComponent';
@@ -20,7 +20,7 @@ import TicketDisplay from '../components/TicketDisplayComponent/TicketDisplay';
 
 export default function App() {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
-  const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.includes('headerPayload'));
+  const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.match(/^(.*;)?\s*headerPayload\s*=\s*[^;]+(.*)?$/) !== null);
   const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
   const [projectData, setProjectData] = useState({});
   const [ticketData, setTicketData] = useState({});
@@ -98,6 +98,9 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route path="/signup" component={SignUp} />
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
         </Switch>
         }
       </Router>

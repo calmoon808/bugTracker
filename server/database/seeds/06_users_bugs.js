@@ -51,8 +51,3 @@ exports.seed = function(knex) {
     }
   )
 }
-
-{
-  users_id: ,
-  bugs_id:
-},
