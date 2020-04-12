@@ -46,6 +46,18 @@ class Bug extends Model {
           from: 'bugs.bug_priority_id',
           to: 'bug_priorities.id'
         }
+      },
+      users: {
+        relation: Model.ManyToManyRelation,
+        modelClass: User,
+        join: {
+          from: 'bugs.id',
+          through: {
+            from: 'users_bugs.bugs.id',
+            to: 'users_bugs.users_id'
+          },
+          to: 'users.id'
+        }
       }
     }
   }

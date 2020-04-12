@@ -13,6 +13,7 @@ class User extends Model {
     const Project = require('./Project');
     const ProjectPosition = require('./ProjectPosition');
     const Company = require('./Company');
+    const Bug = require('./Bug');
 
     return {
       project_position: {
@@ -37,6 +38,18 @@ class User extends Model {
         join: {
           from: 'users.id',
           to: 'projects.project_creator_id'
+        }
+      },
+      bugs: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Bug,
+        join: {
+          from: 'users.id',
+          through: {
+            from: 'users_bugs.users_id',
+            to: 'users_bugs.bugs_id',
+          },
+          to: 'bugs.id'
         }
       }
     }

@@ -19,6 +19,7 @@ userRouter.route("/")
     .withGraphFetched("project_position")
     .withGraphFetched("company")
     .withGraphFetched("projects")
+    .withGraphJoined("bugs")
     .then(users => {
       res.json(users);
     })
