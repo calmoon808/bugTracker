@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from "./DashboardPage.module.scss";
-import { Grid} from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
+import OverviewGraph from '../../components/OverviewGraphComponent';
 
 class DashboardPage extends Component {
   render() {
@@ -10,7 +11,7 @@ class DashboardPage extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={8}>
-              <h1>1</h1>
+              <OverviewGraph />
             </Grid.Column>
             <Grid.Column width={8}>
               <h1>2</h1>
