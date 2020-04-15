@@ -7,7 +7,7 @@ const CardComponent = (props) => {
       <Card.Content>
         <Card.Header>{props.title}</Card.Header>
       </Card.Content>
-      <Card.Content>{props.canvas}</Card.Content>
+      <Card.Content>{props.div}</Card.Content>
     </Card>
   );
 }

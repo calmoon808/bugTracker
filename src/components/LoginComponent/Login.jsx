@@ -27,7 +27,6 @@ const Login = () => {
     
     axios.post("/users/login", { email, password })
     .then(result => {
-      console.log(result)
       if (result.status === 200) {
         setAuthTokens(result.data);
         setIsLoggedIn(true);

@@ -6,7 +6,7 @@ export const validateEmail = (email) => {
 }
 
 export const getGroupCount = (url, group, data) => {
-  return axios.post(`${url}/count`, { group, data: JSON.parse(data) })
+  return axios.post(`${url}/count`, { group, data })
   .then(response => {
     return response;
   })

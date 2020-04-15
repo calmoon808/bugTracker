@@ -28,7 +28,7 @@ export default function App() {
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
-    localStorage.setItem("isAuthenticated", data.isAuthenticated)
+    localStorage.setItem("isAuthenticated", data.isAuthenticated);
     setAuthTokens(data);
     setIsLoggedIn(data.isAuthenticated);
   }

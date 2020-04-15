@@ -18,8 +18,10 @@ bugRouter.post("/count", (req, res) => {
   const body = req.body;
   Bug.query()
   .withGraphFetched('users')
+  .skipUndefined()
   .where('users.id', '=', body.data.id)
   .withGraphJoined('bug_status')
+  .skipUndefined()
   .where('bug_status.status', '=', body.group)
   .then(bugs => {
     res.json(bugs);

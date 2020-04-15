@@ -17,10 +17,9 @@ const DashboardPage = () => {
   useEffect(() => {
     axios.post("/users/dashboard", { data: authTokens })
     .then(response => {
-      //needs to be string or else it will loop endlessly
-      setDashboardData(JSON.stringify(response));
+      setDashboardData(response);
     });
-  }, [dashboardData, authTokens, setDashboardData]);
+  }, [authTokens, setDashboardData]);
 
   useEffect(() => {
     async function getChartData(){
@@ -41,7 +40,7 @@ const DashboardPage = () => {
       ))
     }
     getChartData();
-  }, [dashboardData, authTokens]);
+  }, [dashboardData, authTokens, chartRef]);
 
   
   return (
@@ -52,7 +51,7 @@ const DashboardPage = () => {
           <Grid.Column width={8}>
             <CardComponent 
               title={"My Overview"}
-              canvas={
+              div={
                 <canvas
                   id="myChart"
                   ref={chartRef}
