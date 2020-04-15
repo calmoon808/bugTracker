@@ -28,7 +28,6 @@ const DashboardPage = () => {
       const fixed = await getGroupCount("/bugs", "Fixed", authTokens );
       const inProgress = await getGroupCount("/bugs", "In-Progress", authTokens );
       const closed = await getGroupCount("/bugs", "Closed", authTokens );
-      console.log(fixed, inProgress, closed);
       data.push(fixed.data.length);
       data.push(inProgress.data.length);
       data.push(closed.data.length);
