@@ -31,6 +31,7 @@ userRouter.route("/")
 
 userRouter.post("/dashboard", (req, res) => {
   User.query()
+  .skipUndefined()
   .findById(req.body.data.id)
   .withGraphFetched("project_position")
   .withGraphFetched("company")
@@ -60,7 +61,6 @@ userRouter.get("/find", (req, res, next) => {
       res.status(200).send({
         auth: true,
         email: user.email,
-        message: 'we made it'
       })
     }
   })(req, res, next);

@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import styles from "./DashboardPage.module.scss";
 import { Grid } from 'semantic-ui-react';
 import Chart from "chart.js";
-import CardComponent from '../../components/CardComponent/Card';
+import axios from 'axios';
 import { dashboardGraphOptions } from '../../graphOptions';
 import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
 import { getGroupCount } from "../../actions";
-import axios from 'axios';
+import CardComponent from '../../components/CardComponent';
+import TableComponent from '../../components/TableComponent';
 
 const DashboardPage = () => {
   const { dashboardData, setDashboardData } = usePageData();
@@ -62,6 +63,11 @@ const DashboardPage = () => {
           <Grid.Column width={8}>
             <CardComponent
               title={"My Bugs"}
+              div={
+                <TableComponent 
+                  data={dashboardData.data}
+                />
+              }
             />
           </Grid.Column>
         </Grid.Row>
