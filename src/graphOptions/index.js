@@ -1,13 +1,15 @@
-export const dashboardGraphOptions = {
-  type: "doughnut",
-  data: {
-    labels: ["Open", "Closed"],
-    datasets: [
-      {
-        label: "Bugs",
-        data: [2, 8],
-        backgroundColor: ['green', 'red']
-      }
-    ]
+export const dashboardGraphOptions = (type, sectionLabels, dataLabel, data, dataColor) => {
+  return {
+    type: type,
+    data: {
+      labels: sectionLabels,
+      datasets: [
+        {
+          label: dataLabel,
+          data,
+          backgroundColor: dataColor
+        }
+      ]
+    }
   }
 }

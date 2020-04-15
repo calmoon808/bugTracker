@@ -53,7 +53,7 @@ class Bug extends Model {
         join: {
           from: 'bugs.id',
           through: {
-            from: 'users_bugs.bugs.id',
+            from: 'users_bugs.bugs_id',
             to: 'users_bugs.users_id'
           },
           to: 'users.id'

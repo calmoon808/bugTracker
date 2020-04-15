@@ -80,6 +80,13 @@ exports.seed = function(knex) {
           bug_priority_id: 1
         },
         {
+          bug: "incredibally difficult problem",
+          poster_id: 4,
+          project_id: 7,
+          bug_status_id: 3,
+          bug_priority_id: 3
+        },
+        {
           bug: "Pain receptors not functioning properly",
           poster_id: 38,
           project_id: 7,

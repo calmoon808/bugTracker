@@ -37,6 +37,22 @@ userRouter.route("/")
   //     return res.send('lol')
   //   })
   // })
+userRouter.post("/dashboard", async (req, res) => {
+  await User.query()
+  .findById(JSON.parse(req.body.data).id)
+  .withGraphFetched("project_position")
+  .withGraphFetched("company")
+  .withGraphFetched("projects")
+  .withGraphJoined("bugs.[poster, project, bug_status, bug_priority]")
+  .then(user => {
+    res.json(user)
+  })
+  .catch(err => {
+    console.log(err);
+    res.json(err);
+  })
+})
+
 
 userRouter.get("/find", (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {

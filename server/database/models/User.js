@@ -12,6 +12,8 @@ class User extends Model {
   static get relationMappings(){
     const Project = require('./Project');
     const ProjectPosition = require('./ProjectPosition');
+    const BugStatus = require('./BugStatus');
+    const BugPriority = require('./BugPriority');
     const Company = require('./Company');
     const Bug = require('./Bug');
 
@@ -50,8 +52,40 @@ class User extends Model {
             to: 'users_bugs.bugs_id',
           },
           to: 'bugs.id'
+        },
+      },
+      bug_status: {
+        relation: Model.HasManyRelation,
+        modelClass: BugStatus,
+        join: {
+          from: 'bugs.bug_status_id',
+          to: 'bug_statuses.id'
         }
-      }
+      },
+      bug_priority: {
+        relation: Model.HasOneRelation,
+        modelClass: BugPriority,
+        join: {
+          from: 'bugs.bug_priority_id',
+          to: 'bug_priorities.id'
+        }
+      },
+      poster: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'bugs.poster_id',
+          to: 'users.id'
+        }
+      },
+      project: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Project,
+        join: {
+          from: 'bugs.project_id',
+          to: 'projects.id'
+        }
+      },
     }
   }
 }

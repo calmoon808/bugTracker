@@ -14,4 +14,16 @@ bugRouter.route("/")
     })
   })
 
+bugRouter.post("/count", (req, res) => {
+  const body = req.body;
+  Bug.query()
+  .withGraphFetched('users')
+  .where('users.id', '=', body.data.id)
+  .withGraphJoined('bug_status')
+  .where('bug_status.status', '=', body.group)
+  .then(bugs => {
+    res.json(bugs);
+  })
+})
+
 module.exports = bugRouter;

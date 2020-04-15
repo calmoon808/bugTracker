@@ -24,6 +24,7 @@ export default function App() {
   const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
   const [projectData, setProjectData] = useState({});
   const [ticketData, setTicketData] = useState({});
+  const [dashboardData, setDashboardData] = useState({});
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
@@ -64,12 +65,9 @@ export default function App() {
 
   return (
     <AuthContext.Provider value={{
-      authTokens, 
-      setAuthTokens: setTokens,
-      isLoggedIn,
-      setIsLoggedIn,
-      activePage,
-      setActivePage
+      authTokens, setAuthTokens: setTokens,
+      isLoggedIn, setIsLoggedIn,
+      activePage, setActivePage
     }}>
       <Router>
         {isLoggedIn ? 
@@ -80,10 +78,9 @@ export default function App() {
             <Switch>
               <PageDataContext.Provider value={{
                 mapData,
-                projectData,
-                setProjectData,
-                ticketData,
-                setTicketData
+                projectData, setProjectData,
+                ticketData, setTicketData,
+                dashboardData, setDashboardData
               }}>
                 <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
                 <Route exact path="/" component={DashboardPage} />

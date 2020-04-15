@@ -16,6 +16,14 @@ exports.seed = function(knex) {
           bugs_id: 12
         },
         {
+          users_id: 4,
+          bugs_id: 13
+        },
+        {
+          users_id: 4,
+          bugs_id: 12
+        },
+        {
           users_id: 40,
           bugs_id: 14
         },
@@ -44,9 +52,25 @@ exports.seed = function(knex) {
           bugs_id: 14
         },
         {
+          users_id: 4,
+          bugs_id: 15
+        },
+        {
           users_id: 44,
           bugs_id: 16
         },
+        {
+          users_id: 4,
+          bugs_id: 16
+        },
+        {
+          users_id: 4,
+          bugs_id: 17
+        },
+        {
+          users_id: 4,
+          bugs_id: 18
+        }
       ])
     }
   )

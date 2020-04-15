@@ -7,10 +7,10 @@ exports.seed = function(knex) {
           status: "Fixed",
         },
         {
-          status: "Assigned",
+          status: "In-Progress",
         },
         {
-          status: "Unassigned",
+          status: "Closed",
         }
       ]);
     });
