@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import styles from "./DashboardPage.module.scss";
-import { Grid } from 'semantic-ui-react';
+import { Grid, Segment } from 'semantic-ui-react';
 import Chart from "chart.js";
 import axios from 'axios';
 import { dashboardGraphOptions } from '../../graphOptions';
 import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
 import { getGroupCount } from "../../actions";
-import CardComponent from '../../components/CardComponent';
+// import CardComponent from '../../components/CardComponent';
 import TableComponent from '../../components/TableComponent';
 
 const DashboardPage = () => {
@@ -50,34 +50,35 @@ const DashboardPage = () => {
       <Grid>
         <Grid.Row>
           <Grid.Column width={8}>
-            <CardComponent 
-              title={"My Overview"}
-              div={
-                <canvas
-                  id="myChart"
-                  ref={chartRef}
-                />
-              }
-            />
+            <Segment>
+              <div>My Overview</div>
+              <canvas
+                id='myChart'
+                ref={chartRef}
+              />
+            </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <CardComponent
-              title={"My Bugs"}
-              div={
-                <TableComponent 
-                  data={dashboardData.data}
-                />
-              }
-            />
+            <Segment>
+              <div>My Bugs</div>
+              <TableComponent 
+                headers={["Name", "Poster", "Status", "Due Date"]}
+                data={dashboardData.data}
+              />
+            </Segment>
           </Grid.Column>
         </Grid.Row>
 
         <Grid.Row>
           <Grid.Column width={8}>
-            <h1>3</h1>
+            <Segment>
+              
+            </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <h1>4</h1>
+            <Segment>
+              
+            </Segment>
           </Grid.Column>
         </Grid.Row>
       </Grid>
