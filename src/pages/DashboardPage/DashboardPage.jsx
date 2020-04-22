@@ -41,6 +41,7 @@ const DashboardPage = () => {
       ))
     }
     getChartData();
+    console.log(dashboardData);
   }, [dashboardData, authTokens, chartRef]);
 
   
@@ -64,6 +65,7 @@ const DashboardPage = () => {
               <TableComponent 
                 headers={["Name", "Poster", "Status", "Due Date"]}
                 data={dashboardData.data}
+                type={"myBugs"}
               />
             </Segment>
           </Grid.Column>
@@ -72,12 +74,22 @@ const DashboardPage = () => {
         <Grid.Row>
           <Grid.Column width={8}>
             <Segment>
-              
+              <div>Things Due Today</div>
+              <TableComponent 
+                headers={["Name", "Poster", "Status", "Due Date"]}
+                data={dashboardData.data}
+                type={"dueToday"}
+              />
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
             <Segment>
-              
+              <div>Overdue Items</div>
+              <TableComponent 
+                headers={["Name", "Poster", "Status", "Due Date"]}
+                data={dashboardData.data}
+                type={"overdue"}
+              />
             </Segment>
           </Grid.Column>
         </Grid.Row>
