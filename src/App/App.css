@@ -1,14 +1,19 @@
 body {
-  overflow: hidden; /* Hide scrollbars */
+  height: 100%;
+  width: 100%;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
 .Container {
-  width: 88.6% !important;
-  height: 100%;
-  padding-top: 0 !important;
+  position: relative;
+  height: 95%;
+  width: 84%;
+  top: 5%;
+  padding-left: 10%;
+  padding-top: 5%;
   margin: 0 !important;
-  border: 0 !important;
-  float: right;
 }
 
 /* .ui.fluid.container {

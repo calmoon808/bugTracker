@@ -73,8 +73,8 @@ export default function App() {
         {isLoggedIn ? 
         <>
           <NavigationMenu className="NavMenu"></NavigationMenu>
+          <Header /> 
           <Container className="Container">
-            <Header /> 
             <Switch>
               <PageDataContext.Provider value={{
                 mapData,
