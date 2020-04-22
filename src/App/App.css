@@ -8,12 +8,12 @@ body::-webkit-scrollbar {
 
 .Container {
   position: relative;
+  float: left;
   height: 95%;
   width: 84%;
   top: 5%;
   padding-left: 10%;
   padding-top: 5%;
-  margin: 0 !important;
 }
 
 /* .ui.fluid.container {

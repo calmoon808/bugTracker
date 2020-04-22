@@ -8,19 +8,19 @@ import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
 import { getGroupCount } from "../../actions";
 // import CardComponent from '../../components/CardComponent';
-import TableComponent from '../../components/TableComponent';
+import TableComponent from '../../components/BugTableComponent';
 
 const DashboardPage = () => {
-  const { dashboardData, setDashboardData } = usePageData();
+  const { userData, setUserData } = usePageData();
   const { authTokens } = useAuth();
 
   const chartRef = useRef();
   useEffect(() => {
     axios.post("/users/dashboard", { data: authTokens })
     .then(response => {
-      setDashboardData(response);
+      setUserData(response);
     });
-  }, [authTokens, setDashboardData]);
+  }, [authTokens, setUserData]);
 
   useEffect(() => {
     async function getChartData(){
@@ -41,8 +41,7 @@ const DashboardPage = () => {
       ))
     }
     getChartData();
-    console.log(dashboardData);
-  }, [dashboardData, authTokens, chartRef]);
+  }, [userData, authTokens, chartRef]);
 
   
   return (
@@ -64,7 +63,7 @@ const DashboardPage = () => {
               <div>My Bugs</div>
               <TableComponent 
                 headers={["Name", "Poster", "Status", "Due Date"]}
-                data={dashboardData.data}
+                data={userData.data}
                 type={"myBugs"}
               />
             </Segment>
@@ -77,7 +76,7 @@ const DashboardPage = () => {
               <div>Things Due Today</div>
               <TableComponent 
                 headers={["Name", "Poster", "Status", "Due Date"]}
-                data={dashboardData.data}
+                data={userData.data}
                 type={"dueToday"}
               />
             </Segment>
@@ -87,7 +86,7 @@ const DashboardPage = () => {
               <div>Overdue Items</div>
               <TableComponent 
                 headers={["Name", "Poster", "Status", "Due Date"]}
-                data={dashboardData.data}
+                data={userData.data}
                 type={"overdue"}
               />
             </Segment>

@@ -24,7 +24,7 @@ export default function App() {
   const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
   const [projectData, setProjectData] = useState({});
   const [ticketData, setTicketData] = useState({});
-  const [dashboardData, setDashboardData] = useState({});
+  const [userData, setUserData] = useState({});
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
@@ -80,7 +80,7 @@ export default function App() {
                 mapData,
                 projectData, setProjectData,
                 ticketData, setTicketData,
-                dashboardData, setDashboardData
+                userData, setUserData
               }}>
                 <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
                 <Route exact path="/" component={DashboardPage} />

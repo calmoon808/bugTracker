@@ -11,7 +11,8 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setAuthTokens, setIsLoggedIn, isLoggedIn } = useAuth();
+  const { authTokens, setAuthTokens, setIsLoggedIn, isLoggedIn } = useAuth();
+  console.log(authTokens);
 
   const postLogin = () => {
     if (!email || !password) {

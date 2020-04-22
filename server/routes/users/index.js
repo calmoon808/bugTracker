@@ -30,9 +30,11 @@ userRouter.route("/")
   })
 
 userRouter.post("/dashboard", (req, res) => {
+  let data = req.body.data;
+  if (typeof data === 'string') data = JSON.parse(data);
   User.query()
   .skipUndefined()
-  .findById(req.body.data.id)
+  .findById(data.id)
   .withGraphFetched("project_position")
   .withGraphFetched("company")
   .withGraphFetched("projects")
