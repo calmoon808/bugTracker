@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'semantic-ui-react';
 
-const TableComponent = (props) => {
+const BugTableComponent = (props) => {
   const mapHeaders = () => {
     if (props.headers === undefined) { return false };
     return props.headers.map(header => {
@@ -14,19 +14,19 @@ const TableComponent = (props) => {
   const mapBugs = (type) => {
     if (props.data === undefined) { 
       console.log(props.data)
-      return false
+      return false;
     };
     let bugData = props.data.bugs;
     let today = new Date(Date.now());
     today = today.setHours(0, 0, 0, 0);
     if(type === "dueToday"){
       bugData = bugData.filter(bug => new Date(bug.due_date).setHours(0, 0, 0, 0) === today)
-    }
+    };
     if (type === "overdue"){
       bugData = bugData.filter(bug => new Date(bug.due_date).setHours(0, 0, 0, 0) < today)
-    }
+    };
     return bugData.map(bug => {
-      let timeStampArr = bug.due_date.split("T")
+      let timeStampArr = bug.due_date.split("T");
       let dateFormat = timeStampArr[0];
       // let timeFormat = timeStampArr[1];
 
@@ -56,4 +56,4 @@ const TableComponent = (props) => {
   );
 };
 
-export default TableComponent;
+export default BugTableComponent;
