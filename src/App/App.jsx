@@ -22,7 +22,7 @@ export default function App() {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
   const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.match(/^(.*;)?\s*headerPayload\s*=\s*[^;]+(.*)?$/) !== null);
   const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
-  const [projectData, setProjectData] = useState({});
+  const [projectData, setProjectData] = useState([]);
   const [ticketData, setTicketData] = useState({});
   const [userData, setUserData] = useState({});
 
