@@ -20,15 +20,14 @@ const BugTableComponent = (props) => {
     let today = new Date(Date.now());
     today = today.setHours(0, 0, 0, 0);
     if(type === "dueToday"){
-      bugData = bugData.filter(bug => new Date(bug.due_date).setHours(0, 0, 0, 0) === today)
+      bugData = bugData.filter(bug => new Date(bug.due_date).setHours(0,0,0,0) === today)
     };
     if (type === "overdue"){
-      bugData = bugData.filter(bug => new Date(bug.due_date).setHours(0, 0, 0, 0) < today)
+      bugData = bugData.filter(bug => new Date(bug.due_date).setHours(0,0,0,0) < today)
     };
     return bugData.map(bug => {
       let timeStampArr = bug.due_date.split("T");
       let dateFormat = timeStampArr[0];
-      // let timeFormat = timeStampArr[1];
 
       return (
         <Table.Row key={bug.id}>
