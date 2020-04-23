@@ -13,6 +13,7 @@ class Project extends Model {
     const User = require('./User');
     const Company = require('./Company');
     const Bug = require('./Bug');
+    const ProjectStatus = require('./ProjectStatus');
 
     return {
       project_creator: {
@@ -21,6 +22,14 @@ class Project extends Model {
         join: {
           from: 'projects.project_creator_id',
           to: 'users.id'
+        }
+      },
+      project_status: {
+        relation: Model.HasOneRelation,
+        modelClass: ProjectStatus,
+        join: {
+          from: 'projects.project_status_id',
+          to: 'project_statuses.id'
         }
       },
       company: {

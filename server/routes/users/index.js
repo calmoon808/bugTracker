@@ -38,7 +38,7 @@ userRouter.post("/dashboard", (req, res) => {
   .withGraphFetched("project_position")
   .withGraphFetched("company")
   .withGraphFetched("projects")
-  .withGraphJoined("bugs.[poster, project, bug_status, bug_priority]")
+  .withGraphJoined("bugs.[poster, project.[project_creator, project_status,company, bugs], bug_status, bug_priority]")
   .then(user => {
     res.json(user)
   })
