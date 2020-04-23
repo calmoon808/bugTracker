@@ -7,7 +7,6 @@ import { dashboardGraphOptions } from '../../graphOptions';
 import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
 import { getGroupCount } from "../../actions";
-// import CardComponent from '../../components/CardComponent';
 import TableComponent from '../../components/BugTableComponent';
 
 const DashboardPage = () => {
