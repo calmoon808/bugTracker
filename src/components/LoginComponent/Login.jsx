@@ -38,14 +38,6 @@ const Login = () => {
       setIsError(true);
       setErrorMsg("Email or password are invalid.");
     })
-    // .then(() => {
-    //   axios.get("/secret", (req, res) => {
-    //     console.log("?????", req.isAuthenticated())
-    //   }).then(result => {
-    //     console.log(result);
-    //     console.log("COOKIE: ", document.cookie)
-    //   })
-    // })
   }
 
   const closeButton = () => {
