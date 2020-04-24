@@ -11,6 +11,7 @@ import DashboardPage from '../pages/DashboardPage';
 import AdminPage from '../pages/AdminPage/AdminPage';
 import ProjectPage from '../pages/ProjectPage';
 import ProjectDisplay from '../components/ProjectDisplayComponent';
+import ProjectDashboardPage from '../pages/ProjectDashboardPage'
 import PrivateRoute from '../decorators/PrivateRoute';
 import TicketPage from '../pages/TicketPage/TicketPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
@@ -25,6 +26,7 @@ export default function App() {
   const [projectData, setProjectData] = useState([]);
   const [ticketData, setTicketData] = useState({});
   const [userData, setUserData] = useState({});
+  const [ referrer, setReferrer ] = useState(-1);
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
@@ -80,11 +82,13 @@ export default function App() {
                 mapData,
                 projectData, setProjectData,
                 ticketData, setTicketData,
-                userData, setUserData
+                userData, setUserData,
+                referrer, setReferrer
               }}>
                 <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
                 <Route exact path="/" component={DashboardPage} />
-                <Route path="/projects" component={ProjectPage} />
+                <Route path="/projects/:id" component={ProjectDashboardPage} />
+                <Route exact path="/projects" component={ProjectPage} />
                 <Route path="/tickets" component={TicketPage} />
                 <Route path ="/profile" component={ProfilePage} />
               </PageDataContext.Provider>

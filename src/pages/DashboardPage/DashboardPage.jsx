@@ -7,7 +7,7 @@ import { dashboardGraphOptions } from '../../graphOptions';
 import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
 import { getGroupCount } from "../../actions";
-import TableComponent from '../../components/BugTableComponent';
+import BugTableComponent from '../../components/BugTableComponent';
 
 const DashboardPage = () => {
   const { userData, setUserData } = usePageData();
@@ -60,7 +60,7 @@ const DashboardPage = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>My Bugs</div>
-              <TableComponent 
+              <BugTableComponent 
                 headers={["Name", "Poster", "Status", "Due Date"]}
                 data={userData.data}
                 type={"myBugs"}
@@ -73,7 +73,7 @@ const DashboardPage = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>Things Due Today</div>
-              <TableComponent 
+              <BugTableComponent 
                 headers={["Name", "Poster", "Status", "Due Date"]}
                 data={userData.data}
                 type={"dueToday"}
@@ -83,7 +83,7 @@ const DashboardPage = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>Overdue Items</div>
-              <TableComponent 
+              <BugTableComponent 
                 headers={["Name", "Poster", "Status", "Due Date"]}
                 data={userData.data}
                 type={"overdue"}

@@ -7,7 +7,7 @@ projectRouter.route("/")
     Project.query()
     .withGraphFetched("project_creator")
     .withGraphFetched("company")
-    .withGraphFetched("bugs")
+    .withGraphFetched("bugs.[users]")
     .then(projects => {
       res.json(projects);
     })
