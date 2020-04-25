@@ -22,7 +22,7 @@ projectRouter.post("/dashboard", (req, res) => {
   if (typeof id === 'string') id = JSON.parse(id);
   Project.query()
   .findById(id)
-  .withGraphJoined("bugs.[users]")
+  .withGraphJoined("bugs.[users, poster, bug_status]")
   .then(response => {
     res.json(response);
   })

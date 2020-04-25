@@ -13,7 +13,6 @@ const BugTableComponent = (props) => {
 
   const mapBugs = (type) => {
     if (props.data === undefined) { 
-      console.log(props.data)
       return false;
     };
     let bugData = props.data.bugs;

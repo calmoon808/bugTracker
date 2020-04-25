@@ -4,21 +4,27 @@ import styles from "./ProjectDashboardPage.module.scss";
 import { getChartData, graphDoughnutChart } from "../../actions";
 import { Grid, Segment } from "semantic-ui-react";
 import { usePageData } from "../../context/pageData";
+import BugTableComponent from "../../components/BugTableComponent";
 import axios from "axios";
 
 const ProjectDashboardPage = () => {
-  const { userData } = usePageData();
+  const { projectData, setProjectData } = usePageData();
   const chartRef = useRef();
   const projectId = useParams();
-  console.log(userData, projectId);
-
+  
   useEffect(() => {
+    axios.post("/projects/dashboard", projectId)
+    .then(response => {
+      setProjectData(response);
+    })
+
     getChartData("bugs", projectId, "project")
     .then(data => {
       const myChartRef = chartRef.current.getContext("2d");
       graphDoughnutChart(myChartRef, data);
     })
-  }, [chartRef]);
+    // eslint-disable-next-line
+  }, [chartRef, setProjectData]);
 
   return (
     <div className={styles.ProjectDashboardPage}>
@@ -37,6 +43,11 @@ const ProjectDashboardPage = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>Bugs</div>
+              <BugTableComponent
+                headers={["Name", "Poster", "Status", "Due Date"]}
+                data={projectData.data}
+                type={"myBugs"}
+              />
             </Segment>
           </Grid.Column>
         </Grid.Row>
