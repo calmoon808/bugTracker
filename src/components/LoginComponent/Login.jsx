@@ -27,7 +27,6 @@ const Login = () => {
     
     axios.post("/users/login", { email, password })
     .then(result => {
-      console.log(result)
       if (result.status === 200) {
         setAuthTokens(result.data);
         setIsLoggedIn(true);
@@ -38,14 +37,6 @@ const Login = () => {
       setIsError(true);
       setErrorMsg("Email or password are invalid.");
     })
-    // .then(() => {
-    //   axios.get("/secret", (req, res) => {
-    //     console.log("?????", req.isAuthenticated())
-    //   }).then(result => {
-    //     console.log(result);
-    //     console.log("COOKIE: ", document.cookie)
-    //   })
-    // })
   }
 
   const closeButton = () => {

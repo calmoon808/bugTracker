@@ -1,23 +1,84 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from "./DashboardPage.module.scss";
-import { Link } from "react-router-dom";
+import { Grid, Segment } from 'semantic-ui-react';
+import { usePageData } from "../../context/pageData";
+import { useAuth } from "../../context/auth";
+import { getChartData, graphDoughnutChart } from "../../actions";
+import BugTableComponent from '../../components/BugTableComponent';
+import axios from 'axios';
 
-class DashboardPage extends Component {
-  render() {
-    return (
-      <div className={styles.DashboardPage}>
-        <h1>DashboardPage</h1>
-        <ul>
-          <li>
-            <Link to="/">Home Page</Link>
-          </li>
-          <li>
-            <Link to="/admin">Admin Page</Link>
-          </li>
-        </ul>
-      </div>
-    );
-  }
+const DashboardPage = () => {
+  const { userData, setUserData } = usePageData();
+  const { authTokens } = useAuth();
+  const chartRef = useRef();
+
+  useEffect(() => {
+    axios.post("/users/dashboard", { data: authTokens })
+    .then(response => {
+      setUserData(response);
+    });
+  }, [authTokens, setUserData]);
+
+  useEffect(() => {
+    getChartData("bugs", authTokens, "users")
+    .then(data => { 
+      const myChartRef = chartRef.current.getContext("2d");
+      graphDoughnutChart(myChartRef, data);
+    });
+  }, [userData, authTokens, chartRef]);
+
+  
+  return (
+    <div className={styles.DashboardPage}>
+      <h1>DashboardPage</h1>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={8}>
+            <Segment>
+              <div>My Overview</div>
+              <canvas
+                id='myChart'
+                ref={chartRef}
+              />
+            </Segment>
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Segment>
+              <div>My Bugs</div>
+              <BugTableComponent 
+                headers={["Name", "Poster", "Status", "Due Date"]}
+                data={userData.data}
+                type={"myBugs"}
+              />
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row>
+          <Grid.Column width={8}>
+            <Segment>
+              <div>Things Due Today</div>
+              <BugTableComponent 
+                headers={["Name", "Poster", "Status", "Due Date"]}
+                data={userData.data}
+                type={"dueToday"}
+              />
+            </Segment>
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Segment>
+              <div>Overdue Items</div>
+              <BugTableComponent 
+                headers={["Name", "Poster", "Status", "Due Date"]}
+                data={userData.data}
+                type={"overdue"}
+              />
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </div>
+  );
 }
 
 export default DashboardPage;

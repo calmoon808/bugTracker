@@ -19,6 +19,7 @@ userRouter.route("/")
     .withGraphFetched("project_position")
     .withGraphFetched("company")
     .withGraphFetched("projects")
+    .withGraphJoined("bugs")
     .then(users => {
       res.json(users);
     })
@@ -27,15 +28,25 @@ userRouter.route("/")
       res.json(err);
     })
   })
-  // .post((req, res) => {
-  //   console.log(req.body);
-  //   User.query().insert({
-  //     email: req.body.email,
-  //     password: req.body.password
-  //   }).then(res => {
-  //     return res.send('lol')
-  //   })
-  // })
+
+userRouter.post("/dashboard", (req, res) => {
+  let data = req.body.data;
+  if (typeof data === 'string') data = JSON.parse(data);
+  User.query()
+  .skipUndefined()
+  .findById(data.id)
+  .withGraphFetched("company_position")
+  .withGraphFetched("company")
+  .withGraphFetched("projects")
+  .withGraphJoined("bugs.[poster, project.[project_creator, project_status, company, bugs.[poster, bug_status]], bug_status, bug_priority]")
+  .then(user => {
+    res.json(user)
+  })
+  .catch(err => {
+    console.log('FJLASHFLASHFJAFSKHF', err);
+    res.json(err);
+  })
+})
 
 userRouter.get("/find", (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
@@ -52,7 +63,6 @@ userRouter.get("/find", (req, res, next) => {
       res.status(200).send({
         auth: true,
         email: user.email,
-        message: 'we made it'
       })
     }
   })(req, res, next);
@@ -106,6 +116,7 @@ userRouter.post('/login', (req, res, next) => {
           res.cookie('headerPayload', headerPayload, headerPayloadOptions);
           res.cookie('signature', signature, signatureOptions);
           res.status(200).send({
+            id: user.id,
             session: req.session,
             JWTCookies: req.cookies,
             isAuthenticated: req.isAuthenticated(),

@@ -1,11 +1,7 @@
-
 exports.seed = function(knex) {
-  return knex('bug_statuses').del()
+  return knex('project_statuses').del()
     .then(function () {
-      return knex('bug_statuses').insert([
-        {
-          status: "Fixed",
-        },
+      return knex('project_statuses').insert([
         {
           status: "In-Progress",
         },
