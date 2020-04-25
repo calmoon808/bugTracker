@@ -1,8 +1,8 @@
 exports.seed = function(knex) {
-  return knex("project_positions")
+  return knex("company_positions")
     .del()
     .then(function (){
-      return knex("project_positions").insert([
+      return knex("company_positions").insert([
         {
           name: "Technical Lead"
         },

@@ -35,15 +35,15 @@ userRouter.post("/dashboard", (req, res) => {
   User.query()
   .skipUndefined()
   .findById(data.id)
-  .withGraphFetched("project_position")
+  .withGraphFetched("company_position")
   .withGraphFetched("company")
   .withGraphFetched("projects")
-  .withGraphJoined("bugs.[poster, project.[project_creator, project_status,company, bugs], bug_status, bug_priority]")
+  .withGraphJoined("bugs.[poster, project.[project_creator, project_status, company, bugs], bug_status, bug_priority]")
   .then(user => {
     res.json(user)
   })
   .catch(err => {
-    console.log(err);
+    console.log('FJLASHFLASHFJAFSKHF', err);
     res.json(err);
   })
 })

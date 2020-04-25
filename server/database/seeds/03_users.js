@@ -10,385 +10,385 @@ exports.seed = function(knex) {
         "password": password,
         "first_name": "Vialli",
         "last_name": "Ou",
-        "project_position_id": 1,
+        "company_position_id": 1,
         "company_id": 1
       }, {
         "email": "garwong.com",
         "password": password,
         "first_name": "Gary",
         "last_name": "Wong",
-        "project_position_id": 1,
+        "company_position_id": 1,
         "company_id": 2
       }, {
         "email": "kaucolburn.com",
         "password": password,
         "first_name": "Kau",
         "last_name": "Colburn",
-        "project_position_id": 1,
+        "company_position_id": 1,
         "company_id": 3
       }, {
         "email": "calmoon808@gmail.com",
         "password": password,
         "first_name": "Calvin",
         "last_name": "Moon",
-        "project_position_id": 1,
+        "company_position_id": 1,
         "company_id": 4
       }, {
         "email": "shaphan@gmail.com",
         "password": password,
         "first_name": "Shane",
         "last_name": "Phan",
-        "project_position_id": 1,
+        "company_position_id": 1,
         "company_id": 5
       }, {
         "email": "kconichie0@addtoany.com",
         "password": password,
         "first_name": "Koenraad",
         "last_name": "Conichie",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 1
       }, {
         "email": "aleake1@webs.com",
         "password": password,
         "first_name": "Augusto",
         "last_name": "Leake",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 1 
       }, {
         "email": "coluby2@imdb.com",
         "password": password,
         "first_name": "Corinne",
         "last_name": "O'Luby",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 1 
       }, {
         "email": "lpoacher3@desdev.cn",
         "password": password,
         "first_name": "Leontyne",
         "last_name": "Poacher",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 1 
       }, {
         "email": "egarner4@godaddy.com",
         "password": password,
         "first_name": "Evvie",
         "last_name": "Garner",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 1 
       }, {
         "email": "jrodda5@drupal.org",
         "password": password,
         "first_name": "Jere",
         "last_name": "Rodda",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 1 
       }, {
         "email": "rappleby6@economist.com",
         "password": password,
         "first_name": "Rogerio",
         "last_name": "Appleby",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 1 
       }, {
         "email": "smarrian7@mlb.com",
         "password": password,
         "first_name": "Scot",
         "last_name": "Marrian",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 1 
       }, {
         "email": "kjorioz8@un.org",
         "password": password,
         "first_name": "Keeley",
         "last_name": "Jorioz",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 1 
       }, {
         "email": "tprantl9@lycos.com",
         "password": password,
         "first_name": "Tyson",
         "last_name": "Prantl",
-        "project_position_id": 4,
+        "company_position_id": 4,
         "company_id": 1 
       }, {
         "email": "jhaacka@webnode.com",
         "password": password,
         "first_name": "Jeri",
         "last_name": "Haack",
-        "project_position_id":  2,
+        "company_position_id":  2,
         "company_id": 2
       }, {
         "email": "ocoulsonb@bloglines.com",
         "password": password,
         "first_name": "Oby",
         "last_name": "Coulson",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 2
       }, {
         "email": "gfulmenc@nsw.gov.au",
         "password": password,
         "first_name": "Guglielma",
         "last_name": "Fulmen",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 2
       }, {
         "email": "fbragad@google.co.uk",
         "password": password,
         "first_name": "Fiann",
         "last_name": "Braga",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 2
       }, {
         "email": "svandecappellee@loc.gov",
         "password": password,
         "first_name": "Seth",
         "last_name": "Van De Cappelle",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 2
       }, {
         "email": "fdelucaf@webs.com",
         "password": password,
         "first_name": "Fitz",
         "last_name": "Deluca",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 2
       }, {
         "email": "rhanbyg@usatoday.com",
         "password": password,
         "first_name": "Rica",
         "last_name": "Hanby",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 2
       }, {
         "email": "cdowkerh@de.vu",
         "password": password,
         "first_name": "Clemmy",
         "last_name": "Dowker",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 2
       }, {
         "email": "fpollei@simplemachines.org",
         "password": password,
         "first_name": "Far",
         "last_name": "Polle",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 2
       }, {
         "email": "dschubuserj@engadget.com",
         "password": password,
         "first_name": "Dame",
         "last_name": "Schubuser",
-        "project_position_id": 4,
+        "company_position_id": 4,
         "company_id": 2
       }, {
         "email": "flandisk@umn.edu",
         "password": password,
         "first_name": "Fanni",
         "last_name": "Landis",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 3
       }, {
         "email": "ependlel@imdb.com",
         "password": password,
         "first_name": "Elton",
         "last_name": "Pendle",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 3
       }, {
         "email": "lferrilliom@cpanel.net",
         "password": password,
         "first_name": "Lizzy",
         "last_name": "Ferrillio",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 3
       }, {
         "email": "dhandsn@naver.com",
         "password": password,
         "first_name": "Diann",
         "last_name": "Hands",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 3
       }, {
         "email": "laskwitho@blogtalkradio.com",
         "password": password,
         "first_name": "Lana",
         "last_name": "Askwith",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 3
       }, {
         "email": "pkolakovicp@state.tx.us",
         "password": password,
         "first_name": "Peggie",
         "last_name": "Kolakovic",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 3
       }, {
         "email": "svillaretq@pen.io",
         "password": password,
         "first_name": "Sal",
         "last_name": "Villaret",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 3
       }, {
         "email": "gkillr@csmonitor.com",
         "password": password,
         "first_name": "Giovanna",
         "last_name": "Kill",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 3
       }, {
         "email": "ddominellis@adobe.com",
         "password": password,
         "first_name": "Devora",
         "last_name": "Dominelli",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 3
       }, {
         "email": "ppizeyt@scientificamerican.com",
         "password": password,
         "first_name": "Pet",
         "last_name": "Pizey",
-        "project_position_id": 4,
+        "company_position_id": 4,
         "company_id": 3
       }, {
         "email": "ogolbyu@twitpic.com",
         "password": password,
         "first_name": "Oneida",
         "last_name": "Golby",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 4
       }, {
         "email": "dbethamv@netlog.com",
         "password": password,
         "first_name": "Dalli",
         "last_name": "Betham",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 4
       }, {
         "email": "csafferw@yolasite.com",
         "password": password,
         "first_name": "Cal",
         "last_name": "Saffer",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 4
       }, {
         "email": "jtowerx@techcrunch.com",
         "password": password,
         "first_name": "Jamesy",
         "last_name": "Tower",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 4
       }, {
         "email": "mraithmilly@wordpress.org",
         "password": password,
         "first_name": "Milly",
         "last_name": "Raithmill",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 4
       }, {
         "email": "jgravesonz@ucsd.edu",
         "password": password,
         "first_name": "Joete",
         "last_name": "Graveson",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 4
       }, {
         "email": "knitti10@google.pl",
         "password": password,
         "first_name": "Keslie",
         "last_name": "Nitti",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 4
       }, {
         "email": "filyin11@bbc.co.uk",
         "password": password,
         "first_name": "Fletcher",
         "last_name": "Ilyin",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 4
       }, {
         "email": "fphebee12@php.net",
         "password": password,
         "first_name": "Frieda",
         "last_name": "Phebee",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 4
       }, {
         "email": "hchantillon13@webmd.com",
         "password": password,
         "first_name": "Hetty",
         "last_name": "Chantillon",
-        "project_position_id": 4,
+        "company_position_id": 4,
         "company_id": 4
       }, {
         "email": "glegan14@mashable.com",
         "password": password,
         "first_name": "Gloriane",
         "last_name": "Legan",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 5
       }, {
         "email": "anielson15@jalbum.net",
         "password": password,
         "first_name": "Amii",
         "last_name": "Nielson",
-        "project_position_id": 2,
+        "company_position_id": 2,
         "company_id": 5
       }, {
         "email": "cmcgarvie16@noaa.gov",
         "password": password,
         "first_name": "Cyb",
         "last_name": "McGarvie",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 5
       }, {
         "email": "horsay17@oracle.com",
         "password": password,
         "first_name": "Husein",
         "last_name": "Orsay",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 5
       }, {
         "email": "msaunders18@nsw.gov.au",
         "password": password,
         "first_name": "Michelina",
         "last_name": "Saunders",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 5
       }, {
         "email": "elangmuir19@gravatar.com",
         "password": password,
         "first_name": "Eada",
         "last_name": "Langmuir",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 5
       }, {
         "email": "psowerby1a@loc.gov",
         "password": password,
         "first_name": "Peggy",
         "last_name": "Sowerby",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 5
       }, {
         "email": "bscad1b@umich.edu",
         "password": password,
         "first_name": "Berkeley",
         "last_name": "Scad",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 5
       }, {
         "email": "mwildman1c@utexas.edu",
         "password": password,
         "first_name": "Marc",
         "last_name": "Wildman",
-        "project_position_id": 3,
+        "company_position_id": 3,
         "company_id": 5
       }, {
         "email": "edrummond1d@google.com.hk",
         "password": password,
         "first_name": "Ericha",
         "last_name": "Drummond",
-        "project_position_id": 4,
+        "company_position_id": 4,
         "company_id": 5
       }])
     })
