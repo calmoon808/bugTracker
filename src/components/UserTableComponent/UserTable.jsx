@@ -2,7 +2,6 @@ import React from 'react';
 import { Table } from 'semantic-ui-react';
 
 function UserTable(props) {
-  console.log(props);
   const mapHeaders = () => {
     if (props.headers === undefined) { return false };
     return props.headers.map(header => {
