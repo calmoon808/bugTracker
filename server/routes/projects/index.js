@@ -17,4 +17,18 @@ projectRouter.route("/")
     })
   })
 
+projectRouter.post("/dashboard", (req, res) => {
+  let id = req.body.id;
+  if (typeof id === 'string') id = JSON.parse(id);
+  Project.query()
+  .findById(id)
+  .withGraphJoined("bugs.[users]")
+  .then(response => {
+    res.json(response);
+  })
+  .catch(err => {
+    console.log(err);
+    res.json(err);
+  })
+})
 module.exports = projectRouter;

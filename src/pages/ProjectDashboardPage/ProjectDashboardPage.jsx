@@ -1,13 +1,24 @@
-import React, { useEffect, useRef } from 'react';
-import styles from './ProjectDashboardPage.module.scss';
-import { Grid, Segment } from 'semantic-ui-react';
+import React, { useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
+import styles from "./ProjectDashboardPage.module.scss";
+import { getChartData, graphDoughnutChart } from "../../actions";
+import { Grid, Segment } from "semantic-ui-react";
 import { usePageData } from "../../context/pageData";
-import Chart from 'chart.js';
-import axios from 'axios';
+import axios from "axios";
 
 const ProjectDashboardPage = () => {
   const { userData } = usePageData();
-  console.log(userData);
+  const chartRef = useRef();
+  const projectId = useParams();
+  console.log(userData, projectId);
+
+  useEffect(() => {
+    getChartData("bugs", projectId, "project")
+    .then(data => {
+      const myChartRef = chartRef.current.getContext("2d");
+      graphDoughnutChart(myChartRef, data);
+    })
+  }, [chartRef]);
 
   return (
     <div className={styles.ProjectDashboardPage}>
@@ -17,6 +28,10 @@ const ProjectDashboardPage = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>Project Overview</div>
+              <canvas
+                id='projectBugChart'
+                ref={chartRef}
+              />
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
