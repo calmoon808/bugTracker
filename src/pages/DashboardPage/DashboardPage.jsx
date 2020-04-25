@@ -1,19 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 import styles from "./DashboardPage.module.scss";
 import { Grid, Segment } from 'semantic-ui-react';
-import Chart from "chart.js";
-import axios from 'axios';
 import { dashboardGraphOptions } from '../../graphOptions';
 import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
 import { getGroupCount } from "../../actions";
 import BugTableComponent from '../../components/BugTableComponent';
+import Chart from "chart.js";
+import axios from 'axios';
 
 const DashboardPage = () => {
   const { userData, setUserData } = usePageData();
   const { authTokens } = useAuth();
-
   const chartRef = useRef();
+
   useEffect(() => {
     axios.post("/users/dashboard", { data: authTokens })
     .then(response => {

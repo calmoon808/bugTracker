@@ -6,7 +6,7 @@ import { useAuth } from "../../context/auth";
 import { isEmpty } from "lodash";
 import axios from 'axios';
 
-let freqObj = {}
+let freqObj = {};
 
 const ProjectPage = () => {
   const { userData, setUserData, projectData, setProjectData, referrer, setReferrer } = usePageData();
@@ -33,7 +33,6 @@ const ProjectPage = () => {
 
   const handleClick = (id) => {
     setReferrer(id);
-    console.log(typeof referrer, referrer);
   }
 
   const mapHeaders = (headers) => {
