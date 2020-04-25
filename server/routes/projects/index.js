@@ -7,7 +7,7 @@ projectRouter.route("/")
     Project.query()
     .withGraphFetched("project_creator")
     .withGraphFetched("company")
-    .withGraphFetched("bugs.[users]")
+    .withGraphFetched("bugs.[users, poster]")
     .then(projects => {
       res.json(projects);
     })
@@ -18,11 +18,12 @@ projectRouter.route("/")
   })
 
 projectRouter.post("/dashboard", (req, res) => {
-  let id = req.body.id;
-  if (typeof id === 'string') id = JSON.parse(id);
+  let projectId = req.body.projectId.id;
+  if (typeof projectId === 'string') projectId = JSON.parse(projectId);
   Project.query()
-  .findById(id)
-  .withGraphJoined("bugs.[users, poster, bug_status]")
+  .findById(projectId)
+  .withGraphFetched("company")
+  .withGraphJoined("bugs.[users.[company, company_position], poster, bug_status]")
   .then(response => {
     res.json(response);
   })

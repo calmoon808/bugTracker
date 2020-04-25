@@ -12,9 +12,7 @@ const BugTableComponent = (props) => {
   }
 
   const mapBugs = (type) => {
-    if (props.data === undefined) { 
-      return false;
-    };
+    if (props.data === undefined) { return false };
     let bugData = props.data.bugs;
     let today = new Date(Date.now());
     today = today.setHours(0, 0, 0, 0);
