@@ -3,7 +3,7 @@ exports.up = function(knex){
     table.increments();
     table.string("comment").notNullable();
     table.integer("poster_id").references("id").inTable("users");
-    table.string("bug_id").references("id").inTable("bugs");
+    table.integer("bug_id").references("id").inTable("bugs");
     table.timestamp("created_at").defaultTo(knex.fn.now());
   })
 }
