@@ -10,14 +10,11 @@ import SignUp from '../components/SignUpComponent';
 import DashboardPage from '../pages/DashboardPage';
 import AdminPage from '../pages/AdminPage/AdminPage';
 import ProjectPage from '../pages/ProjectPage';
-// import ProjectDisplay from '../components/ProjectDisplayComponent';
 import ProjectDashboardPage from '../pages/ProjectDashboardPage'
 import PrivateRoute from '../decorators/PrivateRoute';
-import TicketPage from '../pages/TicketPage/TicketPage';
 import ProfilePage from '../pages/ProfilePage/ProfilePage';
 import { AuthContext } from "../context/auth";
 import { PageDataContext } from "../context/pageData";
-// import TicketDisplay from '../components/TicketDisplayComponent/TicketDisplay';
 
 export default function App() {
   const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
@@ -29,6 +26,7 @@ export default function App() {
   const [userData, setUserData] = useState({});
   const [referrer, setReferrer] = useState(-1);
   const [projectUserArr, setProjectUserArr] = useState([]);
+  const [showUsers, setShowUsers] = useState(false);
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
@@ -36,36 +34,6 @@ export default function App() {
     setAuthTokens(data);
     setIsLoggedIn(data.isAuthenticated);
   }
-
-  // const mapData = (data) => {
-  //   if (data.config === undefined) { return false };
-  //   if (data.config.url === "/projects"){
-  //     return data.data.map(project => {
-  //       return (
-  //         <ProjectDisplay 
-  //           key={project.id}
-  //           project_name={project.name}
-  //           project_creator={`${project.project_creator.first_name} ${project.project_creator.last_name || ''}`}
-  //           company_name={project.company.name || ''}
-  //         />
-  //       )
-  //     })
-  //   }
-  //   if (data.config.url === "/bugs"){
-  //     return data.data.map(ticket => {
-  //       return (
-  //         <TicketDisplay
-  //           key={ticket.id}
-  //           description={ticket.bug}
-  //           project={ticket.project.name}
-  //           poster={`${ticket.poster.first_name} ${ticket.poster.last_name || ''}`}
-  //           bug_status={ticket.bug_status.status}
-  //           bug_priority={ticket.bug_priority.priority}
-  //         />
-  //       )
-  //     })
-  //   }
-  // }
 
   return (
     <AuthContext.Provider value={{
@@ -86,13 +54,14 @@ export default function App() {
                 currentProjectData, setCurrentProjectData,
                 ticketData, setTicketData,
                 userData, setUserData,
-                referrer, setReferrer
+                referrer, setReferrer,
+                showUsers, setShowUsers
               }}>
                 <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
                 <Route exact path="/" component={DashboardPage} />
                 <Route path="/projects/:id" component={ProjectDashboardPage} />
                 <Route exact path="/projects" component={ProjectPage} />
-                <Route path="/tickets" component={TicketPage} />
+                {/* <Route path="/tickets" component={TicketPage} /> */}
                 <Route path ="/profile" component={ProfilePage} />
               </PageDataContext.Provider>
             </Switch>
