@@ -9,6 +9,7 @@ bugRouter.route("/")
     .withGraphFetched('project')
     .withGraphFetched('bug_status')
     .withGraphFetched('bug_priority')
+    .withGraphFetched('users')
     .then(bugs => {
       res.json(bugs);
     })
