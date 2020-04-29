@@ -16,6 +16,13 @@ body::-webkit-scrollbar {
   padding-top: 5%;
 }
 
+.ui.fullscreen.modal {
+  left: 2.5% !important;
+}
+
+/* .dimmed.dimmable > .ui.modals.dimmer.visible {
+  display: flex !important;
+} */
 /* .ui.fluid.container {
   margin-left: 0 !important;
 } */
