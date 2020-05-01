@@ -16,7 +16,6 @@ const UserTable = (props) => {
     let userData = props.data;
 
     return userData.map(user => {
-      // console.log(user);
       return (
         <Table.Row key={user.id}>
           <Table.Cell>{`${user.first_name} ${user.last_name}`}</Table.Cell>

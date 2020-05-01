@@ -23,7 +23,7 @@ projectRouter.post("/dashboard", (req, res) => {
   Project.query()
   .findById(projectId)
   .withGraphFetched("company")
-  .withGraphJoined("bugs.[users.[company, company_position], bug_priority,poster, bug_status]")
+  .withGraphJoined("bugs.[users.[company, company_position], comments.[poster],bug_priority,poster, bug_status]")
   .then(response => {
     res.json(response);
   })
