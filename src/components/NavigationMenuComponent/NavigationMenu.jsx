@@ -4,16 +4,16 @@ import { Grid, Menu } from 'semantic-ui-react';
 import styles from "./NavigationMenu.module.scss"
 import { useAuth } from "../../context/auth";
 
-const NavigationMenu = () => {
-  const { activePage, setActivePage } = useAuth()
+const NavigationMenu = (props) => {
+  const { activePage, setActivePage } = useAuth();
 
   const handlePageClick = (e, { name }) => {
     setActivePage(name);
+    props.setReferrer(-1);
   }
 
   return (
     // <div className={styles.NavigationMenu}>
-    //   NAVIGATION MENU
       <Grid className={styles.Grid}>
         <Grid.Column width={16} className={styles.Column}>
           <Menu inverted vertical pointing className={styles.Menu}>
@@ -34,13 +34,6 @@ const NavigationMenu = () => {
               active={activePage === '/projects'}
               onClick={handlePageClick}
             />
-            {/* <Menu.Item
-              as={Link} to='/tickets'
-              name='/tickets'
-              content='My Tickets'
-              active={activePage === '/tickets'}
-              onClick={handlePageClick}
-            /> */}
             <Menu.Item
               as={Link} to='/profile'
               name='/profile'

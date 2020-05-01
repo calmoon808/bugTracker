@@ -44,7 +44,7 @@ export default function App() {
       <Router>
         {isLoggedIn ? 
         <>
-          <NavigationMenu className="NavMenu"></NavigationMenu>
+          <NavigationMenu setReferrer={setReferrer} className="NavMenu"></NavigationMenu>
           <Header /> 
           <Container className="Container">
             <Switch>

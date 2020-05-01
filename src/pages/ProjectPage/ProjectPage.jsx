@@ -11,7 +11,7 @@ let freqObj = {};
 const ProjectPage = () => {
   const { userData, setUserData, projectData, setProjectData, referrer, setReferrer } = usePageData();
   const { authTokens } = useAuth();
-  setReferrer(-1);
+  // setReferrer(-1);
 
   useEffect(() => {
     if (isEmpty(userData)){
