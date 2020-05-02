@@ -41,7 +41,6 @@ app.listen(PORT, () => {
 })
 
 app.get("/", (req, res) => {
-  // console.log('111111111111111', req);
   res.send(req.isAuthenticated);
 })
 
