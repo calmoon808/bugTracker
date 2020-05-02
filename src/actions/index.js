@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { dashboardGraphOptions } = require('../graphOptions');
+const { dashboardGraphOptions } = require("../graphOptions");
 const Chart = require("chart.js");
 
 export async function getChartData(url, data, relation){
@@ -28,6 +28,10 @@ export const graphDoughnutChart = (chartRef, data) => {
     data,
     ['green', 'yellow', 'red']
   ))
+}
+
+export const setProjectFeedCookie = (projectId) => {
+  return axios.post('projects/setCookie', { projectId })
 }
 
 export const timeToMeta = (time) => {
