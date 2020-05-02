@@ -43,7 +43,7 @@ userRouter.post("/dashboard", (req, res) => {
     res.json(user)
   })
   .catch(err => {
-    console.log('FJLASHFLASHFJAFSKHF', err);
+    console.log(err);
     res.json(err);
   })
 })
@@ -112,7 +112,6 @@ userRouter.post('/login', (req, res, next) => {
           const tokenArr = token.split(".");
           const signature = tokenArr.splice(-1 ,1)[0];
           const headerPayload = tokenArr.join('.');
-
           res.cookie('headerPayload', headerPayload, headerPayloadOptions);
           res.cookie('signature', signature, signatureOptions);
           res.status(200).send({
@@ -133,6 +132,7 @@ userRouter.post('/login', (req, res, next) => {
 userRouter.get("/logout", (req, res) => {
   res.clearCookie('headerPayload', headerPayloadOptions);
   res.clearCookie('signature', signatureOptions);
+  res.clearCookie('activityFeedToken');
   res.clearCookie('connect.sid')
   return res.json({ session: {}, message: "See you again soon!" });
 });
