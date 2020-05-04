@@ -4,6 +4,7 @@ import { usePageData } from '../../context/pageData';
 import { Container, Table } from 'semantic-ui-react';
 import { useAuth } from "../../context/auth";
 import { isEmpty } from "lodash";
+import { setProjectFeedCookie } from "../../actions";
 import axios from 'axios';
 
 let freqObj = {};
@@ -11,7 +12,6 @@ let freqObj = {};
 const ProjectPage = () => {
   const { userData, setUserData, projectData, setProjectData, referrer, setReferrer } = usePageData();
   const { authTokens } = useAuth();
-  setReferrer(-1);
 
   useEffect(() => {
     if (isEmpty(userData)){
@@ -31,7 +31,8 @@ const ProjectPage = () => {
     }
   }, [authTokens, userData, setUserData, setProjectData, referrer]);
 
-  const handleClick = (id) => {
+  const handleClick = async (id) => {
+    await setProjectFeedCookie(id);
     setReferrer(id);
   }
 

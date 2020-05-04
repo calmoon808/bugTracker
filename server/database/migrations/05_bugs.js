@@ -7,7 +7,7 @@ exports.up = function(knex) {
     table.integer("bug_status_id").references("id").inTable("bug_statuses").notNullable();
     table.integer("bug_priority_id").references("id").inTable("bug_priorities").notNullable();
     table.timestamp('created_at').defaultTo(knex.fn.now());
-    table.datetime('due_date');
+    table.timestamp('due_date');
   })
 };
 

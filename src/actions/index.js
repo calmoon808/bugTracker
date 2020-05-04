@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { dashboardGraphOptions } = require('../graphOptions');
+const { dashboardGraphOptions } = require("../graphOptions");
 const Chart = require("chart.js");
 
 export async function getChartData(url, data, relation){
@@ -28,6 +28,49 @@ export const graphDoughnutChart = (chartRef, data) => {
     data,
     ['green', 'yellow', 'red']
   ))
+}
+
+export const getUsers = () => {
+  return axios.get('/users')
+  .then(response => {
+    // console.log(response.data)
+    return (response.data);
+  })
+}
+
+export const setProjectFeedCookie = (projectId) => {
+  return axios.post('projects/setCookie', { projectId })
+}
+
+export const timeToMeta = (time) => {
+  const today = new Date();
+  const date = new Date(time);
+  const secondsFromNow = Math.floor((today.getTime() - date.getTime()) / 1000);
+  const minutesFromNow = Math.round(secondsFromNow / 60);
+  const hoursFromNow = Math.round(minutesFromNow / 60);
+  const daysFromNow = Math.round(hoursFromNow / 24);
+  const monthsFromNow = Math.round(daysFromNow / 30);
+  const yearsFromNow = Math.round(monthsFromNow / 12);
+
+  if (secondsFromNow < 50) return "a few seconds ago";
+  if (secondsFromNow < 70) return "a minute ago";
+  if (minutesFromNow < 6) return "a couple of minutes ago";
+  if (minutesFromNow < 60) return `${minutesFromNow} minutes ago`;
+  if (minutesFromNow < 90) return "a hour ago";
+  if (hoursFromNow < 24) return `${hoursFromNow} hours ago`;
+  if (hoursFromNow < 36) return "a day ago";
+  if (daysFromNow < 30) return `${daysFromNow} days ago`;
+  if (daysFromNow < 45) return "a month ago";
+  if (monthsFromNow < 12) return `${monthsFromNow} months ago`;
+  if (monthsFromNow < 18) return "a year ago";
+  return `${yearsFromNow} years ago`;
+}
+
+export const updateBug = (bugDataObj) => {
+  return axios.post("bugs/update/", bugDataObj)
+  .then(response => {
+    return (response);
+  })
 }
 
 export const validateEmail = (email) => {

@@ -15,11 +15,7 @@ const headerPayloadOptions = {
 
 userRouter.route("/")
   .get((req, res) => {
-    User.query()
-    .withGraphFetched("project_position")
-    .withGraphFetched("company")
-    .withGraphFetched("projects")
-    .withGraphJoined("bugs")
+    User.query().orderBy("first_name")
     .then(users => {
       res.json(users);
     })
@@ -38,12 +34,12 @@ userRouter.post("/dashboard", (req, res) => {
   .withGraphFetched("company_position")
   .withGraphFetched("company")
   .withGraphFetched("projects")
-  .withGraphJoined("bugs.[poster, project.[project_creator, project_status, company, bugs.[poster, bug_status]], bug_status, bug_priority]")
+  .withGraphJoined("bugs.[bug_status, bug_priority, users, poster, comments.[poster], project.[project_creator, project_status, company, bugs.[poster, bug_status, comments.[poster]]]]")
   .then(user => {
     res.json(user)
   })
   .catch(err => {
-    console.log('FJLASHFLASHFJAFSKHF', err);
+    console.log(err);
     res.json(err);
   })
 })
@@ -112,7 +108,6 @@ userRouter.post('/login', (req, res, next) => {
           const tokenArr = token.split(".");
           const signature = tokenArr.splice(-1 ,1)[0];
           const headerPayload = tokenArr.join('.');
-
           res.cookie('headerPayload', headerPayload, headerPayloadOptions);
           res.cookie('signature', signature, signatureOptions);
           res.status(200).send({
@@ -133,6 +128,7 @@ userRouter.post('/login', (req, res, next) => {
 userRouter.get("/logout", (req, res) => {
   res.clearCookie('headerPayload', headerPayloadOptions);
   res.clearCookie('signature', signatureOptions);
+  res.clearCookie('activityFeedToken');
   res.clearCookie('connect.sid')
   return res.json({ session: {}, message: "See you again soon!" });
 });

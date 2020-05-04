@@ -22,8 +22,10 @@ const DashboardPage = () => {
   useEffect(() => {
     getChartData("bugs", authTokens, "users")
     .then(data => { 
-      const myChartRef = chartRef.current.getContext("2d");
-      graphDoughnutChart(myChartRef, data);
+      if (chartRef.current){
+        const myChartRef = chartRef.current.getContext("2d");
+        graphDoughnutChart(myChartRef, data);
+      }
     });
   }, [userData, authTokens, chartRef]);
 

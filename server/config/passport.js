@@ -109,7 +109,7 @@ passport.use(
 )
 
 passport.serializeUser(function(user, done) {
-  return done(null, { id: user.id, email: user.email });
+  return done(null, { id: user.id, email: user.email, name: `${user.first_name} ${user.last_name}` });
 });
 
 passport.deserializeUser(function(user, done) {

@@ -1,23 +1,28 @@
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { Grid, Segment } from "semantic-ui-react";
+import { StreamApp, FlatFeed, Activity, LikeButton } from 'react-activity-feed';
+import 'react-activity-feed/dist/index.css';
 import styles from "./ProjectDashboardPage.module.scss";
 import { getChartData, graphDoughnutChart } from "../../actions";
-import { Grid, Segment } from "semantic-ui-react";
 import { usePageData } from "../../context/pageData";
 import BugTableComponent from "../../components/BugTableComponent";
 import UserTableComponent from "../../components/UserTableComponent";
 import axios from "axios";
+import Cookies from 'js-cookie';
+import { useAuth } from "../../context/auth";
 
 const ProjectDashboardPage = () => {
   const { currentProjectData, setCurrentProjectData, projectUserArr, setProjectUserArr } = usePageData();
+  const { authTokens } = useAuth();
   const chartRef = useRef();
   const projectId = useParams();
   
   useEffect(() => {
-    axios.post("/projects/dashboard", { projectId })
+    axios.post("/projects/dashboard", { projectId, authTokens })
     .then(response => {
       setCurrentProjectData(response);
-    })
+    });
     // eslint-disable-next-line
   }, [setCurrentProjectData])
 
@@ -78,12 +83,32 @@ const ProjectDashboardPage = () => {
               <UserTableComponent
                 headers={["Name", "Position", "Company"]}
                 data={projectUserArr}
+                
               />
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
             <Segment>
               <div>Activity Feed</div>
+              <StreamApp
+                apiKey={process.env.REACT_APP_ACTIVITY_FEED_KEY}
+                appId={process.env.REACT_APP_ACTIVITY_FEED_ID}
+                token={Cookies.get('activityFeedToken')}
+              > 
+                <FlatFeed 
+                  feedGroup="projectFeed"
+                  LoadingIndicator
+                  Activity={(props) => 
+                    <Activity {...props} 
+                      Footer={() => (
+                        <div>
+                          <LikeButton {...props} />
+                        </div>
+                      )}
+                    />
+                  }
+                />
+              </StreamApp>
             </Segment>
           </Grid.Column>
         </Grid.Row>

@@ -13,6 +13,7 @@ class Bug extends Model {
     const Project = require('./Project');
     const BugStatus = require('./BugStatus');
     const BugPriority = require('./BugPriority');
+    const Comment = require('./Comment');
 
     return {
       poster: {
@@ -57,6 +58,14 @@ class Bug extends Model {
             to: 'users_bugs.users_id'
           },
           to: 'users.id'
+        }
+      },
+      comments: {
+        relation: Model.HasManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'bugs.id',
+          to: 'comments.bug_id'
         }
       }
     }
