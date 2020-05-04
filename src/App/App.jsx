@@ -17,16 +17,14 @@ import { AuthContext } from "../context/auth";
 import { PageDataContext } from "../context/pageData";
 
 export default function App() {
-  const [authTokens, setAuthTokens] = useState(localStorage.getItem('authTokens') || "");
+  const [authTokens, setAuthTokens] = useState(JSON.parse(localStorage.getItem('authTokens')) || "");
   const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.match(/^(.*;)?\s*headerPayload\s*=\s*[^;]+(.*)?$/) !== null);
   const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
   const [projectData, setProjectData] = useState([]);
   const [currentProjectData, setCurrentProjectData] = useState({});
-  const [ticketData, setTicketData] = useState({});
   const [userData, setUserData] = useState({});
   const [referrer, setReferrer] = useState(-1);
   const [projectUserArr, setProjectUserArr] = useState([]);
-  const [showUsers, setShowUsers] = useState(false);
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
@@ -52,16 +50,13 @@ export default function App() {
                 projectUserArr, setProjectUserArr,
                 projectData, setProjectData,
                 currentProjectData, setCurrentProjectData,
-                ticketData, setTicketData,
                 userData, setUserData,
-                referrer, setReferrer,
-                showUsers, setShowUsers
+                referrer, setReferrer
               }}>
                 <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
                 <Route exact path="/" component={DashboardPage} />
                 <Route path="/projects/:id" component={ProjectDashboardPage} />
                 <Route exact path="/projects" component={ProjectPage} />
-                {/* <Route path="/tickets" component={TicketPage} /> */}
                 <Route path ="/profile" component={ProfilePage} />
               </PageDataContext.Provider>
             </Switch>
