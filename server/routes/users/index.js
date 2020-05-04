@@ -15,11 +15,7 @@ const headerPayloadOptions = {
 
 userRouter.route("/")
   .get((req, res) => {
-    User.query()
-    .withGraphFetched("project_position")
-    .withGraphFetched("company")
-    .withGraphFetched("projects")
-    .withGraphJoined("bugs")
+    User.query().orderBy("first_name")
     .then(users => {
       res.json(users);
     })
