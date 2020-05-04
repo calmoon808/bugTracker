@@ -1,6 +1,7 @@
 const express = require("express");
 const bugRouter = express.Router();
-const Bug = require("../../database/models/Bug")
+const Bug = require("../../database/models/Bug");
+const UsersBugs = require("../../database/models/UsersBugs");
 
 bugRouter.route("/")
   .get((req, res) => {
@@ -28,6 +29,34 @@ bugRouter.post("/count", (req, res) => {
   .then(bugs => {
     res.json(bugs);
   })
+})
+
+bugRouter.post("/update", (req, res) => {
+  const updateInfo = req.body;
+  if (updateInfo.newUserArr){
+    UsersBugs.query()
+    .insertGraph(updateInfo.newUserArr)
+    .catch(err => (
+      console.log(err)
+    ))
+  }
+  if (updateInfo.status){
+    Bug.query()
+    .findById(updateInfo.bug_id)
+    .patch({ bug_status_id: updateInfo.status })
+    .catch(err => (
+      console.log(err)
+    ))
+  }
+  if (updateInfo.priority){
+    Bug.query()
+    .findById(updateInfo.bug_id)
+    .patch({ bug_priority_id: updateInfo.priority })
+    .catch(err => (
+      console.log(err)
+    ))
+  }
+  res.sendStatus(200);
 })
 
 module.exports = bugRouter;
