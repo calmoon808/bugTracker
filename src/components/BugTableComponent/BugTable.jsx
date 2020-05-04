@@ -1,15 +1,27 @@
 import React from 'react';
-import { usePageData } from "../../context/pageData";
-import { Table, Modal, Button, Form, Accordion, Icon, Comment, Header } from 'semantic-ui-react';
-import styles from './BugTable.module.scss';
+import { Table, Comment } from 'semantic-ui-react';
+import { timeToMeta } from '../../actions';
+import BugModal from '../BugModalComponent/BugModal';
 
 const BugTableComponent = (props) => {
-  const {showUsers, setShowUsers} = usePageData();
-
-  const handleClick = () => {
-    showUsers === false ? setShowUsers(true) : setShowUsers(false);
+  const mapComments = (commentsArr) => {
+    if (commentsArr === undefined) { return false }
+    return commentsArr.map(comment => {
+      return (
+        <Comment key={comment.id}>
+          <Comment.Content>
+            <Comment.Author as='a'>{`${comment.poster.first_name} ${comment.poster.last_name}`}</Comment.Author>
+            <Comment.Metadata>
+              <div>{timeToMeta(comment.created_at)}</div>
+            </Comment.Metadata>
+            <Comment.Text>
+              {comment.comment}
+            </Comment.Text>
+          </Comment.Content>
+        </Comment>
+      )
+    })
   }
-
   
   const mapHeaders = () => {
     if (props.headers === undefined) { return false };
@@ -21,13 +33,19 @@ const BugTableComponent = (props) => {
   }
 
   const mapUsers = (userArr) => {
-    console.log(userArr);
     if (userArr === undefined) { return false }
-    return userArr.map(user => {
-      return (
-        <p key={user.id}>{`${user.first_name} ${user.last_name}`}</p>
-      )
+    let newUserArr = [];
+    userArr.forEach(user => {
+      let obj = {
+        key: user.id,
+        text: `${user.first_name} ${user.last_name}`,
+        value: `${user.first_name} ${user.last_name}`,
+        onClick: () => {console.log('yoyo')}
+        // image: { avatar: true, src: '/images/avatar/small/christian.jpg' },
+      };
+      newUserArr.push(obj);
     })
+    return newUserArr;
   }
 
   const mapBugs = (type) => {
@@ -42,67 +60,14 @@ const BugTableComponent = (props) => {
       bugData = bugData.filter(bug => new Date(bug.due_date).setHours(0,0,0,0) < today)
     };
     return bugData.map(bug => {
-      let timeStampArr = bug.due_date.split("T");
-      let dateFormat = timeStampArr[0];
-
+      let userArr = mapUsers(bug.users);
       return (
-        <Modal 
-          closeIcon
-          className={styles.bugModal}
+        <BugModal 
           key={bug.id}
-          centered={true}
-          size={"fullscreen"}
-          onClose={() => setShowUsers(false)}
-          trigger={
-            <Table.Row>
-              <Table.Cell>{bug.bug}</Table.Cell>
-              <Table.Cell>{`${bug.poster.first_name} ${bug.poster.last_name}`}</Table.Cell>
-              <Table.Cell>{bug.bug_status.status}</Table.Cell>
-              <Table.Cell>{dateFormat || '-'}</Table.Cell>
-            </Table.Row>
-          }
-        >
-          <Modal.Header>Bug Ticket</Modal.Header>
-          <Modal.Content>
-            <h2>id: {bug.id}</h2>
-            <h2>Issue: {bug.bug}</h2>
-            <h3>Poster: {`${bug.poster.first_name} ${bug.poster.last_name}`}</h3>
-            <Accordion>
-              <Accordion.Title
-                active={showUsers}
-                onClick={handleClick}
-              >
-                <Icon name='dropdown' />
-                Assigned to:
-              </Accordion.Title>
-              <Accordion.Content
-                active={showUsers}
-              >
-                {mapUsers(bug.users)}
-              </Accordion.Content>
-            </Accordion>
-            <h2>Status: {bug.bug_status.status}</h2>
-            <h2>Priority: {bug.bug_priority.priority}</h2>
-            <Comment.Group>
-              <Header as='h3' dividing>
-                Comments
-              </Header>
-            </Comment.Group>
-            <Form reply>
-              <Form.TextArea />
-              <Button content='Add Reply' labelPosition='left' icon='edit' primary />
-            </Form>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button negative>Cancel</Button>
-            <Button
-              positive
-              icon='checkmark'
-              labelPosition='right'
-              content='Submit'
-            />
-          </Modal.Actions>
-        </Modal>
+          bug={bug}
+          userArr={userArr}
+          mapComments={mapComments}
+        />
       )
     })
   }
