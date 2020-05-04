@@ -30,6 +30,14 @@ export const graphDoughnutChart = (chartRef, data) => {
   ))
 }
 
+export const getUsers = () => {
+  return axios.get('/users')
+  .then(response => {
+    // console.log(response.data)
+    return (response.data);
+  })
+}
+
 export const setProjectFeedCookie = (projectId) => {
   return axios.post('projects/setCookie', { projectId })
 }
@@ -56,6 +64,13 @@ export const timeToMeta = (time) => {
   if (monthsFromNow < 12) return `${monthsFromNow} months ago`;
   if (monthsFromNow < 18) return "a year ago";
   return `${yearsFromNow} years ago`;
+}
+
+export const updateBug = (bugDataObj) => {
+  return axios.post("bugs/update/", bugDataObj)
+  .then(response => {
+    return (response);
+  })
 }
 
 export const validateEmail = (email) => {
