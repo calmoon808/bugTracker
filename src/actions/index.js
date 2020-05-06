@@ -13,10 +13,31 @@ export async function getChartData(url, data, relation){
   return graphData;
 }
 
+export const getBugComments = (bugId) => {
+  return axios.post("/comments/bug", { bugId })
+  .then(response => {
+    return response.data;
+  })
+}
+
 export const getGroupCount = (url, group, data, relation) => {
   return axios.post(`${url}/count`, { group, data, relation })
   .then(response => {
     return response;
+  })
+}
+
+export const getUserData = (data) => {
+  return axios.post("/users/dashboard", data)
+  .then(response => {
+    return response;
+  });
+}
+
+export const getUsers = () => {
+  return axios.get('/users')
+  .then(response => {
+    return (response.data);
   })
 }
 
@@ -30,17 +51,20 @@ export const graphDoughnutChart = (chartRef, data) => {
   ))
 }
 
-export const getUsers = () => {
-  return axios.get('/users')
-  .then(response => {
-    // console.log(response.data)
-    return (response.data);
-  })
+export const postComment = (commentData) => {
+  return axios.post('/comments/add', commentData)
 }
 
 export const setProjectFeedCookie = (projectId) => {
   return axios.post('projects/setCookie', { projectId })
 }
+
+// export const sortComments = (comments) => {
+//   const newArr = comments.sort((a, b) => { 
+//     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+//   });
+//   return newArr;
+// }
 
 export const timeToMeta = (time) => {
   const today = new Date();
