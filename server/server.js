@@ -35,6 +35,7 @@ app.use("/companies", require("./routes/companies"));
 app.use("/company_positions", require("./routes/company_positions"));
 app.use("/projects", require("./routes/projects"));
 app.use("/bugs", require("./routes/bugs"));
+app.use("/comments", require("./routes/comments"));
 
 app.listen(PORT, () => {
   console.log(`PORT ${PORT} at your service.`)
