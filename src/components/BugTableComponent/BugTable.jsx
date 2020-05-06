@@ -1,28 +1,8 @@
 import React from 'react';
-import { Table, Comment } from 'semantic-ui-react';
-import { timeToMeta } from '../../actions';
+import { Table } from 'semantic-ui-react';
 import BugModal from '../BugModalComponent/BugModal';
 
 const BugTableComponent = (props) => {
-  const mapComments = (commentsArr) => {
-    if (commentsArr === undefined) { return false }
-    return commentsArr.map(comment => {
-      return (
-        <Comment key={comment.id}>
-          <Comment.Content>
-            <Comment.Author as='a'>{`${comment.poster.first_name} ${comment.poster.last_name}`}</Comment.Author>
-            <Comment.Metadata>
-              <div>{timeToMeta(comment.created_at)}</div>
-            </Comment.Metadata>
-            <Comment.Text>
-              {comment.comment}
-            </Comment.Text>
-          </Comment.Content>
-        </Comment>
-      )
-    })
-  }
-  
   const mapHeaders = () => {
     if (props.headers === undefined) { return false };
     return props.headers.map(header => {
@@ -66,7 +46,6 @@ const BugTableComponent = (props) => {
           key={bug.id}
           bug={bug}
           userArr={userArr}
-          mapComments={mapComments}
         />
       )
     })
