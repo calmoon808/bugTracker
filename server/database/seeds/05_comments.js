@@ -5,7 +5,8 @@ exports.seed = function(knex) {
       {
         comment: "Yes it is very difficult, and very hard to manage. Will continue to try and succeed. WISH ME LUCK@@!!!!!!!!!!!!!!!!!!",
         poster_id: 4,
-        bug_id: 12
+        bug_id: 12,
+        created_at: "2020-05-01"
       },
       {
         comment: "Yup this looks really hard, I'm out!!!! SORRY!",

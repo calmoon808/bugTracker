@@ -3,9 +3,8 @@ import styles from "./DashboardPage.module.scss";
 import { Grid, Segment } from 'semantic-ui-react';
 import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
-import { getChartData, graphDoughnutChart } from "../../actions";
+import { getChartData, graphDoughnutChart, getUserData } from "../../actions";
 import BugTableComponent from '../../components/BugTableComponent';
-import axios from 'axios';
 
 const DashboardPage = () => {
   const { userData, setUserData } = usePageData();
@@ -13,10 +12,10 @@ const DashboardPage = () => {
   const chartRef = useRef();
 
   useEffect(() => {
-    axios.post("/users/dashboard", { data: authTokens })
+    getUserData({ data: authTokens })
     .then(response => {
-      setUserData(response);
-    });
+      setUserData(response)
+    })
   }, [authTokens, setUserData]);
 
   useEffect(() => {

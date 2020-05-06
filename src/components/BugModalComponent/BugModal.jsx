@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Modal, Button, Form, Comment, Header, Dropdown } from 'semantic-ui-react';
-import styles from "./BugModal.module.scss";
+import { Table, Modal, Button, Dropdown } from 'semantic-ui-react';
 import { getUsers, updateBug } from "../../actions";
+import BugCommentComponent from "../BugCommentComponent";
+import styles from "./BugModal.module.scss";
 
 const BugModal = (props) => {
+  const bug = props.bug;
   const [bugStatus, setBugStatus] = useState({ id: -1, name: "" });
   const [bugPriority, setBugPriority] = useState({ id: -1, name: "" });
-  const [userSearchArr, setUserSearchArr] = useState([]);
+  const [userSearchArr, setUserSearchArr] = useState();
   const [addUserArr, setAddUserArr] = useState();
   const [isSearching, setIsSearching] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState();
-  const bug = props.bug;
   let timeStampArr = bug.due_date.split("T");
   let dateFormat = timeStampArr[0];
   let assignedToUsers = props.userArr;
@@ -40,9 +41,9 @@ const BugModal = (props) => {
         }
       }
       setUserSearchArr(newArr);
+      // setBugComments(sortComments(bug.comments));
     });
-    // eslint-disable-next-line
-  }, []);
+  }, [assignedToUsers, bug.bug_priority.priority, bug.bug_priority_id, bug.bug_status.status, bug.bug_status_id, bug.comments]);
 
   const handleUserSearchChange = (e, { value }) => {
     let newArr = [];
@@ -60,15 +61,21 @@ const BugModal = (props) => {
     let newObj = { bug_id: bug.id };
     if (bugStatus !== bug.bug_status_id) newObj.status = bugStatus.id;
     if (bugPriority !== bug.bug_priority_id) newObj.priority = bugPriority.id;
-    if (addUserArr.length > 0) newObj.newUserArr = addUserArr;
+    if (Array.isArray(addUserArr)) newObj.newUserArr = addUserArr;
     updateBug(newObj)
     await setIsModalOpen(false);
     setIsModalOpen();
   }
 
   const handleCancel = async () => {
-    if (bugStatus !== bug.bug_status_id) setBugStatus(bug.bug_status.status);
-    if (bugPriority !== bug.bug_priority_id) setBugPriority(bug.bug_priority.priority);
+    if (bugStatus.name !== bug.bug_status_id) setBugStatus({
+      id: bugStatus.id,
+      name: bug.bug_status.status
+    });
+    if (bugPriority.name !== bug.bug_priority_id) setBugPriority({
+      id: bugPriority.id,
+      name: bug.bug_priority.priority
+    });
     await setIsModalOpen(false);
     setIsModalOpen();
   }
@@ -183,16 +190,26 @@ const BugModal = (props) => {
             </Dropdown.Menu>
           </Dropdown>
         </h2>
-        <Comment.Group>
+        <BugCommentComponent 
+          bugId={bug.id}
+        />
+        {/* <Comment.Group>
           <Header as='h3' dividing>
             Comments
           </Header>
-          {props.mapComments(bug.comments)}
+          {props.mapComments(bugComments)}
         </Comment.Group>
-        <Form reply>
-          <Form.TextArea />
-          <Button content='Add Reply' labelPosition='left' icon='edit' primary />
-        </Form>
+        <Form reply onSubmit={handleCommentSubmit}>
+          <Form.TextArea 
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <Button 
+            content='Add Reply' 
+            labelPosition='left' 
+            icon='edit' 
+            primary  
+          />
+        </Form> */}
       </Modal.Content>
       <Modal.Actions>
         <Button 
