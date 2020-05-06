@@ -12,7 +12,7 @@ import AdminPage from '../pages/AdminPage/AdminPage';
 import ProjectPage from '../pages/ProjectPage';
 import ProjectDashboardPage from '../pages/ProjectDashboardPage'
 import PrivateRoute from '../decorators/PrivateRoute';
-import ProfilePage from '../pages/ProfilePage/ProfilePage';
+import UserProfilePage from '../pages/UserProfilePage';
 import { AuthContext } from "../context/auth";
 import { PageDataContext } from "../context/pageData";
 
@@ -44,7 +44,7 @@ export default function App() {
         <>
           <NavigationMenu setReferrer={setReferrer} className="NavMenu"></NavigationMenu>
           <Header /> 
-          <Container className="Container">
+          <Container fluid className="Container">
             <Switch>
               <PageDataContext.Provider value={{
                 projectUserArr, setProjectUserArr,
@@ -57,7 +57,7 @@ export default function App() {
                 <Route exact path="/" component={DashboardPage} />
                 <Route path="/projects/:id" component={ProjectDashboardPage} />
                 <Route exact path="/projects" component={ProjectPage} />
-                <Route path ="/profile" component={ProfilePage} />
+                <Route path ="/profile" component={UserProfilePage} />
               </PageDataContext.Provider>
             </Switch>
           </Container>

@@ -8,11 +8,11 @@ body::-webkit-scrollbar {
 
 .Container {
   position: relative;
-  float: left;
   height: 95%;
-  width: 84%;
+  width: 95%;
   top: 5%;
-  padding-left: 10%;
+  padding-left: 250px;
+  padding-right: 50px;
   padding-top: 5%;
 }
 
