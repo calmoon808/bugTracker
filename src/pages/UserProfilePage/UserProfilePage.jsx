@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Segment, Image, Button, Grid } from 'semantic-ui-react';
+import { Segment, Image, Grid, Button } from 'semantic-ui-react';
 import styles from './UserProfilePage.module.scss'
 import { useAuth } from '../../context/auth';
 import { usePageData } from '../../context/pageData';
@@ -9,43 +9,41 @@ import ProfileList from '../../components/ProfileListComponent';
 
 const UserProfilePage = () => {
   const { authTokens } = useAuth();
-  const { userData } = usePageData();
+  const { userData, setUserData } = usePageData();
   const [userProfileData, setUserProfileData] = useState();
 
   useEffect(() => {
     if (Object.keys(userData).length === 0){
       getUserData({ data: authTokens })
       .then(response => {
-        setUserProfileData(response.data)
+        setUserProfileData(response.data);
+        setUserData(response.data);
       })
     } else {
       setUserProfileData(userData.data)
     }
-  }, [setUserProfileData, authTokens, userData]);
+  }, [setUserProfileData, authTokens, userData, setUserData]);
 
   return (
-    <div className={styles.UserProfilePage}>
+    <>
       <h1>User Profile Page</h1>
-      <Container fluid>
-        <Segment>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={4}>
-                <Image 
-                  src={profilePlaceholderImg}
-                />
-                <Button 
-                  onClick={() => {console.log(userProfileData)}}
-                />
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <ProfileList userData={userProfileData}/>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
-      </Container>
-    </div>
+      <Segment piled={true} className={styles.userProfilePage}>
+        <Grid>
+          <Grid.Row className={styles.theRow}>
+            <Grid.Column width={4}>
+              <Image 
+                size='medium'
+                src={profilePlaceholderImg}
+              />
+              <Button className={styles.changePhoto}>change your photo</Button>
+            </Grid.Column>
+            <Grid.Column className={styles.profileList} width={12}>
+              <ProfileList userData={userProfileData}/>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+    </>
   );
 };
 
