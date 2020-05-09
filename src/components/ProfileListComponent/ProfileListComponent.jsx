@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { List } from "semantic-ui-react";
+import { List, Button } from "semantic-ui-react";
+import BasicUserEditModal from "../BasicUserEditModalComponent";
 
 const ProfileList = (props) => {
   const [name, setName] = useState();
@@ -18,22 +19,63 @@ const ProfileList = (props) => {
   }, [props.userData]);
 
   return (
-    <List>
+    <List relaxed>
       <List.Item>
         <List.Icon name="user" size="big"/>
-        <List.Content>Name: {name}</List.Content>
+        <List.Content>
+          <h2>
+            <span>Name: {name}</span>
+            <BasicUserEditModal 
+              changeType="name"
+              setFunc={setName}
+              modalContent={["First Name: ", "Last Name: "]}
+            />
+          </h2>
+        </List.Content>
       </List.Item>
       <List.Item>
         <List.Icon name="mail" size="big"/>
-        <List.Content>Email: {email}</List.Content>
+        <List.Content>
+          <h2>
+            <span>Email: {email}</span>
+            <BasicUserEditModal 
+              changeType="email"
+              setFunc={setEmail}
+              modalContent={["Email: "]}
+            />
+          </h2>
+        </List.Content>
       </List.Item>
       <List.Item>
         <List.Icon name="users" size="big"/>
-        <List.Content>Company: {company}</List.Content>
+        <List.Content>
+          <h2>
+            <span>Company: {company}</span>
+            <BasicUserEditModal 
+              changeType="company"
+              setFunc={setCompany}
+              modalContent={["Company: "]}
+            />
+          </h2>
+        </List.Content>
       </List.Item>
       <List.Item>
         <List.Icon name="briefcase" size="big"/>
-        <List.Content>Position: {position}</List.Content>
+        <List.Content>
+          <h2>
+            <span>Position: {position}</span>
+            <BasicUserEditModal
+              changeType="position"
+              setFunc={setPosition}
+              modalContent={["Position: "]}
+            />
+          </h2>
+        </List.Content>
+      </List.Item>
+      <List.Item>
+        <List.Content>
+          <Button>change password</Button>
+        </List.Content>
       </List.Item>
     </List>
   );
