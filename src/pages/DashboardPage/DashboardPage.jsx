@@ -32,15 +32,17 @@ const DashboardPage = () => {
   return (
     <div className={styles.DashboardPage}>
       <h1>DashboardPage</h1>
-      <Grid>
+      <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
             <Segment>
               <div>My Overview</div>
-              <canvas
-                id='myChart'
-                ref={chartRef}
-              />
+              <Segment>
+                <canvas
+                  id='myChart'
+                  ref={chartRef}
+                />
+              </Segment>
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
