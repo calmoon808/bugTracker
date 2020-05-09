@@ -20,6 +20,20 @@ export const getBugComments = (bugId) => {
   })
 }
 
+export const getCompanies = () => {
+  return axios.get("/companies")
+  .then(response => {
+    return response.data;
+  })
+}
+
+export const getPositions = () => {
+  return axios.get("/company_positions")
+  .then(response => {
+    return response.data;
+  })
+}
+
 export const getGroupCount = (url, group, data, relation) => {
   return axios.post(`${url}/count`, { group, data, relation })
   .then(response => {
@@ -59,13 +73,6 @@ export const setProjectFeedCookie = (projectId) => {
   return axios.post('projects/setCookie', { projectId })
 }
 
-// export const sortComments = (comments) => {
-//   const newArr = comments.sort((a, b) => { 
-//     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-//   });
-//   return newArr;
-// }
-
 export const timeToMeta = (time) => {
   const today = new Date();
   const date = new Date(time);
@@ -91,6 +98,7 @@ export const timeToMeta = (time) => {
 }
 
 export const updateBug = (bugDataObj) => {
+  console.log(bugDataObj);
   return axios.post("bugs/update/", bugDataObj)
   .then(response => {
     return (response);
