@@ -86,7 +86,6 @@ const BugModal = (props) => {
       open={isModalOpen}
       className={styles.bugModal}
       centered={true}
-      size={"fullscreen"}
       trigger={
         <Table.Row>
           <Table.Cell>{bug.bug}</Table.Cell>
@@ -193,23 +192,6 @@ const BugModal = (props) => {
         <BugCommentComponent 
           bugId={bug.id}
         />
-        {/* <Comment.Group>
-          <Header as='h3' dividing>
-            Comments
-          </Header>
-          {props.mapComments(bugComments)}
-        </Comment.Group>
-        <Form reply onSubmit={handleCommentSubmit}>
-          <Form.TextArea 
-            onChange={(e) => setNewComment(e.target.value)}
-          />
-          <Button 
-            content='Add Reply' 
-            labelPosition='left' 
-            icon='edit' 
-            primary  
-          />
-        </Form> */}
       </Modal.Content>
       <Modal.Actions>
         <Button 
