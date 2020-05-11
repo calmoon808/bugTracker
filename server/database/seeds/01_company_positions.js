@@ -4,6 +4,9 @@ exports.seed = function(knex) {
     .then(function (){
       return knex("company_positions").insert([
         {
+          name: "n/a"
+        },
+        {
           name: "Technical Lead"
         },
         {

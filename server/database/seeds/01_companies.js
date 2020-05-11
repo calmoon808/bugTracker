@@ -4,6 +4,9 @@ exports.seed = function(knex) {
     .then(function (){
       return knex("companies").insert([
         {
+          name: "n/a"
+        },
+        {
           name: "Google"
         },
         {
