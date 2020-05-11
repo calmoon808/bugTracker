@@ -15,7 +15,7 @@ const NavigationMenu = (props) => {
   return (
     // <div className={styles.NavigationMenu}>
       <Grid className={styles.Grid}>
-        <Grid.Column width={16} className={styles.Column}>
+        <Grid.Column className={styles.Column}>
           <Menu inverted vertical pointing className={styles.Menu}>
             <Menu.Item
               name='BugTracker'
