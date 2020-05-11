@@ -2,6 +2,13 @@ const axios = require("axios");
 const { dashboardGraphOptions } = require("../graphOptions");
 const Chart = require("chart.js");
 
+export const changePassword = (data) => {
+  return axios.post("/users/newPassword", data)
+  .then(response => {
+    return response;
+  })
+}
+
 export async function getChartData(url, data, relation){
   let graphData = [];
   const fixed = await getGroupCount(`/${url}`, "Fixed", data, relation );
@@ -11,6 +18,13 @@ export async function getChartData(url, data, relation){
   graphData.push(inProgress.data.length);
   graphData.push(closed.data.length);
   return graphData;
+}
+
+export const checkPassword = (data) => {
+  return axios.post("/users/oldPassword", data)
+  .then(response => {
+    return response.data;
+  })
 }
 
 export const getBugComments = (bugId) => {
@@ -69,8 +83,12 @@ export const postComment = (commentData) => {
   return axios.post('/comments/add', commentData)
 }
 
+export const postUserData = (data) => {
+  return axios.post('/users/update', data)
+}
+
 export const setProjectFeedCookie = (projectId) => {
-  return axios.post('projects/setCookie', { projectId })
+  return axios.post('/projects/setCookie', { projectId })
 }
 
 export const timeToMeta = (time) => {
@@ -98,8 +116,7 @@ export const timeToMeta = (time) => {
 }
 
 export const updateBug = (bugDataObj) => {
-  console.log(bugDataObj);
-  return axios.post("bugs/update/", bugDataObj)
+  return axios.post("/bugs/update/", bugDataObj)
   .then(response => {
     return (response);
   })
