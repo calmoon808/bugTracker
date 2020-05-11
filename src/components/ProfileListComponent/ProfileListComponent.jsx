@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, Button } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
 import BasicUserEditModal from "../BasicUserEditModalComponent";
 
 const ProfileList = (props) => {
@@ -70,11 +70,6 @@ const ProfileList = (props) => {
               modalContent={["Position: "]}
             />
           </h2>
-        </List.Content>
-      </List.Item>
-      <List.Item>
-        <List.Content>
-          <Button>change password</Button>
         </List.Content>
       </List.Item>
     </List>

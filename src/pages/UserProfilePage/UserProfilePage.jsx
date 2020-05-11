@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Segment, Image, Grid, Button } from 'semantic-ui-react';
+import { Segment, Image, Grid } from 'semantic-ui-react';
 import styles from './UserProfilePage.module.scss'
 import { useAuth } from '../../context/auth';
 import { usePageData } from '../../context/pageData';
 import { getUserData } from '../../actions';
 import profilePlaceholderImg from '../../imgs/blue.png';
 import ProfileList from '../../components/ProfileListComponent';
+import PasswordChangeModal from '../../components/PasswordChangeModalComponent';
+import ProfilePicChangeModal from '../../components/ProfilePicChangeModalComponent';
 
 const UserProfilePage = () => {
   const { authTokens } = useAuth();
@@ -35,7 +37,8 @@ const UserProfilePage = () => {
                 size='medium'
                 src={profilePlaceholderImg}
               />
-              <Button className={styles.changePhoto}>change your photo</Button>
+              <ProfilePicChangeModal />
+              <PasswordChangeModal />
             </Grid.Column>
             <Grid.Column className={styles.profileList} width={12}>
               <ProfileList userData={userProfileData}/>
