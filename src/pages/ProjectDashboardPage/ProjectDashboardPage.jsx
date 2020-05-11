@@ -53,7 +53,7 @@ const ProjectDashboardPage = () => {
   return (
     <div className={styles.ProjectDashboardPage}>
       <h1>PROJECT DASHBOARDPAGE</h1>
-      <Grid>
+      {currentProjectData.data && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
             <Segment>
@@ -68,7 +68,7 @@ const ProjectDashboardPage = () => {
             <Segment>
               <div>Bugs</div>
               <BugTableComponent
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={[["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]]}
                 data={currentProjectData.data}
                 type={"myBugs"}
               />
@@ -80,11 +80,10 @@ const ProjectDashboardPage = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>People Assigned</div>
-              <UserTableComponent
-                headers={["Name", "Position", "Company"]}
-                data={projectUserArr}
-                
-              />
+              {projectUserArr && <UserTableComponent
+                headers={[["Name", "userFullName"], ["Position", "position"], ["Company", "company"]]}
+                users={projectUserArr}
+              />}
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
@@ -112,7 +111,7 @@ const ProjectDashboardPage = () => {
             </Segment>
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Grid>}
     </div>
   );
 };

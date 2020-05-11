@@ -10,6 +10,7 @@ const DashboardPage = () => {
   const { userData, setUserData } = usePageData();
   const { authTokens } = useAuth();
   const chartRef = useRef();
+  const bugHeaders = [["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]];
 
   useEffect(() => {
     getUserData({ data: authTokens })
@@ -32,24 +33,21 @@ const DashboardPage = () => {
   return (
     <div className={styles.DashboardPage}>
       <h1>DashboardPage</h1>
-      <Grid stretched={true}>
+      {userData.data && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
             <Segment>
-              <div>My Overview</div>
-              <Segment>
-                <canvas
-                  id='myChart'
-                  ref={chartRef}
-                />
-              </Segment>
+              <canvas
+                id='myChart'
+                ref={chartRef}
+              />
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
             <Segment>
               <div>My Bugs</div>
               <BugTableComponent 
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={bugHeaders}
                 data={userData.data}
                 type={"myBugs"}
               />
@@ -62,7 +60,7 @@ const DashboardPage = () => {
             <Segment>
               <div>Things Due Today</div>
               <BugTableComponent 
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={bugHeaders}
                 data={userData.data}
                 type={"dueToday"}
               />
@@ -72,14 +70,14 @@ const DashboardPage = () => {
             <Segment>
               <div>Overdue Items</div>
               <BugTableComponent 
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={bugHeaders}
                 data={userData.data}
                 type={"overdue"}
               />
             </Segment>
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Grid>}
     </div>
   );
 }

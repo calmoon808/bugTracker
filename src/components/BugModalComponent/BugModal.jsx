@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Modal, Button, Dropdown } from 'semantic-ui-react';
+import { Modal, Button, Dropdown } from 'semantic-ui-react';
 import { getUsers, updateBug } from "../../actions";
 import BugCommentComponent from "../BugCommentComponent";
-import styles from "./BugModal.module.scss";
+// import styles from "./BugModal.module.scss";
 
 const BugModal = (props) => {
   const bug = props.bug;
@@ -11,10 +11,7 @@ const BugModal = (props) => {
   const [userSearchArr, setUserSearchArr] = useState();
   const [addUserArr, setAddUserArr] = useState();
   const [isSearching, setIsSearching] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState();
-  let timeStampArr = bug.due_date.split("T");
-  let dateFormat = timeStampArr[0];
-  let assignedToUsers = props.userArr;
+  let assignedToUsers = bug.userArr;
 
   useEffect(() => {
     setBugStatus({
@@ -41,7 +38,6 @@ const BugModal = (props) => {
         }
       }
       setUserSearchArr(newArr);
-      // setBugComments(sortComments(bug.comments));
     });
   }, [assignedToUsers, bug.bug_priority.priority, bug.bug_priority_id, bug.bug_status.status, bug.bug_status_id, bug.comments]);
 
@@ -63,8 +59,8 @@ const BugModal = (props) => {
     if (bugPriority !== bug.bug_priority_id) newObj.priority = bugPriority.id;
     if (Array.isArray(addUserArr)) newObj.newUserArr = addUserArr;
     updateBug(newObj)
-    await setIsModalOpen(false);
-    setIsModalOpen();
+    await props.setIsModalOpen(false);
+    props.setIsModalOpen();
   }
 
   const handleCancel = async () => {
@@ -76,25 +72,12 @@ const BugModal = (props) => {
       id: bugPriority.id,
       name: bug.bug_priority.priority
     });
-    await setIsModalOpen(false);
-    setIsModalOpen();
+    await props.setIsModalOpen(false);
+    props.setIsModalOpen();
   }
 
   return (
-    <Modal 
-      closeIcon
-      open={isModalOpen}
-      className={styles.bugModal}
-      centered={true}
-      trigger={
-        <Table.Row>
-          <Table.Cell>{bug.bug}</Table.Cell>
-          <Table.Cell>{`${bug.poster.first_name} ${bug.poster.last_name}`}</Table.Cell>
-          <Table.Cell>{bugStatus.name}</Table.Cell>
-          <Table.Cell>{dateFormat || '-'}</Table.Cell>
-        </Table.Row>
-      }
-    >
+    <>
       <Modal.Header>Bug Ticket {bug.id}</Modal.Header>
       <Modal.Content>
         <h2>Issue: {bug.bug}</h2>
@@ -209,7 +192,7 @@ const BugModal = (props) => {
           onClick={handleSubmit}
         />
       </Modal.Actions>
-    </Modal>
+    </>
   );
 };
 

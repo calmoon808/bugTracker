@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { usePageData } from '../../context/pageData';
-import { Container, Table } from 'semantic-ui-react';
+import { Table, Segment } from 'semantic-ui-react';
 import { useAuth } from "../../context/auth";
-import { isEmpty } from "lodash";
+import { isEmpty, sortBy, map } from "lodash";
 import { setProjectFeedCookie } from "../../actions";
 import axios from 'axios';
 
@@ -11,6 +11,7 @@ let freqObj = {};
 
 const ProjectPage = () => {
   const { userData, setUserData, projectData, setProjectData, referrer, setReferrer } = usePageData();
+  const [ sortData, setSortData ] = useState();
   const { authTokens } = useAuth();
 
   useEffect(() => {
@@ -25,11 +26,35 @@ const ProjectPage = () => {
       for (let i of bugsArr){
         if (!freqObj[i.project.id]){
           freqObj[i.project.id] = 1;
-          setProjectData(projectData => projectData.concat(i.project));
+          setProjectData(projectData => projectData.concat(i.project))
         }
       }
+      setSortData({
+        column: null,
+        data: projectData,
+        direction: null
+      }) 
     }
-  }, [authTokens, userData, setUserData, setProjectData, referrer]);
+  }, [authTokens, userData, setUserData, setProjectData, referrer, projectData, setSortData]);
+
+  const handleSort = (clickedColumn) => () => {
+    const { column, data, direction } = sortData;
+
+    if (column !== clickedColumn) {
+      setSortData({
+        column: clickedColumn,
+        data: sortBy(data, [clickedColumn]),
+        direction: 'ascending'      
+      })
+      return;
+    }
+
+    setSortData({
+      column: column,
+      data: data.reverse(),
+      direction: direction === 'ascending' ? 'descending' : 'ascending',
+    })
+  }
 
   const handleClick = async (id) => {
     await setProjectFeedCookie(id);
@@ -37,25 +62,47 @@ const ProjectPage = () => {
   }
 
   const mapHeaders = (headers) => {
-    if (!headers) { return false };
+    if (!sortData) return false
+    if (!headers) return false;
+    const { column, direction } = sortData;
     return headers.map(header => {
       return (
-        <Table.HeaderCell key={header}>{header}</Table.HeaderCell>
+        <Table.HeaderCell 
+          key={header[0]}
+          sorted={column === header[1] ? direction : null}
+          onClick={handleSort(header[1])}
+        >
+          {header[0]}
+        </Table.HeaderCell>
       )
     })
   }
 
   const mapProjects = (projects) => {
     if (projects.length === 0) { return false };
-    
-    return projects.map(project => {
+    if (!sortData) return false;
+    const { data } = sortData;
+    const cleanData = [];
+    data.forEach(project => {
+      let newObj = {
+        id: project.id,
+        name: project.name,
+        owner: `${project.project_creator.first_name} ${project.project_creator.last_name}`,
+        status: project.project_status.status,
+        startDate: project.created_at.split("T")[0],
+        endDate: project.due_date === null ? "-" : project.due_date.split("T")[0]
+      }
+      cleanData.push(newObj);
+    })
+
+    return map(cleanData, ({ id, name, owner, status, startDate, endDate }) => {
       return (
-        <Table.Row key={project.id}>
-          <Table.Cell onClick={() => handleClick(project.id)}>{project.name}</Table.Cell>
-          <Table.Cell>{`${project.project_creator.first_name} ${project.project_creator.last_name}`}</Table.Cell>
-          <Table.Cell>{project.project_status.status}</Table.Cell>
-          <Table.Cell>{project.created_at.split("T")[0]}</Table.Cell>
-          <Table.Cell>{project.due_date === null ? "-" : project.due_date.split("T")[0]}</Table.Cell>
+        <Table.Row key={id}>
+          <Table.Cell onClick={() => handleClick(id)}>{name}</Table.Cell>
+          <Table.Cell>{owner}</Table.Cell>
+          <Table.Cell>{status}</Table.Cell>
+          <Table.Cell>{startDate}</Table.Cell>
+          <Table.Cell>{endDate}</Table.Cell>
         </Table.Row>
       )
     })
@@ -66,20 +113,25 @@ const ProjectPage = () => {
   }
 
   return (
-    <Container>
+    <Segment>
       <h1>PROJECT PAGE</h1>
-      <Table celled inverted selectable sortable>
-        <Table.Header>
-          <Table.Row key={"header"}>
-            {mapHeaders(["Project Name", "Owner", "Status", "Start Date", "End Date"])}
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          {mapProjects(projectData)}
-        </Table.Body>
-      </Table>
-    </Container>
+        <Table celled inverted selectable sortable>
+          <Table.Header>
+            <Table.Row key={"header"}>
+              {mapHeaders([
+                ["Project Name", "name"],
+                ["Owner", "owner"],
+                ["Status", "status"],
+                ["Start Date", "startDate"],
+                ["End Date", "endDate"]
+              ])}
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {mapProjects(projectData)}
+          </Table.Body>
+        </Table>
+    </Segment>
   );
 }
 
