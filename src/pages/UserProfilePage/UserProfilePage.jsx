@@ -4,10 +4,10 @@ import styles from './UserProfilePage.module.scss'
 import { useAuth } from '../../context/auth';
 import { usePageData } from '../../context/pageData';
 import { getUserData } from '../../actions';
-import profilePlaceholderImg from '../../imgs/blue.png';
 import ProfileList from '../../components/ProfileListComponent';
 import PasswordChangeModal from '../../components/PasswordChangeModalComponent';
 import ProfilePicChangeModal from '../../components/ProfilePicChangeModalComponent';
+import profilePlaceholderImg from '../../imgs/blue.png';
 
 const UserProfilePage = () => {
   const { authTokens } = useAuth();

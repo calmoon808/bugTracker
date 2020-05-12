@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Modal } from 'semantic-ui-react';
+import UserModal from '../UserModalComponent';
 import { map, sortBy } from 'lodash'
 
 const UserTable = (props) => {
@@ -70,13 +71,28 @@ const UserTable = (props) => {
 
   const mapCleanUsers = (users) => {
     const { data } = sortData;
-    return map(data, ({ id, userFullName, company, position }) => {
+    return map(data, ({ id, userFullName, company, position, email }) => {
       return (
-        <Table.Row key={id}>
-          <Table.Cell>{userFullName}</Table.Cell>
-          <Table.Cell>{position}</Table.Cell>
-          <Table.Cell>{company}</Table.Cell>
-        </Table.Row>
+        <Modal
+          key={id}
+          basic
+          size="tiny"
+          // open={isModalOpen}
+          // centered={true}
+          trigger={
+            <Table.Row key={id}>
+              <Table.Cell>{userFullName}</Table.Cell>
+              <Table.Cell>{position}</Table.Cell>
+              <Table.Cell>{company}</Table.Cell>
+            </Table.Row>
+          }
+        >
+          <UserModal
+            key={id}
+            name={userFullName}
+            email={email}
+          />
+        </Modal>
       )
     })
   }
