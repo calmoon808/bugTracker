@@ -7,7 +7,6 @@ import { useAuth } from "../../context/auth";
 
 const BugModal = (props) => {
   const bug = props.bug;
-  const projectId = props.projectId.id;
   const { authTokens } = useAuth();
   const [bugStatus, setBugStatus] = useState({ id: -1, name: "" });
   const [bugPriority, setBugPriority] = useState({ id: -1, name: "" });
@@ -57,7 +56,8 @@ const BugModal = (props) => {
   }
 
   const handleSubmit = async () => {
-    // console.log(projectId);
+    const projectId = props.projectId.id;
+
     let newObj = { 
       id: authTokens.id,
       bug_id: bug.id, 

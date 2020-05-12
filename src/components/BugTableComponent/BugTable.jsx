@@ -4,7 +4,6 @@ import BugModal from '../BugModalComponent/BugModal';
 import { sortBy, map } from 'lodash'
 
 const BugTableComponent = (props) => {
-  const projectId = props.projectId;
   const [cleanBugs, setCleanBugs] = useState();
   const [sortData, setSortData] = useState();
   const [isModalOpen, setIsModalOpen] = useState();
@@ -72,6 +71,7 @@ const BugTableComponent = (props) => {
     bugsFiltered.forEach(bug => {
       userArr = mapUsers(bug.users);
       const timeStampArr = bug.due_date.split("T");
+      let projectId = bug.project ? bug.project.id : props.projectId;
       const cleanObj = {
         id: bug.id,
         bug: bug.bug,
@@ -79,7 +79,8 @@ const BugTableComponent = (props) => {
         prioity: bug.bug_priority.prioity,
         status: bug.bug_status.status,
         dueDate: timeStampArr[0],
-        userArr: userArr
+        userArr: userArr,
+        projectId: projectId
       }
       const bugObj = Object.assign(cleanObj, bug);
       cleanBugArr.push(bugObj);
@@ -109,7 +110,7 @@ const BugTableComponent = (props) => {
             key={bug.id}
             bug={bug}
             setIsModalOpen={setIsModalOpen}
-            projectId={projectId}
+            projectId={bug.projectId}
           />
         </Modal>
       )
