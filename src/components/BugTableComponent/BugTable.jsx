@@ -4,6 +4,7 @@ import BugModal from '../BugModalComponent/BugModal';
 import { sortBy, map } from 'lodash'
 
 const BugTableComponent = (props) => {
+  const projectId = props.projectId;
   const [cleanBugs, setCleanBugs] = useState();
   const [sortData, setSortData] = useState();
   const [isModalOpen, setIsModalOpen] = useState();
@@ -108,6 +109,7 @@ const BugTableComponent = (props) => {
             key={bug.id}
             bug={bug}
             setIsModalOpen={setIsModalOpen}
+            projectId={projectId}
           />
         </Modal>
       )

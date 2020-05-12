@@ -2,6 +2,7 @@ const express = require("express");
 const bugRouter = express.Router();
 const Bug = require("../../database/models/Bug");
 const UsersBugs = require("../../database/models/UsersBugs");
+const client = require("../../../src/getStream");
 
 bugRouter.route("/")
   .get((req, res) => {
@@ -33,9 +34,24 @@ bugRouter.post("/count", (req, res) => {
 
 bugRouter.post("/update", (req, res) => {
   const updateInfo = req.body;
+  // console.log(updateInfo);
+  const feed = client.feed('projectFeed', updateInfo.projectId);
+
+  // feed.addActivity({
+  //   'actor': client.user(userId).ref(),
+  //   'verb': 'stab',
+  //   'object': 'yo',
+  // })
   if (updateInfo.newUserArr){
     UsersBugs.query()
     .insertGraph(updateInfo.newUserArr)
+    .then(() =>{
+      feed.addActivity({
+        'actor': client.user(updateInfo.id).ref(),
+        'verb': 'update',
+        'object': 'has added users to a bug',
+      })
+    })
     .catch(err => (
       console.log(err)
     ))
@@ -44,6 +60,13 @@ bugRouter.post("/update", (req, res) => {
     Bug.query()
     .findById(updateInfo.bug_id)
     .patch({ bug_status_id: updateInfo.status })
+    .then(() => {
+      feed.addActivity({
+        'actor': client.user(updateInfo.id).ref(),
+        'verb': 'update',
+        'object': 'has changed the status of a bug',
+      })
+    })
     .catch(err => (
       console.log(err)
     ))
@@ -52,6 +75,13 @@ bugRouter.post("/update", (req, res) => {
     Bug.query()
     .findById(updateInfo.bug_id)
     .patch({ bug_priority_id: updateInfo.priority })
+    .then(() => {
+      feed.addActivity({
+        'actor': client.user(updateInfo.id).ref(),
+        'verb': 'update',
+        'object': 'has updated the priority of a bug',
+      })
+    })
     .catch(err => (
       console.log(err)
     ))

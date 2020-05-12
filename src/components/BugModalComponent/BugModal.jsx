@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Dropdown } from 'semantic-ui-react';
 import { getUsers, updateBug } from "../../actions";
 import BugCommentComponent from "../BugCommentComponent";
+import { useAuth } from "../../context/auth";
 // import styles from "./BugModal.module.scss";
 
 const BugModal = (props) => {
   const bug = props.bug;
+  const projectId = props.projectId.id;
+  const { authTokens } = useAuth();
   const [bugStatus, setBugStatus] = useState({ id: -1, name: "" });
   const [bugPriority, setBugPriority] = useState({ id: -1, name: "" });
   const [userSearchArr, setUserSearchArr] = useState();
@@ -54,7 +57,12 @@ const BugModal = (props) => {
   }
 
   const handleSubmit = async () => {
-    let newObj = { bug_id: bug.id };
+    // console.log(projectId);
+    let newObj = { 
+      id: authTokens.id,
+      bug_id: bug.id, 
+      projectId
+    };
     if (bugStatus !== bug.bug_status_id) newObj.status = bugStatus.id;
     if (bugPriority !== bug.bug_priority_id) newObj.priority = bugPriority.id;
     if (Array.isArray(addUserArr)) newObj.newUserArr = addUserArr;

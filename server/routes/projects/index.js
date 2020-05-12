@@ -1,7 +1,7 @@
 const express = require("express");
 const projectRouter = express.Router();
 const Project = require("../../database/models/Project");
-const client = require("../../../src/getStream")
+const client = require("../../../src/getStream");
 
 projectRouter.route("/")
   .get((req, res) => {
@@ -45,19 +45,13 @@ projectRouter.post("/dashboard", async (req, res) => {
     name: userName
   })
   client.user(`user_${userId}`).update({name: userName})
-  // .then(() => {
-  //   client.user(`user_${userId}`).get()
-  //   .then(user => {
-  //     console.log(user);
-  //   });
-  // })
 
   const feed = client.feed('projectFeed', projectId.toString());
 
   // feed.addActivity({
   //   'actor': client.user(userId).ref(),
   //   'verb': 'stab',
-  //   'object': 'I love this picture',
+  //   'object': 'yo',
   // })
 })
 module.exports = projectRouter;

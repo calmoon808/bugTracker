@@ -1,16 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Segment } from "semantic-ui-react";
-import { StreamApp, FlatFeed, Activity, LikeButton } from 'react-activity-feed';
-import 'react-activity-feed/dist/index.css';
 import styles from "./ProjectDashboardPage.module.scss";
 import { getChartData, graphDoughnutChart } from "../../actions";
 import { usePageData } from "../../context/pageData";
 import BugTableComponent from "../../components/BugTableComponent";
 import UserTableComponent from "../../components/UserTableComponent";
-import axios from "axios";
-import Cookies from 'js-cookie';
+import GetStream from "../../components/GetStreamComponent";
 import { useAuth } from "../../context/auth";
+import axios from "axios";
 
 const ProjectDashboardPage = () => {
   const { currentProjectData, setCurrentProjectData, projectUserArr, setProjectUserArr } = usePageData();
@@ -68,6 +66,7 @@ const ProjectDashboardPage = () => {
             <Segment>
               <div>Bugs</div>
               <BugTableComponent
+                projectId={projectId}
                 headers={[["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]]}
                 data={currentProjectData.data}
                 type={"myBugs"}
@@ -89,25 +88,7 @@ const ProjectDashboardPage = () => {
           <Grid.Column width={8}>
             <Segment>
               <div>Activity Feed</div>
-              <StreamApp
-                apiKey={process.env.REACT_APP_ACTIVITY_FEED_KEY}
-                appId={process.env.REACT_APP_ACTIVITY_FEED_ID}
-                token={Cookies.get('activityFeedToken')}
-              > 
-                <FlatFeed 
-                  feedGroup="projectFeed"
-                  LoadingIndicator
-                  Activity={(props) => 
-                    <Activity {...props} 
-                      Footer={() => (
-                        <div>
-                          <LikeButton {...props} />
-                        </div>
-                      )}
-                    />
-                  }
-                />
-              </StreamApp>
+              <GetStream />
             </Segment>
           </Grid.Column>
         </Grid.Row>
