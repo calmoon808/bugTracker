@@ -25,9 +25,11 @@ projectRouter.post("/setCookie", (req, res) => {
 })
 
 projectRouter.post("/dashboard", async (req, res) => {
+  console.log(req.body, "\n")
   let userId = req.body.authTokens.id.toString();
   let userName = req.body.authTokens.name;
   let projectId = req.body.projectId.id;
+  console.log(userId, userName, projectId);
   if (typeof projectId === 'string') projectId = JSON.parse(projectId);
   Project.query()
   .findById(projectId)
@@ -44,14 +46,17 @@ projectRouter.post("/dashboard", async (req, res) => {
   await client.user(`user_${userId}`).getOrCreate({
     name: userName
   })
-  client.user(`user_${userId}`).update({name: userName})
+})
 
-  const feed = client.feed('projectFeed', projectId.toString());
-
-  // feed.addActivity({
-  //   'actor': client.user(userId).ref(),
-  //   'verb': 'stab',
-  //   'object': 'yo',
-  // })
+projectRouter.post("/post", (req, res) => {
+  Project.query()
+  .insert(req.body)
+  .then(() => {
+    res.sendStatus(200);
+  })
+  .catch(err => {
+    console.log(err);
+    res.json(err);
+  })
 })
 module.exports = projectRouter;
