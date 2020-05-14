@@ -35,7 +35,6 @@ bugRouter.post("/count", (req, res) => {
 bugRouter.post("/update", async (req, res) => {
   const updateInfo = req.body;
   const projectId = typeof updateInfo.projectId === "number" ? updateInfo.projectId : updateInfo.projectId.id
-  console.log(updateInfo);
   const bug = Bug.query().findById(updateInfo.bug_id)
   let bug_status_id, bug_priority_id;
   await bug.then(response => {
@@ -60,7 +59,7 @@ bugRouter.post("/update", async (req, res) => {
   let priorityStatusUpdateObj = {};
 
   if (updateInfo.status !== bug_status_id){
-    // console.log("status:", updateInfo.status, bug_status_id)
+  
     priorityStatusUpdateObj.bug_status_id = updateInfo.status;
     feed.addActivity({
       'actor': client.user(updateInfo.id).ref(),
@@ -72,7 +71,6 @@ bugRouter.post("/update", async (req, res) => {
     ))
   }
   if (updateInfo.priority !== bug_priority_id){
-    // console.log("priority:", updateInfo.priority, bug_priority_id)
     priorityStatusUpdateObj.bug_priority_id = updateInfo.priority;
     feed.addActivity({
       'actor': client.user(updateInfo.id).ref(),
