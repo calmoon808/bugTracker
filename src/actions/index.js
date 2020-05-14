@@ -55,6 +55,10 @@ export const getGroupCount = (url, group, data, relation) => {
   })
 }
 
+export const getCurrentProjectData = (data) => {
+  return axios.post("/projects/dashboard", data)
+}
+
 export const getUserData = (data) => {
   return axios.post("/users/dashboard", data)
   .then(response => {
@@ -81,6 +85,10 @@ export const graphDoughnutChart = (chartRef, data) => {
 
 export const postComment = (commentData) => {
   return axios.post('/comments/add', commentData)
+}
+
+export const postProject = (projectData) => {
+  return axios.post('/projects/post', projectData);
 }
 
 export const postUserData = (data) => {
