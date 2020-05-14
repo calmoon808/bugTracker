@@ -12,6 +12,7 @@ const GetStream = () => {
       <FlatFeed 
         feedGroup="projectFeed"
         LoadingIndicator
+        notify
         Activity={(props) => 
           <Activity {...props} 
             Footer={() => (

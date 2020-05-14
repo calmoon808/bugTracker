@@ -111,6 +111,8 @@ const BugTableComponent = (props) => {
             bug={bug}
             setIsModalOpen={setIsModalOpen}
             projectId={bug.projectId}
+            setCurrentProjectData={props.setCurrentProjectData}
+            setUserData={props.setUserData}
           />
         </Modal>
       )

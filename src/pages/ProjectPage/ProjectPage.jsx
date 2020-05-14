@@ -5,13 +5,13 @@ import { Table, Segment } from 'semantic-ui-react';
 import { useAuth } from "../../context/auth";
 import { isEmpty, sortBy, map } from "lodash";
 import { setProjectFeedCookie } from "../../actions";
+import ProjectAddModal from "../../components/ProjectAddModalComponent";
 import axios from 'axios';
 
-let freqObj = {};
-
 const ProjectPage = () => {
-  const { userData, setUserData, projectData, setProjectData, referrer, setReferrer } = usePageData();
-  const [ sortData, setSortData ] = useState();
+  const { userData, setUserData, referrer, setReferrer } = usePageData();
+  const [projectData, setProjectData] = useState();
+  const [sortData, setSortData] = useState();
   const { authTokens } = useAuth();
 
   useEffect(() => {
@@ -22,20 +22,30 @@ const ProjectPage = () => {
       });
     }
     if (userData.data){
-      let bugsArr = userData.data.bugs;
+      const projects = userData.data.projects;
+      const bugsArr = userData.data.bugs;
+      let newArr = [];
+      let freqObj = {};
       for (let i of bugsArr){
         if (!freqObj[i.project.id]){
           freqObj[i.project.id] = 1;
-          setProjectData(projectData => projectData.concat(i.project))
+          newArr.push(i.project);
         }
       }
+      for (let i of projects){
+        if (!freqObj[i.id]){
+          freqObj[i.id] = 1;
+          newArr.push(i);
+        }
+      }
+      setProjectData(newArr);
       setSortData({
         column: null,
-        data: projectData,
+        data: newArr,
         direction: null
       }) 
     }
-  }, [authTokens, userData, setUserData, setProjectData, referrer, projectData, setSortData]);
+  }, [authTokens, userData, setUserData, setProjectData, referrer, setSortData]);
 
   const handleSort = (clickedColumn) => () => {
     const { column, data, direction } = sortData;
@@ -79,7 +89,7 @@ const ProjectPage = () => {
   }
 
   const mapProjects = (projects) => {
-    if (projects.length === 0) { return false };
+    if (!projects) return false;
     if (!sortData) return false;
     const { data } = sortData;
     const cleanData = [];
@@ -115,22 +125,23 @@ const ProjectPage = () => {
   return (
     <Segment>
       <h1>PROJECT PAGE</h1>
-        <Table celled inverted selectable sortable>
-          <Table.Header>
-            <Table.Row key={"header"}>
-              {mapHeaders([
-                ["Project Name", "name"],
-                ["Owner", "owner"],
-                ["Status", "status"],
-                ["Start Date", "startDate"],
-                ["End Date", "endDate"]
-              ])}
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {mapProjects(projectData)}
-          </Table.Body>
-        </Table>
+      <ProjectAddModal />
+      <Table celled inverted selectable sortable>
+        <Table.Header>
+          <Table.Row key={"header"}>
+            {mapHeaders([
+              ["Project Name", "name"],
+              ["Owner", "owner"],
+              ["Status", "status"],
+              ["Start Date", "startDate"],
+              ["End Date", "endDate"]
+            ])}
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {mapProjects(projectData)}
+        </Table.Body>
+      </Table>
     </Segment>
   );
 }

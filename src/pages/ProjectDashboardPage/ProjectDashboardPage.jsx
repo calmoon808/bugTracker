@@ -69,6 +69,7 @@ const ProjectDashboardPage = () => {
                 projectId={projectId}
                 headers={[["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]]}
                 data={currentProjectData.data}
+                setCurrentProjectData={setCurrentProjectData}
                 type={"myBugs"}
               />
             </Segment>

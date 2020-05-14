@@ -32,7 +32,9 @@ const DashboardPage = () => {
   
   return (
     <div className={styles.DashboardPage}>
-      <h1>DashboardPage</h1>
+      <h1>
+        DashboardPage
+      </h1>
       {userData.data && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
@@ -49,6 +51,7 @@ const DashboardPage = () => {
               <BugTableComponent 
                 headers={bugHeaders}
                 data={userData.data}
+                setUserData={setUserData}
                 type={"myBugs"}
               />
             </Segment>

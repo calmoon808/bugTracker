@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Dropdown } from 'semantic-ui-react';
-import { getUsers, updateBug } from "../../actions";
+import { getUsers, updateBug, getUserData, getCurrentProjectData } from "../../actions";
 import BugCommentComponent from "../BugCommentComponent";
 import { useAuth } from "../../context/auth";
+import { usePageData } from '../../context/pageData';
 // import styles from "./BugModal.module.scss";
 
 const BugModal = (props) => {
   const bug = props.bug;
   const { authTokens } = useAuth();
+  const { setUserData, setCurrentProjectData } = usePageData();
   const [bugStatus, setBugStatus] = useState({ id: -1, name: "" });
   const [bugPriority, setBugPriority] = useState({ id: -1, name: "" });
   const [userSearchArr, setUserSearchArr] = useState();
@@ -56,8 +58,8 @@ const BugModal = (props) => {
   }
 
   const handleSubmit = async () => {
-    const projectId = props.projectId.id;
-
+    let projectId = {}; 
+    projectId.id = typeof props.projectId === "number" ? projectId = props.projectId : parseInt(props.projectId.id);
     let newObj = { 
       id: authTokens.id,
       bug_id: bug.id, 
@@ -66,7 +68,23 @@ const BugModal = (props) => {
     if (bugStatus !== bug.bug_status_id) newObj.status = bugStatus.id;
     if (bugPriority !== bug.bug_priority_id) newObj.priority = bugPriority.id;
     if (Array.isArray(addUserArr)) newObj.newUserArr = addUserArr;
-    updateBug(newObj)
+    // console.log(props);
+    await updateBug(newObj).then(() => {
+      if (props.setCurrentProjectData) {
+        getCurrentProjectData({ projectId, authTokens })
+        .then(response => {
+          setCurrentProjectData(response)
+        });
+      } 
+      if (props.setUserData) {
+        getUserData({ data: authTokens })
+        .then(response => {
+          console.log(response);
+          setUserData(response)
+        });
+      }
+    })
+    
     await props.setIsModalOpen(false);
     props.setIsModalOpen();
   }
@@ -122,7 +140,7 @@ const BugModal = (props) => {
                 label={{ color: 'red', empty: true, circular:true }}
                 text='Closed'
                 onClick={() => { setBugStatus({
-                  id: 1,
+                  id: 3,
                   name: 'Closed',
                 })}}
               />
@@ -138,7 +156,7 @@ const BugModal = (props) => {
                 label={{ color: 'green', empty: true, circular:true }}
                 text='Fixed'
                 onClick={() => { setBugStatus({
-                  id: 3,
+                  id: 1,
                   name: 'Fixed'
                 })}}
               />
