@@ -33,7 +33,6 @@ const Login = () => {
       }
     })
     .catch(err => {
-      console.log(err.response);
       setIsError(true);
       setErrorMsg("Email or password are invalid.");
     })
