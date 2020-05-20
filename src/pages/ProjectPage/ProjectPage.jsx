@@ -3,25 +3,29 @@ import { Redirect } from 'react-router-dom';
 import { usePageData } from '../../context/pageData';
 import { Table, Segment } from 'semantic-ui-react';
 import { useAuth } from "../../context/auth";
-import { isEmpty, sortBy, map } from "lodash";
-import { setProjectFeedCookie } from "../../actions";
+import { sortBy, map } from "lodash";
+import { setProjectFeedCookie, getUserData } from "../../actions";
 import ProjectAddModal from "../../components/ProjectAddModalComponent";
 import axios from 'axios';
 
 const ProjectPage = () => {
-  const { userData, setUserData, referrer, setReferrer } = usePageData();
+  const { userData, setUserData, currentProjectData } = usePageData();
+  const { authTokens } = useAuth();
+  const [referrer, setReferrer] = useState(-1)
   const [projectData, setProjectData] = useState();
   const [sortData, setSortData] = useState();
-  const { authTokens } = useAuth();
+
+  // console.log("USERDATA", userData);
+  // console.log("CURRENT PROJECT", currentProjectData);
 
   useEffect(() => {
-    if (isEmpty(userData)){
-      axios.post("/users/dashboard", { data: authTokens })
+    if (!userData){
+      getUserData(authTokens)
       .then(response => {
         setUserData(response);
       });
     }
-    if (userData.data){
+    if (userData){
       const projects = userData.data.projects;
       const bugsArr = userData.data.bugs;
       let newArr = [];

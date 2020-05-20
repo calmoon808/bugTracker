@@ -15,9 +15,10 @@ const UserProfilePage = () => {
   const [userProfileData, setUserProfileData] = useState();
 
   useEffect(() => {
-    if (Object.keys(userData).length === 0){
-      getUserData({ data: authTokens })
+    if (!userData){
+      getUserData(authTokens)
       .then(response => {
+        console.log(response);
         setUserProfileData(response.data);
         setUserData(response.data);
       })
