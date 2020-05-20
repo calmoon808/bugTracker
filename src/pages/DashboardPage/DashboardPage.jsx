@@ -10,10 +10,10 @@ const DashboardPage = () => {
   const { userData, setUserData } = usePageData();
   const { authTokens } = useAuth();
   const chartRef = useRef();
-  const bugHeaders = [["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]];
+  const bugHeaders = [["#", "id"], ["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]];
 
   useEffect(() => {
-    getUserData({ data: authTokens })
+    getUserData(authTokens)
     .then(response => {
       setUserData(response)
     })
@@ -28,14 +28,13 @@ const DashboardPage = () => {
       }
     });
   }, [userData, authTokens, chartRef]);
-
   
   return (
     <div className={styles.DashboardPage}>
       <h1>
         DashboardPage
       </h1>
-      {userData.data && <Grid stretched={true}>
+      {userData && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
             <Segment>
