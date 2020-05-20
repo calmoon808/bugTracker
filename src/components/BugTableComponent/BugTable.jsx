@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Modal } from 'semantic-ui-react';
 import BugModal from '../BugModalComponent/BugModal';
+import EmptyTableReplacement from '../EmptyTableReplacementComponent'
 import { sortBy, map } from 'lodash'
 
 const BugTableComponent = (props) => {
   const [cleanBugs, setCleanBugs] = useState();
   const [sortData, setSortData] = useState();
   const [isModalOpen, setIsModalOpen] = useState();
+  const [isTableEmpty, setIsTableEmpty] = useState(false);
   
   useEffect(() => {
     const bugs = props.data.bugs;
@@ -27,7 +29,12 @@ const BugTableComponent = (props) => {
     if (column !== clickedColumn) {
       setSortData({
         column: clickedColumn,
-        data: sortBy(data, (o) => o[clickedColumn].toLowerCase()),
+        data: sortBy(data, (o) => {
+          if (typeof o[clickedColumn] === "number") {
+            return o[clickedColumn];
+          }
+          return o[clickedColumn].toLowerCase();
+        }),
         direction: 'ascending',
       });
       return;
@@ -56,40 +63,47 @@ const BugTableComponent = (props) => {
     })
   }
 
-  const mapBugs = (bugs) => {
+  const mapBugs = async (bugs) => {
     const type = props.type;
     let today = new Date(Date.now()).setHours(0,0,0,0);
-    let userArr = []
     let cleanBugArr = [];
     let bugsFiltered = bugs;
     if(type === "dueToday"){
       bugsFiltered = bugs.filter(bug => new Date(bug.due_date).setHours(0,0,0,0) === today)
     };
     if (type === "overdue"){
-      bugsFiltered = bugs.filter(bug => new Date(bug.due_date).setHours(0,0,0,0) < today)
+      bugsFiltered = bugs.filter(bug => {
+        return ((new Date(bug.due_date).setHours(0,0,0,0) < today) && bug.due_date)
+      })
     };
+    if (bugsFiltered.length === 0) {
+      await setIsTableEmpty(true);
+      return;
+    }
     bugsFiltered.forEach(bug => {
-      userArr = mapUsers(bug.users);
-      const timeStampArr = bug.due_date.split("T");
-      let projectId = bug.project ? bug.project.id : props.projectId;
+      const timeStampArr = !bug.due_date ? null : bug.due_date.split("T");
       const cleanObj = {
         id: bug.id,
         bug: bug.bug,
+        description: bug.bug_description,
         posterFullName: `${bug.poster.first_name} ${bug.poster.last_name}`,
-        prioity: bug.bug_priority.prioity,
+        priority: bug.bug_priority.priority,
+        priority_id: bug.bug_priority.id,
         status: bug.bug_status.status,
-        dueDate: timeStampArr[0],
-        userArr: userArr,
-        projectId: projectId
+        status_id: bug.bug_status.id,
+        startDate: bug.created_at.split("T")[0],
+        dueDate: !bug.due_date ? "n/a" : timeStampArr[0],
+        projectId: bug.project_id,
+        comments: bug.comments,
+        users: bug.users
       }
-      const bugObj = Object.assign(cleanObj, bug);
-      cleanBugArr.push(bugObj);
+      cleanBugArr.push(cleanObj);
     });
     setCleanBugs(cleanBugArr);
   }
 
   const mapCleanBugs = (bugs) => {
-    const { data } = sortData;
+    const { data } = bugs;
     return map(data, (bug) => {
       return (
         <Modal
@@ -99,6 +113,7 @@ const BugTableComponent = (props) => {
           centered={true}
           trigger={
             <Table.Row key={bug.id}>
+              <Table.Cell>{bug.id}</Table.Cell>
               <Table.Cell>{bug.bug}</Table.Cell>
               <Table.Cell>{bug.posterFullName}</Table.Cell>
               <Table.Cell>{bug.status}</Table.Cell>
@@ -110,7 +125,6 @@ const BugTableComponent = (props) => {
             key={bug.id}
             bug={bug}
             setIsModalOpen={setIsModalOpen}
-            projectId={bug.projectId}
             setCurrentProjectData={props.setCurrentProjectData}
             setUserData={props.setUserData}
           />
@@ -119,34 +133,26 @@ const BugTableComponent = (props) => {
     })
   }
 
-  const mapUsers = (userArr) => {
-    if (userArr === undefined) { return false }
-    let newUserArr = [];
-    userArr.forEach(user => {
-      let obj = {
-        key: user.id,
-        text: `${user.first_name} ${user.last_name}`,
-        value: `${user.first_name} ${user.last_name}`,
-        onClick: () => {console.log('yoyo')}
-        // image: { avatar: true, src: '/images/avatar/small/christian.jpg' },
-      };
-      newUserArr.push(obj);
-    })
-    return newUserArr;
-  }
-
   return (
-    <Table celled inverted selectable sortable>
-      <Table.Header>
-        <Table.Row key={'header'}>
-          {mapHeaders(props.headers)}
-        </Table.Row>
-      </Table.Header>
-
-      <Table.Body>
-        {cleanBugs && mapCleanBugs(cleanBugs)}
-      </Table.Body>
-    </Table>
+    <>
+      {isTableEmpty ? 
+        <EmptyTableReplacement
+          tableType={props.type}
+        /> 
+        : 
+        <Table celled inverted selectable sortable>
+          <Table.Header>
+            <Table.Row key={'header'}>
+              {cleanBugs && mapHeaders(props.headers)}
+            </Table.Row>
+          </Table.Header>
+    
+          <Table.Body>
+            {cleanBugs && mapCleanBugs(sortData)}
+          </Table.Body>
+        </Table>
+      }
+    </>
   );
 };
 
