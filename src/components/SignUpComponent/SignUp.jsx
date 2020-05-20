@@ -124,11 +124,11 @@ const SignUp = () => {
             </Form>
           </Segment>
           {isError && <div className="ui negative message">
-                        <i className="close icon" onClick={e => {closeButton()}}></i>
-                        <div className="header">
-                          {displayErrorMsg()}
-                        </div>
-                      </div>}
+            <i className="close icon" onClick={e => {closeButton()}}></i>
+            <div className="header">
+              {displayErrorMsg()}
+            </div>
+          </div>}
         </Grid.Column>
       </Grid>
     </div>
