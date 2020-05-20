@@ -1,31 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Button, Dropdown } from 'semantic-ui-react';
-import { getUsers, updateBug, getUserData, getCurrentProjectData } from "../../actions";
-import BugCommentComponent from "../BugCommentComponent";
 import { useAuth } from "../../context/auth";
 import { usePageData } from '../../context/pageData';
-// import styles from "./BugModal.module.scss";
+import { getUsers, updateBug, getUserData, getCurrentProjectData, findBug, removeBugUser, mapUsers } from "../../actions";
+import BugCommentComponent from "../BugCommentComponent";
+import StatusPriorityDropdown from "../StatusPriorityDropdownComponent";
+import BugDescription from "../BugDescriptionComponent";
 
 const BugModal = (props) => {
-  const bug = props.bug;
   const { authTokens } = useAuth();
   const { setUserData, setCurrentProjectData } = usePageData();
-  const [bugStatus, setBugStatus] = useState({ id: -1, name: "" });
-  const [bugPriority, setBugPriority] = useState({ id: -1, name: "" });
+  const [bug, setBug] = useState(props.bug);
+  const [bugStatus, setBugStatus] = useState({ id: bug.status_id, name: bug.status });
+  const [bugPriority, setBugPriority] = useState({ id: bug.priority_id, name: bug.priority });
+  const [isSearchingAdd, setIsSearchingAdd] = useState(false);
+  const [isSearchingRemove, setIsSearchingRemove] = useState(false);
   const [userSearchArr, setUserSearchArr] = useState();
+  const [assignedToUsers, setAssignedToUsers] = useState(mapUsers(bug.users));
   const [addUserArr, setAddUserArr] = useState();
-  const [isSearching, setIsSearching] = useState(false);
-  let assignedToUsers = bug.userArr;
+  const [deleteUserArr, setDeleteUserArr] = useState();
 
   useEffect(() => {
-    setBugStatus({
-      id: bug.bug_status_id,
-      name: bug.bug_status.status
-    });
-    setBugPriority({
-      id: bug.bug_priority_id,
-      name: bug.bug_priority.priority
-    });
+    findBug({ bugId: bug.id })
+    .then(bug => {
+      setAssignedToUsers(mapUsers(bug.users));
+    })
+  }, [bug]);
+
+  useEffect(() => {
     getUsers().then(response => {
       let freqObj = {};
       let newArr = [];
@@ -43,71 +45,79 @@ const BugModal = (props) => {
       }
       setUserSearchArr(newArr);
     });
-  }, [assignedToUsers, bug.bug_priority.priority, bug.bug_priority_id, bug.bug_status.status, bug.bug_status_id, bug.comments]);
+  }, [assignedToUsers]);
 
-  const handleUserSearchChange = (e, { value }) => {
+  const handleCancel = async () => {
+    console.log(bugStatus, bugPriority);
+    if (bugStatus.id !== bug.status_id) setBugStatus({
+      id: bug.status_id,
+      name: bug.status
+    });
+    if (bugPriority.id !== bug.priority_id) setBugPriority({
+      id: bug.priority_id,
+      name: bug.priority
+    });
+    await props.setIsModalOpen(false);
+    props.setIsModalOpen();
+  }
+
+  const handleUserSearchChange = (value, addOrRemove) => {
     let newArr = [];
     value.forEach(user_id => {
       let newObj = { 
         bugs_id: bug.id,
-        users_id: user_id
+        users_id: user_id,
       }
-      newArr.push(newObj)
-    })
-    setAddUserArr(newArr);
-  }
+      newArr.push(newObj);
+    });
+    if (addOrRemove === "add") {
+      setAddUserArr(newArr);
+    } else {
+      setDeleteUserArr(newArr);
+    };
+  };
 
   const handleSubmit = async () => {
-    let projectId = {}; 
-    projectId.id = typeof props.projectId === "number" ? projectId = props.projectId : parseInt(props.projectId.id);
     let newObj = { 
       id: authTokens.id,
-      bug_id: bug.id, 
-      projectId
+      bug_id: bug.id,
+      projectId: bug.projectId
     };
-    if (bugStatus !== bug.bug_status_id) newObj.status = bugStatus.id;
-    if (bugPriority !== bug.bug_priority_id) newObj.priority = bugPriority.id;
+    if (bugStatus.name !== bug.status) newObj.status = bugStatus.id;
+    if (bugPriority.name !== bug.priority) newObj.priority = bugPriority.id;
     if (Array.isArray(addUserArr)) newObj.newUserArr = addUserArr;
-    // console.log(props);
-    await updateBug(newObj).then(() => {
+    updateBug(newObj).then(() => {
       if (props.setCurrentProjectData) {
-        getCurrentProjectData({ projectId, authTokens })
+        getCurrentProjectData({ projectId: bug.projectId, authTokens })
         .then(response => {
           setCurrentProjectData(response)
         });
       } 
       if (props.setUserData) {
-        getUserData({ data: authTokens })
+        getUserData(authTokens)
         .then(response => {
-          console.log(response);
           setUserData(response)
         });
       }
-    })
-    
-    await props.setIsModalOpen(false);
-    props.setIsModalOpen();
-  }
-
-  const handleCancel = async () => {
-    if (bugStatus.name !== bug.bug_status_id) setBugStatus({
-      id: bugStatus.id,
-      name: bug.bug_status.status
     });
-    if (bugPriority.name !== bug.bug_priority_id) setBugPriority({
-      id: bugPriority.id,
-      name: bug.bug_priority.priority
-    });
+    if (Array.isArray(deleteUserArr)) {
+      removeBugUser([deleteUserArr, bug.projectId]);
+    }
     await props.setIsModalOpen(false);
-    props.setIsModalOpen();
+    props.setIsModalOpen();  
   }
 
   return (
     <>
-      <Modal.Header>Bug Ticket {bug.id}</Modal.Header>
+      <Modal.Header>Bug #{bug.id}</Modal.Header>
       <Modal.Content>
-        <h2>Issue: {bug.bug}</h2>
-        <h3>Poster: {`${bug.poster.first_name} ${bug.poster.last_name}`}</h3>
+        <span>
+          <h1>{bug.bug}</h1>
+          <p>by: {bug.posterFullName} on {bug.startDate}</p>
+          <BugDescription 
+            bug={bug}
+          />
+        </span><br/>
         <Dropdown 
           text="Assigned to" 
           button={true} 
@@ -118,88 +128,55 @@ const BugModal = (props) => {
           size='medium'
           basic circular 
           onClick={() => {
-            isSearching === false ? setIsSearching(true) : setIsSearching(false);
+            isSearchingAdd === false ? setIsSearchingAdd(true) : setIsSearchingAdd(false);
+            setIsSearchingRemove(false);
+            setDeleteUserArr();
           }}
         />
-        {isSearching && 
+        <Button 
+          icon="user times" 
+          size='medium'
+          basic circular 
+          onClick={() => {
+            isSearchingRemove === false ? setIsSearchingRemove(true) : setIsSearchingRemove(false);
+            setIsSearchingAdd(false);
+            setAddUserArr();
+          }}
+        />
+        {isSearchingAdd && 
           <Dropdown
-            placeholder="Search Users"
+            placeholder="Add Users"
             search 
             multiple
             selection
             options={userSearchArr}
-            onChange={handleUserSearchChange}
+            onChange={(e, {value}) => handleUserSearchChange(value, "add")}
           />}
-        <h2>
+        {isSearchingRemove && 
+          <Dropdown
+            placeholder="Remove Users"
+            search 
+            multiple
+            selection
+            options={assignedToUsers}
+            onChange={(e, {value}) => handleUserSearchChange(value, "remove")}
+          />}
+        <h3>
           Status: {bugStatus.name}
-          <Dropdown>
-            <Dropdown.Menu>
-              <Dropdown.Header content='Change status' />
-              <Dropdown.Divider />
-              <Dropdown.Item 
-                label={{ color: 'red', empty: true, circular:true }}
-                text='Closed'
-                onClick={() => { setBugStatus({
-                  id: 3,
-                  name: 'Closed',
-                })}}
-              />
-              <Dropdown.Item 
-                label={{ color: 'yellow', empty: true, circular:true }}
-                text='In-Progress'
-                onClick={() => { setBugStatus({
-                  id: 2,
-                  name: 'In-Progress'
-                })}}
-              />
-              <Dropdown.Item 
-                label={{ color: 'green', empty: true, circular:true }}
-                text='Fixed'
-                onClick={() => { setBugStatus({
-                  id: 1,
-                  name: 'Fixed'
-                })}}
-              />
-            </Dropdown.Menu>
-          </Dropdown>
-        </h2>
-        <h2>
+          <StatusPriorityDropdown 
+            setFunc={setBugStatus}
+            items={["Closed", "In-Progress", "Fixed"]}
+          />
+          <br/><br/>
           Priority: {bugPriority.name}
-          <Dropdown>
-            <Dropdown.Menu
-              onChange={() => console.log('?????')}
-            >
-              <Dropdown.Header content='Change priority' />
-              <Dropdown.Divider />
-              <Dropdown.Item 
-                label={{ color: 'red', empty: true, circular:true }}
-                text='High'
-                onClick={() => { setBugPriority({
-                  id: 1,
-                  name: "High"
-                })}}
-              />
-              <Dropdown.Item 
-                label={{ color: 'yellow', empty: true, circular:true }}
-                text='Medium'
-                onClick={() => { setBugPriority({
-                  id: 2,
-                  name: "Medium"
-                })}}
-              />
-              <Dropdown.Item 
-                label={{ color: 'green', empty: true, circular:true }}
-                text='Low'
-                onClick={() => { setBugPriority({
-                  id: 3,
-                  name: "Low"
-                })}}
-              />
-            </Dropdown.Menu>
-          </Dropdown>
-        </h2>
+          <StatusPriorityDropdown 
+            setFunc={setBugPriority}
+            items={["High", "Medium", "Low"]}
+          />
+        </h3>
         <BugCommentComponent 
           bugId={bug.id}
+          projectId={bug.projectId}
         />
       </Modal.Content>
       <Modal.Actions>
