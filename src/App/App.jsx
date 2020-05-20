@@ -20,10 +20,9 @@ export default function App() {
   const [authTokens, setAuthTokens] = useState(JSON.parse(localStorage.getItem('authTokens')) || "");
   const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.match(/^(.*;)?\s*headerPayload\s*=\s*[^;]+(.*)?$/) !== null);
   const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
-  const [currentProjectData, setCurrentProjectData] = useState({});
-  const [userData, setUserData] = useState({});
+  const [currentProjectData, setCurrentProjectData] = useState();
+  const [userData, setUserData] = useState();
   const [referrer, setReferrer] = useState(-1);
-  const [projectUserArr, setProjectUserArr] = useState([]);
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
@@ -46,7 +45,6 @@ export default function App() {
           <Container fluid className="Container">
             <Switch>
               <PageDataContext.Provider value={{
-                projectUserArr, setProjectUserArr,
                 currentProjectData, setCurrentProjectData,
                 userData, setUserData,
                 referrer, setReferrer
