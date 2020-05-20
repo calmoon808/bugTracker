@@ -27,10 +27,10 @@ exports.seed = function(knex) {
         "company_position_id": 2,
         "company_id": 4
       }, {
-        "email": "calmoon808@gmail.com",
+        "email": "demo@gmail.com",
         "password": password,
-        "first_name": "Calvin",
-        "last_name": "Moon",
+        "first_name": "Demo",
+        "last_name": "Man",
         "company_position_id": 2,
         "company_id": 5
       }, {
