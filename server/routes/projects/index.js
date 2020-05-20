@@ -25,25 +25,24 @@ projectRouter.post("/setCookie", (req, res) => {
 })
 
 projectRouter.post("/dashboard", async (req, res) => {
-  console.log(req.body, "\n")
-  let userId = req.body.authTokens.id.toString();
-  let userName = req.body.authTokens.name;
-  let projectId = req.body.projectId.id;
-  console.log(userId, userName, projectId);
+  const project = req.body;
+  let userId = project.authTokens.id.toString();
+  let userName = project.authTokens.name;
+  let projectId = project.projectId;
   if (typeof projectId === 'string') projectId = JSON.parse(projectId);
   Project.query()
-  .findById(projectId)
+  .findById(project.projectId)
   .withGraphFetched("company")
   .withGraphJoined("bugs.[users.[company, company_position], comments.[poster],bug_priority,poster, bug_status]")
   .then(response => {
     res.json(response);
   })
   .catch(err => {
-    console.log(err);
     res.json(err);
   });
   
-  await client.user(`user_${userId}`).getOrCreate({
+  await client.user(userId).delete();
+  await client.user(userId).getOrCreate({
     name: userName
   })
 })
