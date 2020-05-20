@@ -4,6 +4,16 @@ const Bug = require("../../database/models/Bug");
 const UsersBugs = require("../../database/models/UsersBugs");
 const client = require("../../../src/getStream");
 
+function compare( a, b ) {
+  if ( a.first_name.toLowerCase() < b.first_name.toLowerCase() ){
+    return -1;
+  }
+  if ( a.first_name.toLowerCase() > b.first_name.toLowerCase() ){
+    return 1;
+  }
+  return 0;
+}
+
 bugRouter.route("/")
   .get((req, res) => {
     Bug.query()
@@ -14,6 +24,9 @@ bugRouter.route("/")
     .withGraphFetched('users')
     .then(bugs => {
       res.json(bugs);
+    })
+    .catch(err => {
+      return res.send(err);
     })
   })
 
@@ -30,18 +43,94 @@ bugRouter.post("/count", (req, res) => {
   .then(bugs => {
     res.json(bugs);
   })
+  .catch(err => {
+    res.send(err);
+  })
+})
+
+bugRouter.post("/description", (req, res) => {
+  const descriptionData = req.body;
+  const feed = client.feed('projectFeed', descriptionData.project_id.toString());
+  Bug.query()
+  .findById(descriptionData.bugId)
+  .update({ bug_description: descriptionData.newDescription })
+  .then(() => {
+    feed.addActivity({
+      'actor': client.user(bugData.poster_id).ref(),
+      'verb': 'add',
+      'object': `has updated bug #${descriptionData.bugId}'s description`,
+    })
+    res.sendStatus(200)
+  })
+  .catch(err => {
+    res.send(err);
+  })
+})
+
+bugRouter.post("/find", (req, res) => {
+  const bugId = req.body.bugId;
+  Bug.query()
+  .findById(bugId)
+  .withGraphFetched('users')
+  .then(response => {
+    let userArr = response.users
+    response.users = userArr.sort(compare)
+    res.json(response);
+  })
+})
+
+bugRouter.post("/post", (req, res) => {
+  const bugData = req.body;
+  const feed = client.feed('projectFeed', bugData.project_id.toString());
+  Bug.query()
+  .insert(bugData)
+  .then(response => {
+    feed.addActivity({
+      'actor': client.user(bugData.poster_id).ref(),
+      'verb': 'add',
+      'object': `has added a bug`,
+    })
+    res.sendStatus(200);
+  })
+  .catch(err => {
+    res.send(err)
+  })
+})
+
+bugRouter.post("/removeUser", async (req, res) => {
+  const bugUser = req.body;
+  const feed = client.feed('projectFeed', bugUser[1].id.toString());
+  await bugUser[0].forEach((data) => {
+    UsersBugs.query()
+    .delete()
+    .where("bugs_id", data[0].bugs_id)
+    .where("users_id", data[0].users_id)
+    .then(() =>{
+      feed.addActivity({
+        'actor': client.user(bugUser[0].users_id).ref(),
+        'verb': 'remove users',
+        'object': `has removed users from bug #${bug_id}`,
+      })
+    })
+    .catch(err => {
+      return res.send(err);
+    })
+  })
+  res.sendStatus(200);
 })
 
 bugRouter.post("/update", async (req, res) => {
   const updateInfo = req.body;
-  const projectId = typeof updateInfo.projectId === "number" ? updateInfo.projectId : updateInfo.projectId.id
+  let updateObj;
   const bug = Bug.query().findById(updateInfo.bug_id)
-  let bug_status_id, bug_priority_id;
   await bug.then(response => {
-    bug_status_id = response.bug_status_id,
-    bug_priority_id = response.bug_priority_id
+    updateObj = {
+      id: response.id,
+      bug_status_id: response.bug_status_id,
+      bug_priority_id: response.bug_priority_id
+    }
   })
-  const feed = client.feed('projectFeed', projectId);
+  const feed = client.feed('projectFeed', updateInfo.projectId.toString());
   if (updateInfo.newUserArr){
     UsersBugs.query()
     .insertGraph(updateInfo.newUserArr)
@@ -49,48 +138,43 @@ bugRouter.post("/update", async (req, res) => {
       feed.addActivity({
         'actor': client.user(updateInfo.id).ref(),
         'verb': 'update',
-        'object': 'has added users to a bug',
+        'object': `has added users to bug #${updateObj.id}`,
       })
     })
     .catch(err => (
-      console.log(err)
+      res.send(err)
     ))
   }
-  let priorityStatusUpdateObj = {};
 
-  if (updateInfo.status !== bug_status_id){
+  if (updateInfo.status !== updateObj.bug_status_id){
   
-    priorityStatusUpdateObj.bug_status_id = updateInfo.status;
+    updateObj.bug_status_id = updateInfo.status;
     feed.addActivity({
       'actor': client.user(updateInfo.id).ref(),
       'verb': 'update',
-      'object': 'has changed the status of a bug',
+      'object': `has changed the status of bug #${updateObj.id}`,
     })
     .catch(err => (
-      console.log(err)
+      res.send(err)
     ))
   }
-  if (updateInfo.priority !== bug_priority_id){
-    priorityStatusUpdateObj.bug_priority_id = updateInfo.priority;
+  if (updateInfo.priority !== updateObj.bug_priority_id){
+    updateObj.bug_priority_id = updateInfo.priority;
     feed.addActivity({
       'actor': client.user(updateInfo.id).ref(),
       'verb': 'update',
-      'object': 'has updated the priority of a bug',
+      'object': `has updated the priority of bug #${updateObj.id}`,
     })
     .catch(err => (
-      console.log(err)
+      res.send(err)
     ))
   }
   
-  if (priorityStatusUpdateObj.bug_status_id || priorityStatusUpdateObj.bug_priority_id){
-    bug.update(priorityStatusUpdateObj)
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch(err => (
-      console.log(err)
-    ))
-  }
+  bug.update(updateObj)
+  .catch(err => {
+    console.log(err)
+  })
+  res.sendStatus(200);
 })
 
 module.exports = bugRouter;
