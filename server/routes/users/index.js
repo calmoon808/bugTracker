@@ -27,11 +27,10 @@ userRouter.get("/", (req, res) => {
 });
 
 userRouter.post("/dashboard", (req, res) => {
-  let data = req.body.data;
-  if (typeof data === 'string') data = JSON.parse(data);
+  let authToken = req.body;
   User.query()
   .skipUndefined()
-  .findById(data.id)
+  .findById(authToken.id)
   .withGraphFetched("company_position")
   .withGraphFetched("company")
   .withGraphFetched("projects.[project_creator, project_status]")
@@ -77,13 +76,15 @@ userRouter.post('/signup', (req, res, next) => {
         const data = {
           email: req.body.email,
           first_name: req.body.firstName,
-          last_name: req.body.lastName
+          last_name: req.body.lastName,
         };
         User.query()
         .findOne({ email: data.email })
         .patch({ 
           first_name: data.first_name, 
-          last_name: data.last_name 
+          last_name: data.last_name,
+          company_id: 1,
+          company_position_id: 1
         }).then(() => {
           console.log('user created in db');
           res.status(200).send({ message: 'user created' })
