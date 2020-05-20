@@ -18,8 +18,9 @@ const ProjectAddModal = () => {
   const [isCompany, setIsCompany] = useState();
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const user = userData.data;
     if (!projectName) {
       setIsError(true);
@@ -43,18 +44,25 @@ const ProjectAddModal = () => {
     postProject(newProjectData)
     .then(response => {
       if (response.status === 200){
-        // axios.post("/users/dashboard", { data: authTokens })
         getUserData({ data: authTokens })
         .then(response => {
           setUserData(response);
         });
       }
-    })
+    });
+    await setIsModalOpen(false);
+    setIsModalOpen();
+  }
+
+  const handleCancel = async () => {
+    await setIsModalOpen(false);
+    setIsModalOpen();
   }
 
   return (
     <Modal
       closeIcon
+      open={isModalOpen}
       trigger={
         <Button
           color="black"
@@ -104,7 +112,7 @@ const ProjectAddModal = () => {
           icon='cancel'
           labelPosition='right'
           content='Cancel'
-          // onClick={handleCancel}
+          onClick={handleCancel}
         />
         <Button
           positive
