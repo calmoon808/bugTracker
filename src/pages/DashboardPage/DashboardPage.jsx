@@ -20,7 +20,7 @@ const DashboardPage = () => {
   }, [authTokens, setUserData]);
 
   useEffect(() => {
-    getChartData("bugs", authTokens, "users")
+    getChartData("bugs", {id: authTokens.id.toString()}, "users")
     .then(data => { 
       if (chartRef.current){
         const myChartRef = chartRef.current.getContext("2d");
@@ -37,7 +37,8 @@ const DashboardPage = () => {
       {userData && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
+              <div>Bugs Overview</div>
               <canvas
                 id='myChart'
                 ref={chartRef}
@@ -45,7 +46,7 @@ const DashboardPage = () => {
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>My Bugs</div>
               <BugTableComponent 
                 headers={bugHeaders}
@@ -59,7 +60,7 @@ const DashboardPage = () => {
 
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Things Due Today</div>
               <BugTableComponent 
                 headers={bugHeaders}
@@ -69,7 +70,7 @@ const DashboardPage = () => {
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Overdue Items</div>
               <BugTableComponent 
                 headers={bugHeaders}

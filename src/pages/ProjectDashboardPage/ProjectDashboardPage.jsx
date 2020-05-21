@@ -5,7 +5,6 @@ import { getChartData, graphDoughnutChart, getCurrentProjectData } from "../../a
 import { usePageData } from "../../context/pageData";
 import BugTableComponent from "../../components/BugTableComponent";
 import UserTableComponent from "../../components/UserTableComponent";
-import ProjectBugAddModal from "../../components/ProjectBugAddModalComponent/";
 import GetStream from "../../components/GetStreamComponent";
 import { useAuth } from "../../context/auth";
 import styles from "./ProjectDashboardPage.module.scss";
@@ -16,14 +15,13 @@ const ProjectDashboardPage = () => {
   const chartRef = useRef();
   const projectId = useParams();
   const [projectUserArr, setProjectUserArr] = useState();
-  
+
   useEffect(() => {
     getCurrentProjectData({ projectId: projectId.id, authTokens })
     .then(response => {
       setCurrentProjectData(response);
     });
-    // eslint-disable-next-line
-  }, [setCurrentProjectData])
+  }, [setCurrentProjectData, projectId.id, authTokens])
 
   useEffect(() => {
     getChartData("bugs", projectId, "project")
@@ -59,7 +57,7 @@ const ProjectDashboardPage = () => {
       {currentProjectData && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Project Overview</div>
               <canvas
                 id='projectBugChart'
@@ -68,11 +66,8 @@ const ProjectDashboardPage = () => {
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Bugs</div>
-              <ProjectBugAddModal
-                projectId={projectId}
-              />
               <BugTableComponent
                 headers={[["#", "id"], ["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]]}
                 data={currentProjectData.data}
@@ -85,16 +80,16 @@ const ProjectDashboardPage = () => {
 
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>People Assigned</div>
               {projectUserArr && <UserTableComponent
-                headers={[["Name", "userFullName"], ["Position", "position"], ["Company", "company"]]}
+                headers={[["Name", "userFullName"], ["Position", "position"]]}
                 users={projectUserArr}
               />}
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Activity Feed</div>
               <GetStream />
             </Segment>
