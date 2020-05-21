@@ -1,7 +1,7 @@
 const express = require("express");
 const projectRouter = express.Router();
 const Project = require("../../database/models/Project");
-const client = require("../../../src/getStream")
+const client = require("../../../src/getStream");
 
 projectRouter.route("/")
   .get((req, res) => {
@@ -25,39 +25,36 @@ projectRouter.post("/setCookie", (req, res) => {
 })
 
 projectRouter.post("/dashboard", async (req, res) => {
-  let userId = req.body.authTokens.id.toString();
-  let userName = req.body.authTokens.name;
-  let projectId = req.body.projectId.id;
+  const project = req.body;
+  let userId = project.authTokens.id.toString();
+  let userName = project.authTokens.name;
+  let projectId = project.projectId;
   if (typeof projectId === 'string') projectId = JSON.parse(projectId);
   Project.query()
-  .findById(projectId)
-  .withGraphFetched("company")
-  .withGraphJoined("bugs.[users.[company, company_position], comments.[poster],bug_priority,poster, bug_status]")
+  .findById(project.projectId)
+  .withGraphJoined("bugs.[users.[company_position], comments.[poster],bug_priority,poster, bug_status]")
   .then(response => {
     res.json(response);
   })
   .catch(err => {
-    console.log(err);
     res.json(err);
   });
   
-  await client.user(`user_${userId}`).getOrCreate({
+  await client.user(userId).delete();
+  await client.user(userId).getOrCreate({
     name: userName
   })
-  client.user(`user_${userId}`).update({name: userName})
-  // .then(() => {
-  //   client.user(`user_${userId}`).get()
-  //   .then(user => {
-  //     console.log(user);
-  //   });
-  // })
+})
 
-  const feed = client.feed('projectFeed', projectId.toString());
-
-  // feed.addActivity({
-  //   'actor': client.user(userId).ref(),
-  //   'verb': 'stab',
-  //   'object': 'I love this picture',
-  // })
+projectRouter.post("/post", (req, res) => {
+  Project.query()
+  .insert(req.body)
+  .then(() => {
+    res.sendStatus(200);
+  })
+  .catch(err => {
+    console.log(err);
+    res.json(err);
+  })
 })
 module.exports = projectRouter;

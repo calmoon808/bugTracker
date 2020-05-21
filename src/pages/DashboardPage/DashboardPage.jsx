@@ -10,16 +10,17 @@ const DashboardPage = () => {
   const { userData, setUserData } = usePageData();
   const { authTokens } = useAuth();
   const chartRef = useRef();
+  const bugHeaders = [["#", "id"], ["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]];
 
   useEffect(() => {
-    getUserData({ data: authTokens })
+    getUserData(authTokens)
     .then(response => {
       setUserData(response)
     })
   }, [authTokens, setUserData]);
 
   useEffect(() => {
-    getChartData("bugs", authTokens, "users")
+    getChartData("bugs", {id: authTokens.id.toString()}, "users")
     .then(data => { 
       if (chartRef.current){
         const myChartRef = chartRef.current.getContext("2d");
@@ -27,16 +28,17 @@ const DashboardPage = () => {
       }
     });
   }, [userData, authTokens, chartRef]);
-
   
   return (
     <div className={styles.DashboardPage}>
-      <h1>DashboardPage</h1>
-      <Grid>
+      <h1>
+        DashboardPage
+      </h1>
+      {userData && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
-              <div>My Overview</div>
+            <Segment className={styles.Segment}>
+              <div>Bugs Overview</div>
               <canvas
                 id='myChart'
                 ref={chartRef}
@@ -44,11 +46,12 @@ const DashboardPage = () => {
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>My Bugs</div>
               <BugTableComponent 
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={bugHeaders}
                 data={userData.data}
+                setUserData={setUserData}
                 type={"myBugs"}
               />
             </Segment>
@@ -57,27 +60,27 @@ const DashboardPage = () => {
 
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Things Due Today</div>
               <BugTableComponent 
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={bugHeaders}
                 data={userData.data}
                 type={"dueToday"}
               />
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Overdue Items</div>
               <BugTableComponent 
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={bugHeaders}
                 data={userData.data}
                 type={"overdue"}
               />
             </Segment>
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Grid>}
     </div>
   );
 }

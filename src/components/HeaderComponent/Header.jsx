@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Input, Image, Menu } from 'semantic-ui-react';
+import { Image, Menu } from 'semantic-ui-react';
 import styles from "./Header.module.scss";
 import bugIcon from "../../icons/bugIcon.png"
 import { useAuth } from "../../context/auth";
@@ -30,9 +30,6 @@ const Header = () => {
         />
       </Menu.Item>
       <Menu.Menu position="right">
-        <Menu.Item>
-          <Input icon='search' placeholder='Search....'/>
-        </Menu.Item>
         <Menu.Item name="logout" onClick={ () => logoutOnClick() }>
           Logout
         </Menu.Item>

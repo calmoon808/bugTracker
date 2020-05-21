@@ -1,41 +1,42 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Grid, Segment } from "semantic-ui-react";
-import { StreamApp, FlatFeed, Activity, LikeButton } from 'react-activity-feed';
-import 'react-activity-feed/dist/index.css';
-import styles from "./ProjectDashboardPage.module.scss";
-import { getChartData, graphDoughnutChart } from "../../actions";
+import { getChartData, graphDoughnutChart, getCurrentProjectData } from "../../actions";
 import { usePageData } from "../../context/pageData";
 import BugTableComponent from "../../components/BugTableComponent";
 import UserTableComponent from "../../components/UserTableComponent";
-import axios from "axios";
-import Cookies from 'js-cookie';
+import GetStream from "../../components/GetStreamComponent";
 import { useAuth } from "../../context/auth";
+import styles from "./ProjectDashboardPage.module.scss";
 
 const ProjectDashboardPage = () => {
-  const { currentProjectData, setCurrentProjectData, projectUserArr, setProjectUserArr } = usePageData();
+  const { currentProjectData, setCurrentProjectData } = usePageData();
   const { authTokens } = useAuth();
   const chartRef = useRef();
   const projectId = useParams();
-  
+  const [projectUserArr, setProjectUserArr] = useState();
+
   useEffect(() => {
-    axios.post("/projects/dashboard", { projectId, authTokens })
+    getCurrentProjectData({ projectId: projectId.id, authTokens })
     .then(response => {
       setCurrentProjectData(response);
     });
-    // eslint-disable-next-line
-  }, [setCurrentProjectData])
+  }, [setCurrentProjectData, projectId.id, authTokens])
 
   useEffect(() => {
     getChartData("bugs", projectId, "project")
     .then(data => {
-      const myChartRef = chartRef.current.getContext("2d");
-      graphDoughnutChart(myChartRef, data);
+      if (chartRef.current) {
+        const myChartRef = chartRef.current.getContext("2d");
+        graphDoughnutChart(myChartRef, data);
+      }
     })
-    if (currentProjectData.data){
+    if (currentProjectData){
       let freqObj = {};
       let bugsArr = [...currentProjectData.data.bugs];
-      bugsArr.map(bug => { return bugsArr[bugsArr.indexOf(bug)] = bug.users });
+      bugsArr.map(bug => { 
+        return bugsArr[bugsArr.indexOf(bug)] = bug.users 
+      });
       const mergedArr = [].concat.apply([], bugsArr);
       for (let i = 0; i < mergedArr.length; i++){
         if (!freqObj[mergedArr[i].id]){
@@ -49,14 +50,14 @@ const ProjectDashboardPage = () => {
     };
   // eslint-disable-next-line
   }, [chartRef, currentProjectData, setProjectUserArr]);
-
+  
   return (
     <div className={styles.ProjectDashboardPage}>
       <h1>PROJECT DASHBOARDPAGE</h1>
-      <Grid>
+      {currentProjectData && <Grid stretched={true}>
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Project Overview</div>
               <canvas
                 id='projectBugChart'
@@ -65,11 +66,12 @@ const ProjectDashboardPage = () => {
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Bugs</div>
               <BugTableComponent
-                headers={["Name", "Poster", "Status", "Due Date"]}
+                headers={[["#", "id"], ["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]]}
                 data={currentProjectData.data}
+                setCurrentProjectData={setCurrentProjectData}
                 type={"myBugs"}
               />
             </Segment>
@@ -78,41 +80,22 @@ const ProjectDashboardPage = () => {
 
         <Grid.Row>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>People Assigned</div>
-              <UserTableComponent
-                headers={["Name", "Position", "Company"]}
-                data={projectUserArr}
-                
-              />
+              {projectUserArr && <UserTableComponent
+                headers={[["Name", "userFullName"], ["Position", "position"]]}
+                users={projectUserArr}
+              />}
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>
-            <Segment>
+            <Segment className={styles.Segment}>
               <div>Activity Feed</div>
-              <StreamApp
-                apiKey={process.env.REACT_APP_ACTIVITY_FEED_KEY}
-                appId={process.env.REACT_APP_ACTIVITY_FEED_ID}
-                token={Cookies.get('activityFeedToken')}
-              > 
-                <FlatFeed 
-                  feedGroup="projectFeed"
-                  LoadingIndicator
-                  Activity={(props) => 
-                    <Activity {...props} 
-                      Footer={() => (
-                        <div>
-                          <LikeButton {...props} />
-                        </div>
-                      )}
-                    />
-                  }
-                />
-              </StreamApp>
+              <GetStream />
             </Segment>
           </Grid.Column>
         </Grid.Row>
-      </Grid>
+      </Grid>}
     </div>
   );
 };

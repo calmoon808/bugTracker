@@ -12,7 +12,6 @@ class User extends Model {
   static get relationMappings(){
     const Project = require('./Project');
     const CompanyPosition = require('./CompanyPosition');
-    const Company = require('./Company');
     const Bug = require('./Bug');
 
     return {
@@ -22,14 +21,6 @@ class User extends Model {
         join: {
           from: 'users.company_position_id',
           to: 'company_positions.id'
-        }
-      },
-      company: {
-        relation: Model.HasOneRelation,
-        modelClass: Company,
-        join: {
-          from: 'users.company_id',
-          to: 'companies.id'
         }
       },
       projects: {

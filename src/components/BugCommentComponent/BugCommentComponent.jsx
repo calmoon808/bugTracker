@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Comment, Header, Form, Button } from "semantic-ui-react";
 import { timeToMeta, postComment, getBugComments } from '../../actions';
 import { useAuth } from "../../context/auth";
+import styles from "./BugCommentComponent.module.scss";
 
 const BugCommentComponent = (props) => {
   const { authTokens } = useAuth();
@@ -16,7 +17,6 @@ const BugCommentComponent = (props) => {
   }, [props.bugId])
 
   const mapComments = (commentsArr) => {
-    if (commentsArr === undefined) { return false }
     return commentsArr.map(comment => {
       return (
         <Comment key={comment.id}>
@@ -41,7 +41,7 @@ const BugCommentComponent = (props) => {
       poster_id: authTokens.id,
       comment: newComment
     };
-    postComment(commentData)
+    postComment([commentData, props.projectId])
     .then(() => {
       getBugComments(props.bugId)
       .then((response) => {
@@ -52,22 +52,21 @@ const BugCommentComponent = (props) => {
   }
 
   return (
-    <Comment.Group>
+    <Comment.Group className={styles.comments}>
       <Header as='h3' dividing>
         Comments
       </Header>
-      {mapComments(bugComments)}
-      <Form 
-        reply 
-        onSubmit={handleCommentSubmit}
-      >
+      <div className={styles.commentContainer}>
+        {bugComments.length !== 0 && mapComments(bugComments)}
+      </div>
+      <Form onSubmit={handleCommentSubmit}>
         <Form.TextArea
           value={newComment} 
           onChange={(e) => setNewComment(e.target.value)}
           />
         <Button 
-          content='Add Reply' 
-          labelPosition='left' 
+          content='Add Comment' 
+          labelPosition='right' 
           icon='edit' 
           primary  
         />

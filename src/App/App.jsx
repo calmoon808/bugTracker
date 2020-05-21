@@ -20,11 +20,9 @@ export default function App() {
   const [authTokens, setAuthTokens] = useState(JSON.parse(localStorage.getItem('authTokens')) || "");
   const [isLoggedIn, setIsLoggedIn] = useState(document.cookie.match(/^(.*;)?\s*headerPayload\s*=\s*[^;]+(.*)?$/) !== null);
   const [activePage, setActivePage] = useState(`/${document.URL.split('/')[3]}`);
-  const [projectData, setProjectData] = useState([]);
-  const [currentProjectData, setCurrentProjectData] = useState({});
-  const [userData, setUserData] = useState({});
+  const [currentProjectData, setCurrentProjectData] = useState();
+  const [userData, setUserData] = useState();
   const [referrer, setReferrer] = useState(-1);
-  const [projectUserArr, setProjectUserArr] = useState([]);
 
   const setTokens = (data) => {
     localStorage.setItem("authTokens", JSON.stringify(data.session.passport.user));
@@ -42,25 +40,23 @@ export default function App() {
       <Router>
         {isLoggedIn ? 
         <>
-          <NavigationMenu setReferrer={setReferrer} className="NavMenu"></NavigationMenu>
-          <Header /> 
-          <Container fluid className="Container">
-            <Switch>
-              <PageDataContext.Provider value={{
-                projectUserArr, setProjectUserArr,
-                projectData, setProjectData,
-                currentProjectData, setCurrentProjectData,
-                userData, setUserData,
-                referrer, setReferrer
-              }}>
-                <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
-                <Route exact path="/" component={DashboardPage} />
-                <Route path="/projects/:id" component={ProjectDashboardPage} />
-                <Route exact path="/projects" component={ProjectPage} />
-                <Route path ="/profile" component={UserProfilePage} />
-              </PageDataContext.Provider>
-            </Switch>
-          </Container>
+          <PageDataContext.Provider value={{
+            currentProjectData, setCurrentProjectData,
+            userData, setUserData,
+            referrer, setReferrer
+          }}>
+            <NavigationMenu setReferrer={setReferrer} className="NavMenu" />
+            <Header /> 
+            <Container fluid className="Container">
+              <Switch>
+                  <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
+                  <Route exact path="/" component={DashboardPage} />
+                  <Route path="/projects/:id" component={ProjectDashboardPage} />
+                  <Route exact path="/projects" component={ProjectPage} />
+                  <Route path ="/profile" component={UserProfilePage} />
+              </Switch>
+            </Container>
+          </PageDataContext.Provider>
         </>
         : 
         <Switch>

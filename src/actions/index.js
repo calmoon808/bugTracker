@@ -2,6 +2,38 @@ const axios = require("axios");
 const { dashboardGraphOptions } = require("../graphOptions");
 const Chart = require("chart.js");
 
+export const changeBugDescription = (description) => {
+  return axios.post('/bugs/description', description)
+}
+
+export const changePassword = (data) => {
+  return axios.post("/users/newPassword", data)
+  .then(response => {
+    return response;
+  })
+}
+
+export const checkPassword = (data) => {
+  return axios.post("/users/oldPassword", data)
+  .then(response => {
+    return response.data;
+  })
+}
+
+export const findBug = (bugId) => {
+  return axios.post("/bugs/find", bugId)
+  .then(response => {
+    return response.data;
+  })
+}
+
+export const getBugComments = (bugId) => {
+  return axios.post("/comments/bug", { bugId })
+  .then(response => {
+    return response.data;
+  })
+}
+
 export async function getChartData(url, data, relation){
   let graphData = [];
   const fixed = await getGroupCount(`/${url}`, "Fixed", data, relation );
@@ -13,8 +45,15 @@ export async function getChartData(url, data, relation){
   return graphData;
 }
 
-export const getBugComments = (bugId) => {
-  return axios.post("/comments/bug", { bugId })
+export const getCompanies = () => {
+  return axios.get("/companies")
+  .then(response => {
+    return response.data;
+  })
+}
+
+export const getPositions = () => {
+  return axios.get("/company_positions")
   .then(response => {
     return response.data;
   })
@@ -27,8 +66,12 @@ export const getGroupCount = (url, group, data, relation) => {
   })
 }
 
-export const getUserData = (data) => {
-  return axios.post("/users/dashboard", data)
+export const getCurrentProjectData = (data) => {
+  return axios.post("/projects/dashboard", data)
+}
+
+export const getUserData = (authToken) => {
+  return axios.post("/users/dashboard", authToken)
   .then(response => {
     return response;
   });
@@ -51,20 +94,43 @@ export const graphDoughnutChart = (chartRef, data) => {
   ))
 }
 
+export const mapUsers = (userArr) => {
+  if (userArr === undefined) { return false }
+  let newUserArr = [];
+  userArr.forEach(user => {
+    let obj = {
+      key: user.id,
+      text: `${user.first_name} ${user.last_name}`,
+      value: user.id,
+    };
+    newUserArr.push(obj);
+  })
+  return newUserArr;
+}
+
+export const postBug = (bugData) => {
+  return axios.post('/bugs/post', bugData)
+}
+
 export const postComment = (commentData) => {
   return axios.post('/comments/add', commentData)
 }
 
-export const setProjectFeedCookie = (projectId) => {
-  return axios.post('projects/setCookie', { projectId })
+export const postProject = (projectData) => {
+  return axios.post('/projects/post', projectData)
 }
 
-// export const sortComments = (comments) => {
-//   const newArr = comments.sort((a, b) => { 
-//     return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-//   });
-//   return newArr;
-// }
+export const postUserData = (data) => {
+  return axios.post('/users/update', data)
+}
+
+export const removeBugUser = (bugUserData) => {
+  return axios.post('/bugs/removeUser', bugUserData)
+}
+
+export const setProjectFeedCookie = (projectId) => {
+  return axios.post('/projects/setCookie', { projectId })
+}
 
 export const timeToMeta = (time) => {
   const today = new Date();
@@ -91,7 +157,7 @@ export const timeToMeta = (time) => {
 }
 
 export const updateBug = (bugDataObj) => {
-  return axios.post("bugs/update/", bugDataObj)
+  return axios.post("/bugs/update/", bugDataObj)
   .then(response => {
     return (response);
   })
