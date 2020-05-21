@@ -32,7 +32,7 @@ bugRouter.route("/")
 
 bugRouter.post("/count", (req, res) => {
   const body = req.body;
-  if (typeof body.data === "string") body.data = JSON.parse(body.data);
+  if (typeof body.data == "string") body.data = JSON.parse(body.data);
   Bug.query()
   .withGraphFetched('users')
   .withGraphFetched('project')
@@ -85,12 +85,16 @@ bugRouter.post("/post", (req, res) => {
   Bug.query()
   .insert(bugData)
   .then(response => {
-    feed.addActivity({
-      'actor': client.user(bugData.poster_id).ref(),
-      'verb': 'add',
-      'object': `has added a bug`,
+    UsersBugs.query()
+    .insert({ users_id: bugData.poster_id, bugs_id: response.id })
+    .then(() => {
+      feed.addActivity({
+        'actor': client.user(bugData.poster_id).ref(),
+        'verb': 'add',
+        'object': `has added a bug`,
+      })
+      res.sendStatus(200);
     })
-    res.sendStatus(200);
   })
   .catch(err => {
     res.send(err)
@@ -99,12 +103,12 @@ bugRouter.post("/post", (req, res) => {
 
 bugRouter.post("/removeUser", async (req, res) => {
   const bugUser = req.body;
-  const feed = client.feed('projectFeed', bugUser[1].id.toString());
+  const feed = client.feed('projectFeed', bugUser[1].toString());
   await bugUser[0].forEach((data) => {
     UsersBugs.query()
     .delete()
-    .where("bugs_id", data[0].bugs_id)
-    .where("users_id", data[0].users_id)
+    .where("bugs_id", data.bugs_id)
+    .where("users_id", data.users_id)
     .then(() =>{
       feed.addActivity({
         'actor': client.user(bugUser[0].users_id).ref(),
@@ -116,7 +120,6 @@ bugRouter.post("/removeUser", async (req, res) => {
       return res.send(err);
     })
   })
-  res.sendStatus(200);
 })
 
 bugRouter.post("/update", async (req, res) => {

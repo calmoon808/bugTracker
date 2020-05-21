@@ -32,9 +32,8 @@ userRouter.post("/dashboard", (req, res) => {
   .skipUndefined()
   .findById(authToken.id)
   .withGraphFetched("company_position")
-  .withGraphFetched("company")
   .withGraphFetched("projects.[project_creator, project_status]")
-  .withGraphJoined("bugs.[bug_status, bug_priority, users, poster, comments.[poster], project.[project_creator, project_status, company, bugs.[poster, bug_status, comments.[poster]]]]")
+  .withGraphJoined("bugs.[bug_status, bug_priority, users, poster, comments.[poster], project.[project_creator, project_status, bugs.[poster, bug_status, comments.[poster]]]]")
   .then(user => {
     res.json(user)
   })
@@ -46,7 +45,6 @@ userRouter.post("/dashboard", (req, res) => {
 
 userRouter.get("/find", (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    console.log(user);
     if (err) {
       console.log(err)
       res.send(err.message);
@@ -83,7 +81,6 @@ userRouter.post('/signup', (req, res, next) => {
         .patch({ 
           first_name: data.first_name, 
           last_name: data.last_name,
-          company_id: 1,
           company_position_id: 1
         }).then(() => {
           console.log('user created in db');
@@ -147,8 +144,6 @@ userRouter.post("/update", (req, res) => {
     }
   } else if (changeType === "email"){
     changeObj = { email: userData.email }
-  } else if (changeType === "company"){
-    changeObj = { company_id: userData.dataId }
   } else if (changeType === "position"){
     changeObj = { company_position_id: userData.dataId };
   }

@@ -32,8 +32,7 @@ projectRouter.post("/dashboard", async (req, res) => {
   if (typeof projectId === 'string') projectId = JSON.parse(projectId);
   Project.query()
   .findById(project.projectId)
-  .withGraphFetched("company")
-  .withGraphJoined("bugs.[users.[company, company_position], comments.[poster],bug_priority,poster, bug_status]")
+  .withGraphJoined("bugs.[users.[company_position], comments.[poster],bug_priority,poster, bug_status]")
   .then(response => {
     res.json(response);
   })
