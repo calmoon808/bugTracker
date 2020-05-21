@@ -10,7 +10,7 @@ import BugDescription from "../BugDescriptionComponent";
 const BugModal = (props) => {
   const { authTokens } = useAuth();
   const { setUserData, setCurrentProjectData } = usePageData();
-  const [bug, setBug] = useState(props.bug);
+  const [bug] = useState(props.bug);
   const [bugStatus, setBugStatus] = useState({ id: bug.status_id, name: bug.status });
   const [bugPriority, setBugPriority] = useState({ id: bug.priority_id, name: bug.priority });
   const [isSearchingAdd, setIsSearchingAdd] = useState(false);
