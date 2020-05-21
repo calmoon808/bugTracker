@@ -5,15 +5,13 @@ import BasicUserEditModal from "../BasicUserEditModalComponent";
 const ProfileList = (props) => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
-  const [company, setCompany] = useState();
   const [position, setPosition] = useState();
-  
+
   useEffect(() => {
     if (props.userData){
-      const user = props.userData;
+      const user = props.userData.data;
       setName(`${user.first_name} ${user.last_name}`);
       setEmail(user.email);
-      setCompany(user.company.name);
       setPosition(user.company_position.name);
     }
   }, [props.userData]);
@@ -42,19 +40,6 @@ const ProfileList = (props) => {
               changeType="email"
               setFunc={setEmail}
               modalContent={["Email: "]}
-            />
-          </h2>
-        </List.Content>
-      </List.Item>
-      <List.Item>
-        <List.Icon name="users" size="big"/>
-        <List.Content>
-          <h2>
-            <span>Company: {company}</span>
-            <BasicUserEditModal 
-              changeType="company"
-              setFunc={setCompany}
-              modalContent={["Company: "]}
             />
           </h2>
         </List.Content>
