@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Modal } from 'semantic-ui-react';
 import UserModal from '../UserModalComponent';
+import EmptyTableReplacement from '../EmptyTableReplacementComponent';
 import { map, sortBy } from 'lodash'
 
 const UserTable = (props) => {
   const [cleanUsers, setCleanUsers] = useState();
   const [sortData, setSortData] = useState();
+  const [isTableEmpty] = useState(props.users.length === 0);
 
   useEffect(() => {
-    if (props.users.length > 0) mapUsers(props.users);
-    // eslint-disable-next-line
+    mapUsers(props.users);
   }, [props])
 
   useEffect(() => {
@@ -61,7 +62,6 @@ const UserTable = (props) => {
         id: user.id,
         userFullName: `${user.first_name} ${user.last_name}`,
         email: user.email,
-        company: user.company.name,
         position: user.company_position.name,
       }
       cleanUserData.push(newObj);
@@ -71,19 +71,16 @@ const UserTable = (props) => {
 
   const mapCleanUsers = (users) => {
     const { data } = sortData;
-    return map(data, ({ id, userFullName, company, position, email }) => {
+    return map(data, ({ id, userFullName, position, email }) => {
       return (
         <Modal
           key={id}
           basic
           size="tiny"
-          // open={isModalOpen}
-          // centered={true}
           trigger={
             <Table.Row key={id}>
               <Table.Cell>{userFullName}</Table.Cell>
               <Table.Cell>{position}</Table.Cell>
-              <Table.Cell>{company}</Table.Cell>
             </Table.Row>
           }
         >
@@ -98,17 +95,24 @@ const UserTable = (props) => {
   }
 
   return (
-    <Table celled inverted selectable sortable>
-      <Table.Header>
-        <Table.Row key={'header'}>
-          {mapHeaders(props.headers)}
-        </Table.Row>
-      </Table.Header>
+    <>
+      {isTableEmpty ? 
+        <EmptyTableReplacement 
+          tableType="projectUsers"
+        />
+      :
+      <Table celled inverted selectable sortable>
+        <Table.Header>
+          <Table.Row key={'header'}>
+            {mapHeaders(props.headers)}
+          </Table.Row>
+        </Table.Header>
 
-      <Table.Body>
-        {cleanUsers && mapCleanUsers(cleanUsers)}
-      </Table.Body>
-    </Table>
+        <Table.Body>
+          {cleanUsers && mapCleanUsers(cleanUsers)}
+        </Table.Body>
+      </Table>}
+    </>
   );
 }
 

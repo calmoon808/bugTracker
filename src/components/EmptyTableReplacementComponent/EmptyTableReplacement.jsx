@@ -10,12 +10,20 @@ const EmptyTableReplacement = (props) => {
     icon = "file alternate outline";
   }
   if (props.tableType === "overdue"){
-    msg = "Nothing is overdue. Good job!"
-    icon = "thumbs up outline"
+    msg = "Nothing is overdue. Good job!";
+    icon = "thumbs up outline";
   }
   if (props.tableType === "myBugs"){
-    msg = "Add a bug and you can track it here."
-    icon="bug"
+    msg = "Add a bug and you can track it here.";
+    icon="bug";
+  }
+  if (props.tableType === "projectUsers"){
+    msg = "Click on a bug to add users.";
+    icon = "users";
+  }
+  if (props.tableType === "projects"){
+    msg = "Start a project from the dashboard.";
+    icon = "pied piper";
   }
   return (
     <div className={styles.EmptyTableReplacement}>

@@ -5,28 +5,30 @@ import { Table, Segment } from 'semantic-ui-react';
 import { useAuth } from "../../context/auth";
 import { sortBy, map } from "lodash";
 import { setProjectFeedCookie, getUserData } from "../../actions";
-import ProjectAddModal from "../../components/ProjectAddModalComponent";
-import axios from 'axios';
+import EmptyTableReplacement from '../../components/EmptyTableReplacementComponent';
 
 const ProjectPage = () => {
-  const { userData, setUserData, currentProjectData } = usePageData();
+  const { userData, setUserData } = usePageData();
   const { authTokens } = useAuth();
   const [referrer, setReferrer] = useState(-1)
   const [projectData, setProjectData] = useState();
   const [sortData, setSortData] = useState();
-
-  // console.log("USERDATA", userData);
-  // console.log("CURRENT PROJECT", currentProjectData);
+  const [isTableEmpty, setIsTableEmpty] = useState(false);
 
   useEffect(() => {
-    if (!userData){
-      getUserData(authTokens)
-      .then(response => {
-        setUserData(response);
-      });
-    }
+    getUserData(authTokens)
+    .then(response => {
+      setUserData(response);
+    });
+  }, [authTokens, userData, setUserData]);
+
+  useEffect(() => {
     if (userData){
       const projects = userData.data.projects;
+      if (projects.length === 0) {
+        setIsTableEmpty(true);
+        return;
+      }
       const bugsArr = userData.data.bugs;
       let newArr = [];
       let freqObj = {};
@@ -47,9 +49,9 @@ const ProjectPage = () => {
         column: null,
         data: newArr,
         direction: null
-      }) 
+      })
     }
-  }, [authTokens, userData, setUserData, setProjectData, referrer, setSortData]);
+  }, [userData])
 
   const handleSort = (clickedColumn) => () => {
     const { column, data, direction } = sortData;
@@ -111,8 +113,8 @@ const ProjectPage = () => {
 
     return map(cleanData, ({ id, name, owner, status, startDate, endDate }) => {
       return (
-        <Table.Row key={id}>
-          <Table.Cell onClick={() => handleClick(id)}>{name}</Table.Cell>
+        <Table.Row onClick={() => handleClick(id)} key={id}>
+          <Table.Cell>{name}</Table.Cell>
           <Table.Cell>{owner}</Table.Cell>
           <Table.Cell>{status}</Table.Cell>
           <Table.Cell>{startDate}</Table.Cell>
@@ -129,23 +131,28 @@ const ProjectPage = () => {
   return (
     <Segment>
       <h1>PROJECT PAGE</h1>
-      <ProjectAddModal />
-      <Table celled inverted selectable sortable>
-        <Table.Header>
-          <Table.Row key={"header"}>
-            {mapHeaders([
-              ["Project Name", "name"],
-              ["Owner", "owner"],
-              ["Status", "status"],
-              ["Start Date", "startDate"],
-              ["End Date", "endDate"]
-            ])}
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {mapProjects(projectData)}
-        </Table.Body>
-      </Table>
+      {isTableEmpty ? 
+        <EmptyTableReplacement 
+          tableType="projects"
+        />
+        :
+        <Table celled inverted selectable sortable>
+          <Table.Header>
+            <Table.Row key={"header"}>
+              {mapHeaders([
+                ["Project Name", "name"],
+                ["Owner", "owner"],
+                ["Status", "status"],
+                ["Start Date", "startDate"],
+                ["End Date", "endDate"]
+              ])}
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {mapProjects(projectData)}
+          </Table.Body>
+        </Table>
+      }
     </Segment>
   );
 }
