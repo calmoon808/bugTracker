@@ -40,23 +40,23 @@ export default function App() {
       <Router>
         {isLoggedIn ? 
         <>
-          <NavigationMenu setReferrer={setReferrer} className="NavMenu"></NavigationMenu>
-          <Header /> 
-          <Container fluid className="Container">
-            <Switch>
-              <PageDataContext.Provider value={{
-                currentProjectData, setCurrentProjectData,
-                userData, setUserData,
-                referrer, setReferrer
-              }}>
-                <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
-                <Route exact path="/" component={DashboardPage} />
-                <Route path="/projects/:id" component={ProjectDashboardPage} />
-                <Route exact path="/projects" component={ProjectPage} />
-                <Route path ="/profile" component={UserProfilePage} />
-              </PageDataContext.Provider>
-            </Switch>
-          </Container>
+          <PageDataContext.Provider value={{
+            currentProjectData, setCurrentProjectData,
+            userData, setUserData,
+            referrer, setReferrer
+          }}>
+            <NavigationMenu setReferrer={setReferrer} className="NavMenu" />
+            <Header /> 
+            <Container fluid className="Container">
+              <Switch>
+                  <PrivateRoute path="/admin" component={AdminPage}></PrivateRoute>
+                  <Route exact path="/" component={DashboardPage} />
+                  <Route path="/projects/:id" component={ProjectDashboardPage} />
+                  <Route exact path="/projects" component={ProjectPage} />
+                  <Route path ="/profile" component={UserProfilePage} />
+              </Switch>
+            </Container>
+          </PageDataContext.Provider>
         </>
         : 
         <Switch>
