@@ -6,7 +6,6 @@ exports.up = function(knex) {
     table.string("first_name");
     table.string("last_name");
     table.integer("company_position_id").references("id").inTable("company_positions");
-    table.integer("company_id").references("id").inTable("companies");
   })
 }
 
