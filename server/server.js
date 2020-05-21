@@ -31,7 +31,6 @@ app.use(flash());
 app.use("/users", require("./routes/users"));
 app.use("/bug_priorities", require("./routes/bug_priorities"));
 app.use("/bug_statuses", require("./routes/bug_statuses"));
-app.use("/companies", require("./routes/companies"));
 app.use("/company_positions", require("./routes/company_positions"));
 app.use("/projects", require("./routes/projects"));
 app.use("/bugs", require("./routes/bugs"));
