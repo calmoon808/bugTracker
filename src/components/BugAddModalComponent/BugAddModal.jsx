@@ -7,7 +7,7 @@ import { usePageData } from '../../context/pageData';
 
 const ProjectBugAddModal = (props) => {
   const { authTokens } = useAuth();
-  const { setCurrentProjectData } = usePageData();
+  const { currentProjectData, setCurrentProjectData } = usePageData();
   const [bugName, setBugName] = useState("");
   const [bugPriority, setBugPriority] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -19,17 +19,16 @@ const ProjectBugAddModal = (props) => {
       bug: bugName,
       bug_description: bugDescription,
       poster_id: authTokens.id,
-      project_id: parseInt(props.projectId.id),
+      project_id: currentProjectData.data.id,
       bug_status_id: 2,
       bug_priority_id: bugPriority.id,
       due_date: dueDate === "" ? null : dueDate
     }
     postBug(newBugData)
     .then(() => {
-      let projectId = props.projectId
-      getCurrentProjectData({ projectId: projectId.id, authTokens })
+      let projectId = currentProjectData.data.id
+      getCurrentProjectData({ projectId, authTokens })
       .then(response => {
-        console.log(response)
         setCurrentProjectData(response)
       });
     });
@@ -47,10 +46,8 @@ const ProjectBugAddModal = (props) => {
       closeIcon
       open={isModalOpen}
       trigger={
-        <Button
-          color="black"
-          content="New Bug"
-          floated="right"
+        <Menu.Item 
+          content="Submit a Bug"
         />
       }
     >
@@ -79,7 +76,6 @@ const ProjectBugAddModal = (props) => {
             <Dropdown.Menu
               onChange={() => console.log('?????')}
             >
-              <Dropdown.Header content='Change priority' />
               <Dropdown.Divider />
               <Dropdown.Item 
                 label={{ color: 'red', empty: true, circular:true }}
