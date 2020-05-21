@@ -18,12 +18,11 @@ const UserProfilePage = () => {
     if (!userData){
       getUserData(authTokens)
       .then(response => {
-        console.log(response);
-        setUserProfileData(response.data);
-        setUserData(response.data);
+        setUserProfileData(response);
+        setUserData(response);
       })
     } else {
-      setUserProfileData(userData.data)
+      setUserProfileData(userData);
     }
   }, [setUserProfileData, authTokens, userData, setUserData]);
 
@@ -42,7 +41,7 @@ const UserProfilePage = () => {
               <PasswordChangeModal />
             </Grid.Column>
             <Grid.Column className={styles.profileList} width={12}>
-              <ProfileList userData={userProfileData}/>
+              {userProfileData && <ProfileList userData={userProfileData}/>}
             </Grid.Column>
           </Grid.Row>
         </Grid>
