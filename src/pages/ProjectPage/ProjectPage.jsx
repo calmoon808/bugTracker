@@ -20,7 +20,7 @@ const ProjectPage = () => {
     .then(response => {
       setUserData(response);
     });
-  }, [authTokens, userData, setUserData]);
+  }, [authTokens, setUserData]);
 
   useEffect(() => {
     if (userData){
