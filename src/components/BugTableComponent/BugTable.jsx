@@ -12,6 +12,7 @@ const BugTableComponent = (props) => {
   
   useEffect(() => {
     const bugs = props.data.bugs;
+    if (bugs.length > 0) setIsTableEmpty(false);
     mapBugs(bugs);
     // eslint-disable-next-line
   }, [props]);
