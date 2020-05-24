@@ -1,0 +1,42 @@
+body {
+  height: 100%;
+  width: 100%;
+  background-image: url("../imgs/wavyToWhite.jpg")
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.Container {
+  position: relative;
+  height: 100%;
+  width: 95%;
+  top: 5%;
+  padding-left: 250px;
+  padding-right: 50px;
+  padding-top: 5%;
+}
+
+.ui.fullscreen.modal {
+  left: 2.5% !important;
+}
+
+.ui.fullscreen.scrolling.modal {
+  left: 2.5% !important;
+}
+
+/* .dimmed.dimmable > .ui.modals.dimmer.visible {
+  display: flex !important;
+} */
+/* .ui.fluid.container {
+  margin-left: 0 !important;
+} */
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

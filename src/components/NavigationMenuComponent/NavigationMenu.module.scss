@@ -1,0 +1,19 @@
+.Grid {
+  // display: block;
+  float: left;
+  height: 100%;
+  width: 10%;
+  margin-right: 0 !important; 
+
+
+  .Column {
+    height: 100%;
+
+    .Menu {
+      height: 100%;
+      position: fixed;
+      z-index: 2;
+      display: block;
+    }
+  }
+}
