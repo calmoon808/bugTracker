@@ -7,9 +7,15 @@ import { map, sortBy } from 'lodash'
 const UserTable = (props) => {
   const [cleanUsers, setCleanUsers] = useState();
   const [sortData, setSortData] = useState();
-  const [isTableEmpty] = useState(props.users.length === 0);
+  const [isTableEmpty, setIsTableEmpty] = useState(false);
 
   useEffect(() => {
+    if (props.users.length === 0) {
+      setIsTableEmpty(true);
+      return
+    } else {
+      setIsTableEmpty(false);
+    }
     mapUsers(props.users);
   }, [props])
 
