@@ -65,14 +65,13 @@ const SignUp = () => {
     <div className={styles.SignUp}>
       {isSuccess && <Redirect to="/"/>}
       <Grid centered columns={2}>
-        <Grid.Column>
-          <Header as="h2" textAlign="center">
-            Sign Up
-          </Header>
-          <Segment>
+        <Grid.Column className={styles.SegmentContainer}>
+          <Segment className={styles.Segment}>
+            <Header as="h2" textAlign="center">
+              Sign Up
+            </Header>
             <Form size="large">
               <Form.Input 
-                fluid
                 name="email"
                 icon="envelope"
                 iconPosition="left"
@@ -82,7 +81,6 @@ const SignUp = () => {
                 }}
               />
               <Form.Input 
-                fluid
                 icon="user"
                 iconPosition="left"
                 placeholder="Full name"
@@ -91,7 +89,6 @@ const SignUp = () => {
                 }}
               />
               <Form.Input
-                fluid
                 name="password"
                 icon="lock"
                 iconPosition="left"
@@ -102,7 +99,6 @@ const SignUp = () => {
                 }}
               />
               <Form.Input
-                fluid
                 icon="lock"
                 iconPosition="left"
                 placeholder="Confirm password"

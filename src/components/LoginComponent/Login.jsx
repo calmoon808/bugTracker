@@ -50,14 +50,13 @@ const Login = () => {
     <div className={styles.Login}>
       {isLoggedIn && <Redirect to="/home"/>}
       <Grid centered columns={2}>
-        <Grid.Column>
-          <Header as="h2" textAlign="center">
-            Login
-          </Header>
-          <Segment>
+        <Grid.Column className={styles.SegmentContainer}>
+          <Segment className={styles.Segment}>
+            <Header as="h2" textAlign="center">
+              Login
+            </Header>
             <Form size="large">
               <Form.Input
-                fluid
                 name="email"
                 icon="envelope"
                 iconPosition="left"
@@ -67,7 +66,6 @@ const Login = () => {
                 }}
               />
               <Form.Input
-                fluid
                 name="password"
                 icon="lock"
                 iconPosition="left"
@@ -79,8 +77,8 @@ const Login = () => {
               />
 
               <Button 
-                color="blue" 
-                fluid size="large"
+                fluid
+                color="blue"  size="large"
                 onClick={ () => postLogin() }
               >
                 Login
