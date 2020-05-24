@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Dropdown } from 'semantic-ui-react';
+import { Modal, Button, Dropdown, Input } from 'semantic-ui-react';
 import { useAuth } from "../../context/auth";
 import { usePageData } from '../../context/pageData';
 import { getUsers, updateBug, getUserData, getCurrentProjectData, findBug, removeBugUser, mapUsers } from "../../actions";
@@ -11,6 +11,7 @@ const BugModal = (props) => {
   const { authTokens } = useAuth();
   const { setUserData, setCurrentProjectData } = usePageData();
   const [bug] = useState(props.bug);
+  const [bugName, setBugName] = useState(bug.bug);
   const [bugStatus, setBugStatus] = useState({ id: bug.status_id, name: bug.status });
   const [bugPriority, setBugPriority] = useState({ id: bug.priority_id, name: bug.priority });
   const [isSearchingAdd, setIsSearchingAdd] = useState(false);
@@ -112,7 +113,15 @@ const BugModal = (props) => {
       <Modal.Header>Bug #{bug.id}</Modal.Header>
       <Modal.Content>
         <span>
-          <h1>{bug.bug}</h1>
+          <h1>
+            <Input 
+              value={bugName}
+              transparent
+              onChange={(e) => {
+                setBugName(e.target.value);
+              }}
+            />
+          </h1>
           <p>by: {bug.posterFullName} on {bug.startDate}</p>
           <BugDescription 
             bug={bug}
