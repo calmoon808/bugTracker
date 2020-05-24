@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Comment, Header, Form, Button } from "semantic-ui-react";
+import { Comment, Header, Form, Button, Icon } from "semantic-ui-react";
 import { timeToMeta, postComment, getBugComments } from '../../actions';
 import { useAuth } from "../../context/auth";
 import styles from "./BugCommentComponent.module.scss";
@@ -17,6 +17,15 @@ const BugCommentComponent = (props) => {
   }, [props.bugId])
 
   const mapComments = (commentsArr) => {
+    if (commentsArr.length === 0) {
+      return (
+        <div className={styles.noComments}>
+          <Icon className={styles.icon} size="massive" name="comment outline" />
+          <br/><br/>
+          <p>Add a comment below</p>
+        </div>
+      )
+    }
     return commentsArr.map(comment => {
       return (
         <Comment key={comment.id}>
@@ -57,7 +66,7 @@ const BugCommentComponent = (props) => {
         Comments
       </Header>
       <div className={styles.commentContainer}>
-        {bugComments.length !== 0 && mapComments(bugComments)}
+        {mapComments(bugComments)}
       </div>
       <Form onSubmit={handleCommentSubmit}>
         <Form.TextArea

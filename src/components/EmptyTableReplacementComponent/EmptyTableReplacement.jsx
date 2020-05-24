@@ -25,9 +25,13 @@ const EmptyTableReplacement = (props) => {
     msg = "Start a project from the dashboard.";
     icon = "pied piper";
   }
+  if (props.tableType === "overviewChart"){
+    msg = "No data to display.";
+    icon = "ban";
+  }
   return (
     <div className={styles.EmptyTableReplacement}>
-      <Icon className={styles.icon} size="massive" name={icon} />
+      <Icon className={styles.icon} size="huge" name={icon} />
       <br/><br/>
       <p>{msg}</p>
     </div>

@@ -6,15 +6,17 @@ import { usePageData } from "../../context/pageData";
 import BugTableComponent from "../../components/BugTableComponent";
 import UserTableComponent from "../../components/UserTableComponent";
 import GetStream from "../../components/GetStreamComponent";
+import EmptyTableReplacement from "../../components/EmptyTableReplacementComponent";
 import { useAuth } from "../../context/auth";
 import styles from "./ProjectDashboardPage.module.scss";
 
 const ProjectDashboardPage = () => {
   const { currentProjectData, setCurrentProjectData } = usePageData();
   const { authTokens } = useAuth();
+  const [projectUserArr, setProjectUserArr] = useState();
+  const [isChartEmpty, setIsChartEmpty] = useState(false);
   const chartRef = useRef();
   const projectId = useParams();
-  const [projectUserArr, setProjectUserArr] = useState();
 
   useEffect(() => {
     getCurrentProjectData({ projectId: projectId.id, authTokens })
@@ -26,6 +28,10 @@ const ProjectDashboardPage = () => {
   useEffect(() => {
     getChartData("bugs", projectId, "project")
     .then(data => {
+      if (JSON.stringify(data) === "[0,0,0]") {
+        setIsChartEmpty(true);
+        return
+      }
       if (chartRef.current) {
         const myChartRef = chartRef.current.getContext("2d");
         graphDoughnutChart(myChartRef, data);
@@ -58,11 +64,16 @@ const ProjectDashboardPage = () => {
         <Grid.Row>
           <Grid.Column width={8}>
             <Segment className={styles.Segment}>
-              <div>Project Overview</div>
-              <canvas
-                id='projectBugChart'
-                ref={chartRef}
-              />
+              {isChartEmpty ?
+                <EmptyTableReplacement 
+                  tableType="overviewChart"
+                />
+                :
+                <canvas
+                  id='myChart'
+                  ref={chartRef}
+                />
+              }
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>

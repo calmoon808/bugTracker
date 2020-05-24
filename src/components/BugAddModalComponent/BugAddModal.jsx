@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { DateInput } from "semantic-ui-calendar-react";
-import { Modal, Button, Input, Form, Dropdown, Menu } from 'semantic-ui-react'
+import { Modal, Button, Input, Form, Menu } from 'semantic-ui-react'
 import { useAuth } from '../../context/auth';
 import { postBug, getCurrentProjectData } from '../../actions';
 import { usePageData } from '../../context/pageData';
+import StatusPriorityDropdown from '../StatusPriorityDropdownComponent';
 
 const ProjectBugAddModal = (props) => {
   const { authTokens } = useAuth();
@@ -13,8 +14,20 @@ const ProjectBugAddModal = (props) => {
   const [dueDate, setDueDate] = useState("");
   const [bugDescription, setBugDescription] = useState("");
   const [isModalOpen, setIsModalOpen] = useState();
+  const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async () => {
+    if (!bugName) {
+      setIsError(true);
+      setErrorMsg("Please add a name.");
+      return
+    };
+    if (!bugPriority.id) {
+      setIsError(true);
+      setErrorMsg("Please add a priority level.");
+      return
+    };
     let newBugData = {
       bug: bugName,
       bug_description: bugDescription,
@@ -66,44 +79,12 @@ const ProjectBugAddModal = (props) => {
           value={dueDate}
           iconPosition="right"
           onChange={(e, { value }) => setDueDate(value)}
-        />
-        <span>Set Priority:</span>
-        <Menu compact borderless={true}>
-          <Dropdown
-            item
-            text={bugPriority.name}
-          >
-            <Dropdown.Menu
-              onChange={() => console.log('?????')}
-            >
-              <Dropdown.Divider />
-              <Dropdown.Item 
-                label={{ color: 'red', empty: true, circular:true }}
-                text='High'
-                onClick={() => { setBugPriority({
-                  id: 1,
-                  name: "High"
-                })}}
-              />
-              <Dropdown.Item 
-                label={{ color: 'yellow', empty: true, circular:true }}
-                text='Medium'
-                onClick={() => { setBugPriority({
-                  id: 2,
-                  name: "Medium"
-                })}}
-              />
-              <Dropdown.Item 
-                label={{ color: 'green', empty: true, circular:true }}
-                text='Low'
-                onClick={() => { setBugPriority({
-                  id: 3,
-                  name: "Low"
-                })}}
-              />
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu><br/>
+        /><br/>
+        <span>Set Priority: {bugPriority.name}</span>
+        <StatusPriorityDropdown 
+          setFunc={setBugPriority}
+          items={["High", "Medium", "Low"]}
+        /><br/><br/>
         <span>Bug Description:</span>
         <Form>
           <Form.TextArea 
@@ -111,6 +92,12 @@ const ProjectBugAddModal = (props) => {
             onChange={(e, { value }) => setBugDescription(value)}
           />
         </Form>
+        {isError && <div className="ui negative message">
+          <i className="close icon" onClick={() => {setIsError(false)}}></i>
+          <div className="header">
+            {errorMsg}
+          </div>
+        </div>}
       </Modal.Content>
       <Modal.Actions>
         <Button 

@@ -31,8 +31,9 @@ const ProjectAddModal = () => {
     postProject(newProjectData)
     .then(response => {
       if (response.status === 200){
-        getUserData({ data: authTokens })
+        getUserData(authTokens)
         .then(response => {
+          console.log(response)
           setUserData(response);
         });
       }
@@ -52,7 +53,7 @@ const ProjectAddModal = () => {
       open={isModalOpen}
       trigger={
         <Menu.Item 
-          content="Submit a Project"
+          content="Start a New Project"
         />
       }
     >

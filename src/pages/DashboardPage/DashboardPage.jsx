@@ -1,14 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from "./DashboardPage.module.scss";
 import { Grid, Segment } from 'semantic-ui-react';
 import { usePageData } from "../../context/pageData";
 import { useAuth } from "../../context/auth";
 import { getChartData, graphDoughnutChart, getUserData } from "../../actions";
 import BugTableComponent from '../../components/BugTableComponent';
+import EmptyTableReplacement from '../../components/EmptyTableReplacementComponent';
 
 const DashboardPage = () => {
   const { userData, setUserData } = usePageData();
   const { authTokens } = useAuth();
+  const [isChartEmpty, setIsChartEmpty] = useState(false);
   const chartRef = useRef();
   const bugHeaders = [["#", "id"], ["Name", "bug"], ["Poster", "posterFullName"], ["Status", "status"], ["Due Date", "dueDate"]];
 
@@ -21,7 +23,11 @@ const DashboardPage = () => {
 
   useEffect(() => {
     getChartData("bugs", {id: authTokens.id.toString()}, "users")
-    .then(data => { 
+    .then(data => {
+      if (JSON.stringify(data) === "[0,0,0]") {
+        setIsChartEmpty(true);
+        return
+      }
       if (chartRef.current){
         const myChartRef = chartRef.current.getContext("2d");
         graphDoughnutChart(myChartRef, data);
@@ -39,10 +45,16 @@ const DashboardPage = () => {
           <Grid.Column width={8}>
             <Segment className={styles.Segment}>
               <div>Bugs Overview</div>
-              <canvas
-                id='myChart'
-                ref={chartRef}
-              />
+              {isChartEmpty ?
+                <EmptyTableReplacement 
+                  tableType="overviewChart"
+                />
+                :
+                <canvas
+                  id='myChart'
+                  ref={chartRef}
+                />
+              }
             </Segment>
           </Grid.Column>
           <Grid.Column width={8}>

@@ -29,7 +29,7 @@ const UserProfilePage = () => {
   return (
     <>
       <h1>User Profile Page</h1>
-      <Segment piled={true} className={styles.userProfilePage}>
+      <Segment compact piled={true} className={styles.userProfilePage}>
         <Grid>
           <Grid.Row className={styles.theRow}>
             <Grid.Column width={4}>
