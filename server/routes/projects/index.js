@@ -40,7 +40,7 @@ projectRouter.post("/dashboard", async (req, res) => {
     res.json(err);
   });
   
-  await client.user(userId).delete();
+  // await client.user(userId).delete();
   await client.user(userId).getOrCreate({
     name: userName
   })

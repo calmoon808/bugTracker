@@ -148,9 +148,8 @@ bugRouter.post("/update", async (req, res) => {
       res.send(err)
     ))
   }
-
-  if (updateInfo.status !== updateObj.bug_status_id){
-  
+  if (updateInfo.status && updateInfo.status !== updateObj.bug_status_id){
+    
     updateObj.bug_status_id = updateInfo.status;
     feed.addActivity({
       'actor': client.user(updateInfo.id).ref(),
@@ -161,7 +160,7 @@ bugRouter.post("/update", async (req, res) => {
       res.send(err)
     ))
   }
-  if (updateInfo.priority !== updateObj.bug_priority_id){
+  if (updateInfo.priority && updateInfo.priority !== updateObj.bug_priority_id){
     updateObj.bug_priority_id = updateInfo.priority;
     feed.addActivity({
       'actor': client.user(updateInfo.id).ref(),
