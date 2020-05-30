@@ -6,6 +6,10 @@ const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const app = express();
 const { withAuth } = require('./middleware');
+const KnexSessionStore = require("connect-session-knex")(session);
+const store = new KnexSessionStore({
+  knex: knex
+})
 
 const PORT = process.env.PORT || 8080;
 require("./config/passport");
@@ -22,8 +26,9 @@ app.use(bodyParser.json());
 app.use(session({ 
   secret: 'keyboard cat',
   saveUninitialized: true,
-  resave: true
- }));
+  resave: true,
+  store: store
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
