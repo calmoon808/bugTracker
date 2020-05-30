@@ -41,7 +41,7 @@ const SignUp = () => {
       firstName,
       lastName,
     }
-    axios.post("/users/signup", data)
+    axios.post("/api/users/signup", data)
     .then(result => {
       setIsSuccess(true);
       setIsError(false);

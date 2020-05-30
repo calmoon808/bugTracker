@@ -10,7 +10,7 @@ const Header = () => {
   const { setIsLoggedIn } = useAuth();
 
   const logoutOnClick = () => {
-    axios.get("/users/logout")
+    axios.get("/api/users/logout")
     .then(() => {
       setIsLoggedIn(false);
       localStorage.clear();

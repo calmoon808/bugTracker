@@ -25,7 +25,7 @@ const Login = () => {
       return false;
     }
     
-    axios.post("/users/login", { email, password })
+    axios.post("/api/users/login", { email, password })
     .then(result => {
       if (result.status === 200) {
         setAuthTokens(result.data);

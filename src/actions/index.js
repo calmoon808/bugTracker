@@ -3,32 +3,32 @@ const { dashboardGraphOptions } = require("../graphOptions");
 const Chart = require("chart.js");
 
 export const changeBugDescription = (description) => {
-  return axios.post('/bugs/description', description)
+  return axios.post('/api/bugs/description', description)
 }
 
 export const changePassword = (data) => {
-  return axios.post("/users/newPassword", data)
+  return axios.post("/api/users/newPassword", data)
   .then(response => {
     return response;
   })
 }
 
 export const checkPassword = (data) => {
-  return axios.post("/users/oldPassword", data)
+  return axios.post("/api/users/oldPassword", data)
   .then(response => {
     return response.data;
   })
 }
 
 export const findBug = (bugId) => {
-  return axios.post("/bugs/find", bugId)
+  return axios.post("/api/bugs/find", bugId)
   .then(response => {
     return response.data;
   })
 }
 
 export const getBugComments = (bugId) => {
-  return axios.post("/comments/bug", { bugId })
+  return axios.post("/api/comments/bug", { bugId })
   .then(response => {
     return response.data;
   })
@@ -36,9 +36,9 @@ export const getBugComments = (bugId) => {
 
 export async function getChartData(url, data, relation){
   let graphData = [];
-  const fixed = await getGroupCount(`/${url}`, "Fixed", data, relation );
-  const inProgress = await getGroupCount(`/${url}`, "In-Progress", data, relation );
-  const closed = await getGroupCount(`/${url}`, "Closed", data, relation );
+  const fixed = await getGroupCount(url, "Fixed", data, relation );
+  const inProgress = await getGroupCount(url, "In-Progress", data, relation );
+  const closed = await getGroupCount(url, "Closed", data, relation );
   graphData.push(fixed.data.length);
   graphData.push(inProgress.data.length);
   graphData.push(closed.data.length);
@@ -46,39 +46,39 @@ export async function getChartData(url, data, relation){
 }
 
 export const getCompanies = () => {
-  return axios.get("/companies")
+  return axios.get("/api/companies")
   .then(response => {
     return response.data;
   })
 }
 
 export const getPositions = () => {
-  return axios.get("/company_positions")
+  return axios.get("/api/company_positions")
   .then(response => {
     return response.data;
   })
 }
 
 export const getGroupCount = (url, group, data, relation) => {
-  return axios.post(`${url}/count`, { group, data, relation })
+  return axios.post(`/api/${url}/count`, { group, data, relation })
   .then(response => {
     return response;
   })
 }
 
 export const getCurrentProjectData = (data) => {
-  return axios.post("/projects/dashboard", data)
+  return axios.post("/api/projects/dashboard", data)
 }
 
 export const getUserData = (authToken) => {
-  return axios.post("/users/dashboard", authToken)
+  return axios.post("/api/users/dashboard", authToken)
   .then(response => {
     return response;
   });
 }
 
 export const getUsers = () => {
-  return axios.get('/users')
+  return axios.get('/api/users')
   .then(response => {
     return (response.data);
   })
@@ -109,27 +109,27 @@ export const mapUsers = (userArr) => {
 }
 
 export const postBug = (bugData) => {
-  return axios.post('/bugs/post', bugData)
+  return axios.post('/api/bugs/post', bugData)
 }
 
 export const postComment = (commentData) => {
-  return axios.post('/comments/add', commentData)
+  return axios.post('/api/comments/add', commentData)
 }
 
 export const postProject = (projectData) => {
-  return axios.post('/projects/post', projectData)
+  return axios.post('/api/projects/post', projectData)
 }
 
 export const postUserData = (data) => {
-  return axios.post('/users/update', data)
+  return axios.post('/api/users/update', data)
 }
 
 export const removeBugUser = (bugUserData) => {
-  return axios.post('/bugs/removeUser', bugUserData)
+  return axios.post('/api/bugs/removeUser', bugUserData)
 }
 
 export const setProjectFeedCookie = (projectId) => {
-  return axios.post('/projects/setCookie', { projectId })
+  return axios.post('/api/projects/setCookie', { projectId })
 }
 
 export const timeToMeta = (time) => {
@@ -157,7 +157,7 @@ export const timeToMeta = (time) => {
 }
 
 export const updateBug = (bugDataObj) => {
-  return axios.post("/bugs/update/", bugDataObj)
+  return axios.post("/api/bugs/update/", bugDataObj)
   .then(response => {
     return (response);
   })

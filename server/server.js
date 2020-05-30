@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const session = require('express-session');
 const app = express();
 const { withAuth } = require('./middleware');
+const path = require("path");
 const KnexSessionStore = require("connect-session-knex")(session);
 const config = require("./knexfile");
 const knex = require("knex")(config);
@@ -16,6 +17,8 @@ const store = new KnexSessionStore({
 
 const PORT = process.env.PORT || 8080;
 require("./config/passport");
+
+app.use(express.static(path.join(__dirname, "/public")));
 
 app.use(
   bodyParser.urlencoded({
@@ -36,13 +39,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.use("/users", require("./routes/users"));
-app.use("/bug_priorities", require("./routes/bug_priorities"));
-app.use("/bug_statuses", require("./routes/bug_statuses"));
-app.use("/company_positions", require("./routes/company_positions"));
-app.use("/projects", require("./routes/projects"));
-app.use("/bugs", require("./routes/bugs"));
-app.use("/comments", require("./routes/comments"));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/bug_priorities", require("./routes/bug_priorities"));
+app.use("/api/bug_statuses", require("./routes/bug_statuses"));
+app.use("/api/company_positions", require("./routes/company_positions"));
+app.use("/api/projects", require("./routes/projects"));
+app.use("/api/bugs", require("./routes/bugs"));
+app.use("/api/comments", require("./routes/comments"));
 
 app.listen(PORT, () => {
   console.log(`PORT ${PORT} at your service.`)
