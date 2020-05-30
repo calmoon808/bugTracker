@@ -7,6 +7,8 @@ const session = require('express-session');
 const app = express();
 const { withAuth } = require('./middleware');
 const KnexSessionStore = require("connect-session-knex")(session);
+const knex = require("./knexfile");
+
 const store = new KnexSessionStore({
   knex: knex
 })
